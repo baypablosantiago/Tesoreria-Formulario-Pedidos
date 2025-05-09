@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FormTableComponent } from "./form-table/form-table.component";
+import { FormTableComponent } from "./components/form-table/form-table.component";
 
 @Component({
   selector: 'app-root',

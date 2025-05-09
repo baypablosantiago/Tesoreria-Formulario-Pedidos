@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { FormTableDataSource, FormTableItem } from './form-table-datasource';
+import { TextFieldComponent } from "../text-field/text-field.component";
 
 @Component({
   selector: 'app-form-table',
   templateUrl: './form-table.component.html',
   styleUrl: './form-table.component.scss',
-  imports: [MatTableModule]
+  imports: [MatTableModule, TextFieldComponent]
 })
 export class FormTableComponent implements AfterViewInit {
 
