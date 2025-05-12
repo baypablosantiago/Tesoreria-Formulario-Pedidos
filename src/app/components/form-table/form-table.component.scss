@@ -1,13 +1,62 @@
-  th, td {
-    border-right: 1.5px solid #ccc; 
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    border-top: none;
-    border-bottom: none;
+th, td {
+  border-right: 1px solid #ccc; 
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none;
+  border-bottom: none;
+  text-align: center;
   }
+  
+.table-limit {
+  width: 95%;
+  margin: 0 auto;
+}
 
-  th:last-child, td:last-child {
-    border-right: none; 
-  }
+.col-da {
+  width: 70px;
+  text-align: center;
+}
+
+.col-ns {
+  width: 70px;
+  text-align: center;
+}
+
+.col-ej {
+  width: 70px;
+  text-align: center;
+}
+
+.col-op {
+  width: 100px;
+  text-align: center;
+}
+
+.col-cpc {
+  width: 250px;
+  text-align: center;
+}
+
+.col-venc {
+  width: 120px;
+  text-align: center;
+}
+
+.col-imp {
+  width: 160px;
+  text-align: center;
+}
+
+.col-fuen {
+  width: 140px;
+  text-align: center;
+}
+
+.col-cc {
+  width: 150px;
+  text-align: center;
+}
+
+//MORE IN THE GLOBAL STYLES.SCSS

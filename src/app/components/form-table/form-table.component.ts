@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
-import { FormTableDataSource, FormTableItem } from './form-table-datasource';
 import { TextFieldComponent } from "../text-field/text-field.component";
 
 @Component({
@@ -11,10 +10,8 @@ import { TextFieldComponent } from "../text-field/text-field.component";
 })
 export class FormTableComponent implements AfterViewInit {
 
-  @ViewChild(MatTable) table!: MatTable<FormTableItem>;
-  dataSource = new FormTableDataSource();
+ @ViewChild(MatTable) table!: MatTable<any>;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = [
     'D.A.', 
     'N° de Solicitud',
@@ -25,6 +22,9 @@ export class FormTableComponent implements AfterViewInit {
     'Importe Solicitado', 
     'Fuente de Financiamiento', 
     'Cuenta Corriente a la cual acreditar'];
+
+
+  dataSource = Array.from({ length: 10 }, () => ({})); //lord have mercy with this sintax
 
   ngAfterViewInit(): void {
     this.table.dataSource = this.dataSource;

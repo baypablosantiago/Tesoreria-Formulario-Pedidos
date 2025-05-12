@@ -1,9 +1,9 @@
-<div class="mat-elevation-z2">
+<div class="table-limit">
   <table mat-table aria-label="Elements">
     
     <!-- D.A. Column -->
     <ng-container matColumnDef="D.A.">
-      <th mat-header-cell *matHeaderCellDef>D.A.</th>
+      <th mat-header-cell *matHeaderCellDef class="col-da">D.A.</th>
       <td mat-cell *matCellDef="let row">
         <app-text-field></app-text-field>
       </td>
@@ -11,7 +11,7 @@
 
     <!-- N° de Solicitud Column -->
     <ng-container matColumnDef="N° de Solicitud">
-      <th mat-header-cell *matHeaderCellDef>N° de Solicitud</th>
+      <th mat-header-cell *matHeaderCellDef class="col-ns">N° de Solicitud</th>
       <td mat-cell *matCellDef="let row">
         <app-text-field></app-text-field>
       </td>
@@ -19,57 +19,57 @@
 
     <!-- Ejercicio Column -->
     <ng-container matColumnDef="Ejercicio">
-      <th mat-header-cell *matHeaderCellDef>Ejercicio</th>
+      <th mat-header-cell *matHeaderCellDef class="col-ej">Ejercicio</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- N° de Orden de Pago Column -->
     <ng-container matColumnDef="N° de Orden de Pago">
-      <th mat-header-cell *matHeaderCellDef>N° de Orden de Pago</th>
+      <th mat-header-cell *matHeaderCellDef class="col-op">N° de Orden de Pago</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- Concepto, Proveedor o Contratista Column -->
     <ng-container matColumnDef="Concepto, Proveedor o Contratista">
-      <th mat-header-cell *matHeaderCellDef>Concepto, Proveedor o Contratista</th>
+      <th mat-header-cell *matHeaderCellDef class="col-cpc">Concepto, Proveedor o Contratista</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- Vencimiento y/o Periodo Column -->
     <ng-container matColumnDef="Vencimiento y/o Periodo">
-      <th mat-header-cell *matHeaderCellDef>Vencimiento y/o Periodo</th>
+      <th mat-header-cell *matHeaderCellDef class="col-venc">Vencimiento y/o Periodo</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- Importe Solicitado Column -->
     <ng-container matColumnDef="Importe Solicitado">
-      <th mat-header-cell *matHeaderCellDef>Importe Solicitado</th>
+      <th mat-header-cell *matHeaderCellDef class="col-imp">Importe Solicitado</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- Fuente de Financiamiento Column -->
     <ng-container matColumnDef="Fuente de Financiamiento">
-      <th mat-header-cell *matHeaderCellDef>Fuente de Financiamiento</th>
+      <th mat-header-cell *matHeaderCellDef class="col-fuen">Fuente de Financiamiento</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
     <!-- Cuenta Corriente a la cual acreditar Column -->
     <ng-container matColumnDef="Cuenta Corriente a la cual acreditar">
-      <th mat-header-cell *matHeaderCellDef>Cuenta Corriente a la cual acreditar</th>
+      <th mat-header-cell *matHeaderCellDef class="col-cc">Cuenta Corriente a la cual acreditar</th>
       <td mat-cell *matCellDef="let row">
-        
+        <app-text-field></app-text-field>
       </td>
     </ng-container>
 
