@@ -6,18 +6,21 @@ import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'app-number-field',
   imports: [FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
   ],
-  templateUrl: './text-field.component.html',
-  styleUrl: './text-field.component.scss',
+  templateUrl: './number-field.component.html',
+  styleUrl: './number-field.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class TextFieldComponent {
-  readonly field = new FormControl('', [Validators.required]);
+export class NumberFieldComponent {
+  readonly field = new FormControl('', [
+  Validators.required,
+  Validators.pattern(/^\d+$/) // solo dígitos positivos (sin decimales ni negativos)
+]);
 
   errorMessage = signal('');
 
@@ -26,6 +29,14 @@ export class TextFieldComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
+
+  allowOnlyNumbers(event: KeyboardEvent) {
+  const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight'];
+  const isNumber = /^[0-9]$/.test(event.key);
+  if (!isNumber && !allowedKeys.includes(event.key)) {
+    event.preventDefault();
+  }
+}
 
   updateErrorMessage() {
     if (this.field.hasError('required')) {

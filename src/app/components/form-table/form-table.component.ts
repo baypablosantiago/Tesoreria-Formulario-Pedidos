@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { TextFieldComponent } from "../text-field/text-field.component";
+import { NumberFieldComponent } from "../number-field/number-field.component";
 
 @Component({
   selector: 'app-form-table',
   templateUrl: './form-table.component.html',
   styleUrl: './form-table.component.scss',
-  imports: [MatTableModule, TextFieldComponent]
+  imports: [MatTableModule, TextFieldComponent, NumberFieldComponent]
 })
 export class FormTableComponent implements AfterViewInit {
 
@@ -21,7 +22,8 @@ export class FormTableComponent implements AfterViewInit {
     'Vencimiento y/o Periodo', 
     'Importe Solicitado', 
     'Fuente de Financiamiento', 
-    'Cuenta Corriente a la cual acreditar'];
+    'Cuenta Corriente a la cual acreditar',
+    'Notas / Comentarios'];
 
 
   dataSource = Array.from({ length: 10 }, () => ({})); //lord have mercy with this sintax

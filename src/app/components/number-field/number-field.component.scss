@@ -1,0 +1,24 @@
+.mdc-text-field--outlined {
+    height: 56px;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    box-sizing: border-box;
+}
+
+.mat-mdc-input-element {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}

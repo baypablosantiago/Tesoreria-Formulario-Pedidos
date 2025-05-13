@@ -1,9 +1,11 @@
 <mat-form-field appearance="outline">
     <input 
         matInput
+        type="number"
         [formControl]="field"
         (blur)="updateErrorMessage()"
         required
+        (keypress)="allowOnlyNumbers($event)"
     />
     @if (field.invalid) {
       <mat-error>{{errorMessage()}}</mat-error>
