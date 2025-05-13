@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline">
+  <input
+    matInput
+    [formControl]="moneyField"
+    (input)="onMoneyInput()"
+    (blur)="formatMoneyField()"
+    required
+  />
+  <span matTextPrefix>$&nbsp;</span>
+  @if (moneyField.invalid) {
+    <mat-error>{{ errorMessage() }}</mat-error>
+  }
+</mat-form-field>

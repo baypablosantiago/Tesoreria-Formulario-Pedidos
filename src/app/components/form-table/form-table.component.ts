@@ -2,12 +2,13 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { TextFieldComponent } from "../text-field/text-field.component";
 import { NumberFieldComponent } from "../number-field/number-field.component";
+import { MoneyFieldComponent } from "../money-field/money-field.component";
 
 @Component({
   selector: 'app-form-table',
   templateUrl: './form-table.component.html',
   styleUrl: './form-table.component.scss',
-  imports: [MatTableModule, TextFieldComponent, NumberFieldComponent]
+  imports: [MatTableModule, TextFieldComponent, NumberFieldComponent, MoneyFieldComponent]
 })
 export class FormTableComponent implements AfterViewInit {
 
