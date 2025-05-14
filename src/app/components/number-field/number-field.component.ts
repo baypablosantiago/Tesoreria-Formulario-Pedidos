@@ -7,7 +7,8 @@ import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-number-field',
-  imports: [FormsModule,
+  imports: [
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

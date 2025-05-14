@@ -27,7 +27,7 @@ export class FormTableComponent implements AfterViewInit {
     'Notas / Comentarios'];
 
 
-  dataSource = Array.from({ length: 10 }, () => ({})); //lord have mercy with this sintax
+  dataSource = Array.from({ length: 6 }, () => ({})); //lord have mercy with this sintax
 
   ngAfterViewInit(): void {
     this.table.dataSource = this.dataSource;

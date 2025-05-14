@@ -1,4 +1,6 @@
-input.mat-input-element {
-  text-align: right;
-  direction: ltr;
+.mdc-text-field--outlined {
+    height: 56px;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    box-sizing: border-box;
 }
