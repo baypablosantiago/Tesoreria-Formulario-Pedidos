@@ -5,7 +5,7 @@ import { SendButtonComponent } from "./components/send-button/send-button.compon
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormTableComponent, SendButtonComponent],
+  imports: [RouterOutlet, FormTableComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

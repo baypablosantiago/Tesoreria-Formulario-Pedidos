@@ -1,16 +1,28 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, signal, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { TextFieldComponent } from "../text-field/text-field.component";
 import { NumberFieldComponent } from "../number-field/number-field.component";
 import { MoneyFieldComponent } from "../money-field/money-field.component";
+import { SendButtonComponent } from "../send-button/send-button.component";
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-form-table',
   templateUrl: './form-table.component.html',
   styleUrl: './form-table.component.scss',
-  imports: [MatTableModule, TextFieldComponent, NumberFieldComponent, MoneyFieldComponent]
+  imports: [ReactiveFormsModule, JsonPipe ,MatTableModule, TextFieldComponent, NumberFieldComponent, MoneyFieldComponent, SendButtonComponent]
 })
 export class FormTableComponent implements AfterViewInit {
+
+  form = signal<FormGroup>(
+    new FormGroup(
+      {
+        DA: new FormControl(''),
+        nroSolicitud: new FormControl('')
+      }
+    )
+  );
 
  @ViewChild(MatTable) table!: MatTable<any>;
 

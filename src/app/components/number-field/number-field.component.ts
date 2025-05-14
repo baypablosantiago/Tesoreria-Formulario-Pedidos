@@ -20,7 +20,7 @@ import { merge } from 'rxjs';
 export class NumberFieldComponent {
   readonly field = new FormControl('', [
   Validators.required,
-  Validators.pattern(/^\d+$/) // solo dígitos positivos (sin decimales ni negativos)
+  Validators.pattern(/^\d+$/) // solo digitos positivos, sin decimales ni negativos
 ]);
 
   errorMessage = signal('');
