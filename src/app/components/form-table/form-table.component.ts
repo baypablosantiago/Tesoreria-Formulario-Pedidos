@@ -23,7 +23,6 @@ import { SendButtonComponent } from '../send-button/send-button.component';
 export class FormTableComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  // Form con FormArray de filas
   form = signal<FormGroup>(
     new FormGroup({
       rows: new FormArray([])
@@ -48,7 +47,6 @@ export class FormTableComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    // Inicializamos con 6 filas vacías como en tu ejemplo
     Array.from({ length: 2 }).forEach(() => this.addRow());
     this.table.dataSource = this.rows.controls;
   }
@@ -57,13 +55,13 @@ export class FormTableComponent implements AfterViewInit {
     const row = new FormGroup({
       DA: new FormControl('', Validators.required),
       nroSolicitud: new FormControl('', Validators.required),
-      ejercicio: new FormControl(''),
-      ordenPago: new FormControl(''),
-      concepto: new FormControl(''),
-      vencimiento: new FormControl(''),
-      importe: new FormControl(''),
-      fuenteFinanciamiento: new FormControl(''),
-      cuentaCorriente: new FormControl(''),
+      ejercicio: new FormControl('', Validators.required),
+      ordenPago: new FormControl('', Validators.required),
+      concepto: new FormControl('', Validators.required),
+      vencimiento: new FormControl('', Validators.required),
+      importe: new FormControl('', Validators.required),
+      fuenteFinanciamiento: new FormControl('', Validators.required),
+      cuentaCorriente: new FormControl('', Validators.required),
       comentarios: new FormControl('')
     });
 
@@ -97,6 +95,6 @@ private markAllControlsAsTouched(formGroup: FormGroup | FormArray): void {
     } else {
       control.markAsTouched();
     }
-  });
+  })
 }
 }

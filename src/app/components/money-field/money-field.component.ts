@@ -1,13 +1,6 @@
 import { Component, signal, ViewEncapsulation, forwardRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ControlValueAccessor,
-  FormControl,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
@@ -64,12 +57,8 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    if (isDisabled) {
-      this.moneyField.disable({ emitEvent: false });
-    } else {
-      this.moneyField.enable({ emitEvent: false });
-    }
+  setDisabledState(isDisabled: boolean): void {
+    isDisabled ? this.moneyField.disable() : this.moneyField.enable();
   }
 
   updateErrorMessage() {

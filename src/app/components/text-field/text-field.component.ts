@@ -1,17 +1,5 @@
-import {
-  Component,
-  forwardRef,
-  ViewEncapsulation,
-  signal
-} from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { Component, forwardRef, ViewEncapsulation, signal } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,7 +7,6 @@ import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-text-field',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -37,6 +24,7 @@ import { merge } from 'rxjs';
     }
   ]
 })
+
 export class TextFieldComponent implements ControlValueAccessor {
   readonly field = new FormControl('', [Validators.required]);
   errorMessage = signal('');
@@ -49,7 +37,7 @@ export class TextFieldComponent implements ControlValueAccessor {
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.updateErrorMessage();
-        this.onChange(this.field.value); // notificar cambios
+        this.onChange(this.field.value);
       });
   }
 
@@ -60,8 +48,6 @@ export class TextFieldComponent implements ControlValueAccessor {
       this.errorMessage.set('');
     }
   }
-
-  // ControlValueAccessor implementation
 
   writeValue(value: any): void {
     this.field.setValue(value, { emitEvent: false });
