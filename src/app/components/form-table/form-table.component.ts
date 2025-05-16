@@ -5,6 +5,7 @@ import { TextFieldComponent } from '../text-field/text-field.component';
 import { NumberFieldComponent } from '../number-field/number-field.component';
 import { MoneyFieldComponent } from '../money-field/money-field.component';
 import { SendButtonComponent } from '../send-button/send-button.component';
+import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
 
 @Component({
   selector: 'app-form-table',
@@ -17,7 +18,8 @@ import { SendButtonComponent } from '../send-button/send-button.component';
     NumberFieldComponent,
     MoneyFieldComponent,
     SendButtonComponent,
-  ],
+    UnrequiredTextFieldComponent
+],
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {

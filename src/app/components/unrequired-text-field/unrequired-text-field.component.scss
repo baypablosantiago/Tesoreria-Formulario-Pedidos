@@ -1,0 +1,12 @@
+.mdc-text-field--outlined {
+    height: 56px;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    box-sizing: border-box;
+}
+
+.mat-mdc-input-element {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
