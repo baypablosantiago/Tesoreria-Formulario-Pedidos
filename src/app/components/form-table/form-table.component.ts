@@ -6,6 +6,7 @@ import { NumberFieldComponent } from '../number-field/number-field.component';
 import { MoneyFieldComponent } from '../money-field/money-field.component';
 import { SendButtonComponent } from '../send-button/send-button.component';
 import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
+import { RowsPanelComponent } from "../rows-panel/rows-panel.component";
 
 @Component({
   selector: 'app-form-table',
@@ -18,7 +19,8 @@ import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequire
     NumberFieldComponent,
     MoneyFieldComponent,
     SendButtonComponent,
-    UnrequiredTextFieldComponent
+    UnrequiredTextFieldComponent,
+    RowsPanelComponent
 ],
   standalone: true
 })
@@ -49,7 +51,7 @@ export class FormTableComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    Array.from({ length: 2 }).forEach(() => this.addRow());
+    Array.from({ length: 3 }).forEach(() => this.addRow());
     this.table.dataSource = this.rows.controls;
   }
 
@@ -74,8 +76,8 @@ export class FormTableComponent implements AfterViewInit {
     }
   }
 
-  removeRow(index: number) {
-    this.rows.removeAt(index);
+  removeRow() {
+    this.rows.removeAt(this.rows.length-1);
     this.table.renderRows();
   }
 
