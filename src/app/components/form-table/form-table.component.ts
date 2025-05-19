@@ -77,9 +77,23 @@ export class FormTableComponent implements AfterViewInit {
     }
   }
 
+ private isRowEmpty(row: FormGroup): boolean {
+  return Object.values(row.controls).every(control => {
+    const value = control.value;
+    return value === null || value === undefined || String(value).trim() === '';
+  });
+}
+
   removeRow() {
-    this.rows.removeAt(this.rows.length-1);
+    const lastIndex = this.rows.length - 1;
+  const lastRow = this.rows.at(lastIndex) as FormGroup;
+
+  if (this.isRowEmpty(lastRow)) {
+    this.rows.removeAt(lastIndex);
     this.table.renderRows();
+  } else {
+    console.warn('No se puede eliminar una fila que contiene datos.');
+  }
   }
 
   onSubmit(): void {
