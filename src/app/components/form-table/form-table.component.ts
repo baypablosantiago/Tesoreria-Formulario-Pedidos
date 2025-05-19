@@ -21,7 +21,7 @@ import { RowsPanelComponent } from "../rows-panel/rows-panel.component";
     SendButtonComponent,
     UnrequiredTextFieldComponent,
     RowsPanelComponent
-],
+  ],
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {
@@ -77,44 +77,48 @@ export class FormTableComponent implements AfterViewInit {
     }
   }
 
- private isRowEmpty(row: FormGroup): boolean {
-  return Object.values(row.controls).every(control => {
-    const value = control.value;
-    return value === null || value === undefined || String(value).trim() === '';
-  });
-}
+  private isRowEmpty(row: FormGroup): boolean {
+    return Object.values(row.controls).every(control => {
+      const value = control.value;
+      return value === null || value === undefined || String(value).trim() === '';
+    });
+  }
 
   removeRow() {
     const lastIndex = this.rows.length - 1;
-  const lastRow = this.rows.at(lastIndex) as FormGroup;
+    const lastRow = this.rows.at(lastIndex) as FormGroup;
 
-  if (this.isRowEmpty(lastRow)) {
-    this.rows.removeAt(lastIndex);
-    this.table.renderRows();
-  } else {
-    console.warn('No se puede eliminar una fila que contiene datos.');
-  }
+    if (lastIndex == 0) {
+      console.warn('Debe haber por lo menos una fila en existencia.');
+    } else {
+      if (this.isRowEmpty(lastRow)) {
+        this.rows.removeAt(lastIndex);
+        this.table.renderRows();
+      } else {
+        console.warn('No se puede eliminar una fila que contiene datos.');
+      }
+    }
   }
 
   onSubmit(): void {
-  const formGroup = this.form();
+    const formGroup = this.form();
 
-  if (formGroup.valid) {
-    console.log('Formulario enviado:', formGroup.value);
-    this.isDisabled = true;
-  } else {
-    console.warn('Formulario inválido. Por favor, completá los campos requeridos.');
-    this.markAllControlsAsTouched(formGroup);
-  }
-}
-
-private markAllControlsAsTouched(formGroup: FormGroup | FormArray): void {
-  Object.values(formGroup.controls).forEach(control => {
-    if (control instanceof FormGroup || control instanceof FormArray) {
-      this.markAllControlsAsTouched(control);
+    if (formGroup.valid) {
+      console.log('Formulario enviado:', formGroup.value);
+      this.isDisabled = true;
     } else {
-      control.markAsTouched();
+      console.warn('Formulario inválido. Por favor, completá los campos requeridos.');
+      this.markAllControlsAsTouched(formGroup);
     }
-  })
-}
+  }
+
+  private markAllControlsAsTouched(formGroup: FormGroup | FormArray): void {
+    Object.values(formGroup.controls).forEach(control => {
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markAllControlsAsTouched(control);
+      } else {
+        control.markAsTouched();
+      }
+    })
+  }
 }
