@@ -1,4 +1,4 @@
-<form [formGroup]="form()">
+<form [formGroup]="form()" [class.disabled]="isDisabled">
   <div formArrayName="rows" class="table-limit">
     <table mat-table [dataSource]="rows.controls" aria-label="Elements">
 

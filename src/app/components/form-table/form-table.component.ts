@@ -25,6 +25,7 @@ import { RowsPanelComponent } from "../rows-panel/rows-panel.component";
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {
+  isDisabled = false;
   @ViewChild(MatTable) table!: MatTable<any>;
 
   form = signal<FormGroup>(
@@ -86,6 +87,7 @@ export class FormTableComponent implements AfterViewInit {
 
   if (formGroup.valid) {
     console.log('Formulario enviado:', formGroup.value);
+    this.isDisabled = true;
   } else {
     console.warn('Formulario inválido. Por favor, completá los campos requeridos.');
     this.markAllControlsAsTouched(formGroup);
