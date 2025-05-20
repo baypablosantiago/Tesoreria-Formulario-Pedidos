@@ -85,9 +85,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-
-    <app-rows-panel (add)="addRow()" (remove)="removeRow()" ></app-rows-panel>
-    <app-send-button (send)="onSubmit()"></app-send-button>
+    
+    <div class="buttons-container">
+      <app-add-row-button (add)="addRow()"></app-add-row-button>
+      <app-remove-row-button (remove)="removeRow()"></app-remove-row-button>
+      <app-send-button class="spaced-right" (send)="onSubmit()"></app-send-button>
+    </div>
     
   </div>
 </form>

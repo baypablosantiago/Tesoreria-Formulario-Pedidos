@@ -4,21 +4,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-rows-panel',
+  selector: 'app-add-row-button',
   imports: [MatButtonModule, MatDividerModule, MatIconModule],
-  templateUrl: './rows-panel.component.html',
-  styleUrl: './rows-panel.component.scss'
+  templateUrl: './add-row-button.component.html',
+  styleUrl: './add-row-button.component.scss'
 })
-export class RowsPanelComponent {
+export class AddRowButtonComponent {
+
   @Output() add = new EventEmitter<void>();
-  @Output() remove = new EventEmitter<void>();
 
   onAdd() {
     this.add.emit();
-  }
-
-  onRemove() {
-    this.remove.emit();
   }
 
 }

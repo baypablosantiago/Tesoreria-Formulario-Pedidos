@@ -6,7 +6,8 @@ import { NumberFieldComponent } from '../number-field/number-field.component';
 import { MoneyFieldComponent } from '../money-field/money-field.component';
 import { SendButtonComponent } from '../send-button/send-button.component';
 import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
-import { RowsPanelComponent } from "../rows-panel/rows-panel.component";
+import { AddRowButtonComponent } from "../add-row-button/add-row-button.component";
+import { RemoveRowButtonComponent } from "../remove-row-button/remove-row-button.component";
 
 @Component({
   selector: 'app-form-table',
@@ -20,8 +21,9 @@ import { RowsPanelComponent } from "../rows-panel/rows-panel.component";
     MoneyFieldComponent,
     SendButtonComponent,
     UnrequiredTextFieldComponent,
-    RowsPanelComponent
-  ],
+    AddRowButtonComponent,
+    RemoveRowButtonComponent
+],
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {

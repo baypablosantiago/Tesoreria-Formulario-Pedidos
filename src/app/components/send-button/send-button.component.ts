@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Output} from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageBoxComponent } from '../message-box/message-box.component';
 
 @Component({
   selector: 'app-send-button',
@@ -14,6 +16,13 @@ export class SendButtonComponent {
 
   onClick() {
     this.send.emit();
+    this.openDialog();
+  }
+
+  readonly dialog = inject(MatDialog);
+
+  openDialog():void{
+    this.dialog.open(MessageBoxComponent);
   }
 
 }
