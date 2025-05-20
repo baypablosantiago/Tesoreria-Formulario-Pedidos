@@ -1,11 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MessageType } from '../../services/message-box.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-message-box',
-  imports: [],
+  imports: [MatDialogModule,MatButtonModule,MatIcon],
   templateUrl: './message-box.component.html',
-  styleUrl: './message-box.component.scss'
+  styleUrls: ['./message-box.component.scss']
 })
 export class MessageBoxComponent {
+  constructor(
+    public dialogRef: MatDialogRef<MessageBoxComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string, type: MessageType, title: string }
+  ) {}
 
+  get icon(): string {
+    switch (this.data.type) {
+      case 'success': return 'check_circle';
+      case 'error': return 'error';
+      case 'warning': return 'warning';
+      default: return 'info';
+    }
+  }
+
+  get iconColor(): string {
+    switch (this.data.type) {
+      case 'success': return 'green';
+      case 'error': return 'red';
+      case 'warning': return 'orange';
+      default: return 'blue';
+    }
+  }
 }
