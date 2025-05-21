@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, inject, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { TextFieldComponent } from '../text-field/text-field.component';
@@ -8,6 +8,7 @@ import { SendButtonComponent } from '../send-button/send-button.component';
 import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
 import { AddRowButtonComponent } from "../add-row-button/add-row-button.component";
 import { RemoveRowButtonComponent } from "../remove-row-button/remove-row-button.component";
+import { MessageBoxService } from '../../services/message-box.service';
 
 @Component({
   selector: 'app-form-table',
@@ -29,7 +30,8 @@ import { RemoveRowButtonComponent } from "../remove-row-button/remove-row-button
 export class FormTableComponent implements AfterViewInit {
   isDisabled = false;
   @ViewChild(MatTable) table!: MatTable<any>;
-
+  private readonly messageBox = inject(MessageBoxService);
+  
   form = signal<FormGroup>(
     new FormGroup({
       rows: new FormArray([])
@@ -91,12 +93,14 @@ export class FormTableComponent implements AfterViewInit {
     const lastRow = this.rows.at(lastIndex) as FormGroup;
 
     if (lastIndex == 0) {
+      this.messageBox.show('Debe haber por lo menos una fila en existencia.','info', 'Minimo de celdas alcanzado.');
       console.warn('Debe haber por lo menos una fila en existencia.');
     } else {
       if (this.isRowEmpty(lastRow)) {
         this.rows.removeAt(lastIndex);
         this.table.renderRows();
       } else {
+        this.messageBox.show('No se puede eliminar una fila que contiene datos. Verifique la ultima fila.', 'warning', 'Atención.');
         console.warn('No se puede eliminar una fila que contiene datos.');
       }
     }
@@ -106,9 +110,11 @@ export class FormTableComponent implements AfterViewInit {
     const formGroup = this.form();
 
     if (formGroup.valid) {
+      this.messageBox.show('La solicitud fue enviada correctamente y entrará en revisión por el personal de la Tesoreria General.', 'success', 'Formulario enviado.');
       console.log('Formulario enviado:', formGroup.value);
       this.isDisabled = true;
     } else {
+      this.messageBox.show('Por favor, complete todos los campos marcados como requeridos. Si tiene menos de 3 solicitudes, puede usar el boton "Eliminar ultima fila".', 'error', 'Campos incompletos.');
       console.warn('Formulario inválido. Por favor, completá los campos requeridos.');
       this.markAllControlsAsTouched(formGroup);
     }
