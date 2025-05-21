@@ -74,11 +74,18 @@ export class FormTableComponent implements AfterViewInit {
       comentarios: new FormControl('')
     });
 
-    this.rows.push(row);
+    if (this.rows.length < 15)
+    {
+      this.rows.push(row);
 
-    if (this.table) {
-      this.table.renderRows();
+      if (this.table) {
+        this.table.renderRows();
+      }
+    } else {
+      this.messageBox.show('Puede enviar formularios de hasta 15 filas como máximo.','info', 'Máximo de filas alcanzado.');
+      console.log("Maximo de 15 filas")
     }
+    
   }
 
   private isRowEmpty(row: FormGroup): boolean {

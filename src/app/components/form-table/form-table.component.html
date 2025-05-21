@@ -1,5 +1,12 @@
 <form [formGroup]="form()" [class.disabled]="isDisabled" (keydown.enter)="$event.preventDefault()">
   <div formArrayName="rows" class="table-limit">
+
+    <div class="buttons-container">
+      <app-add-row-button (add)="addRow()"></app-add-row-button>
+      <app-remove-row-button (remove)="removeRow()"></app-remove-row-button>
+      <app-send-button class="spaced-right" (send)="onSubmit()"></app-send-button>
+    </div>
+
     <table mat-table [dataSource]="rows.controls" aria-label="Elements">
 
       <!-- D.A. Column -->
@@ -85,12 +92,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    
-    <div class="buttons-container">
-      <app-add-row-button (add)="addRow()"></app-add-row-button>
-      <app-remove-row-button (remove)="removeRow()"></app-remove-row-button>
-      <app-send-button class="spaced-right" (send)="onSubmit()"></app-send-button>
-    </div>
     
   </div>
 </form>
