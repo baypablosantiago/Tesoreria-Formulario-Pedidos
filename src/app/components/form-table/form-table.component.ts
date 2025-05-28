@@ -9,6 +9,8 @@ import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequire
 import { AddRowButtonComponent } from "../add-row-button/add-row-button.component";
 import { RemoveRowButtonComponent } from "../remove-row-button/remove-row-button.component";
 import { MessageBoxService } from '../../services/message-box.service';
+import { FundingRequestService } from '../../services/funding-request.service';
+import { FundingRequest } from '../../models/funding-request';
 
 @Component({
   selector: 'app-form-table',
@@ -37,6 +39,8 @@ export class FormTableComponent implements AfterViewInit {
       rows: new FormArray([])
     })
   );
+
+  constructor(private fundingService: FundingRequestService) {}
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
@@ -74,7 +78,7 @@ export class FormTableComponent implements AfterViewInit {
       comentarios: new FormControl('')
     });
 
-    if (this.rows.length < 15)
+    if (this.rows.length < 10)
     {
       this.rows.push(row);
 
@@ -82,8 +86,7 @@ export class FormTableComponent implements AfterViewInit {
         this.table.renderRows();
       }
     } else {
-      this.messageBox.show('Puede enviar formularios de hasta 15 filas como máximo.','info', 'Máximo de filas alcanzado.');
-      console.log("Maximo de 15 filas")
+      this.messageBox.show('Puede enviar formularios de hasta 10 filas como máximo.','info', 'Máximo de filas alcanzado.');
     }
     
   }
@@ -101,31 +104,59 @@ export class FormTableComponent implements AfterViewInit {
 
     if (lastIndex == 0) {
       this.messageBox.show('Debe haber por lo menos una fila en existencia.','info', 'Minimo de celdas alcanzado.');
-      console.warn('Debe haber por lo menos una fila en existencia.');
     } else {
       if (this.isRowEmpty(lastRow)) {
         this.rows.removeAt(lastIndex);
         this.table.renderRows();
       } else {
         this.messageBox.show('No se puede eliminar una fila que contiene datos. Verifique la ultima fila.', 'warning', 'Atención.');
-        console.warn('No se puede eliminar una fila que contiene datos.');
       }
     }
   }
 
-  onSubmit(): void {
-    const formGroup = this.form();
+  submitRequest(): void {
+  const formGroup = this.form();
 
-    if (formGroup.valid) {
-      this.messageBox.show('La solicitud fue enviada correctamente y entrará en revisión por el personal de la Tesoreria General.', 'success', 'Formulario enviado.');
-      console.log('Formulario enviado:', formGroup.value);
-      this.isDisabled = true;
-    } else {
-      this.messageBox.show('Por favor, complete todos los campos marcados como requeridos. Si tiene menos de 3 solicitudes, puede usar el boton "Eliminar ultima fila".', 'error', 'Campos incompletos.');
-      console.warn('Formulario inválido. Por favor, completá los campos requeridos.');
-      this.markAllControlsAsTouched(formGroup);
-    }
+  if (formGroup.valid) {
+    const requests: FundingRequest[] = this.rows.controls.map(row => ({
+      da: +row.get('DA')?.value,
+      requestNumber: +row.get('nroSolicitud')?.value,
+      fiscalYear: +row.get('ejercicio')?.value,
+      paymentOrderNumber: +row.get('ordenPago')?.value,
+      concept: row.get('concepto')?.value,
+      dueDate: row.get('vencimiento')?.value,
+      amount: +row.get('importe')?.value,
+      fundingSource: row.get('fuenteFinanciamiento')?.value,
+      checkingAccount: row.get('cuentaCorriente')?.value,
+      comments: row.get('comentarios')?.value || ''
+    }));
+
+    requests.forEach(req => {
+      this.fundingService.addFundingRequest(req).subscribe({
+        next: () => {},
+        error: err => {
+          console.error('Error al enviar una solicitud:', err);
+          this.messageBox.show('Ocurrió un error al enviar una solicitud. Informe a Tesoreria.', 'error', 'Error de servidor.');
+        }
+      });
+    });
+
+    this.messageBox.show(
+      'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
+      'success',
+      'Formulario enviado.'
+    );
+
+    this.isDisabled = true;
+  } else {
+    this.messageBox.show(
+      'Por favor, complete todos los campos requeridos. Use "Eliminar última fila" si tiene filas vacías.',
+      'error',
+      'Formulario incompleto.'
+    );
+    this.markAllControlsAsTouched(formGroup);
   }
+}
 
   private markAllControlsAsTouched(formGroup: FormGroup | FormArray): void {
     Object.values(formGroup.controls).forEach(control => {
