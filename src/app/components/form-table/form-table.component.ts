@@ -132,8 +132,11 @@ export class FormTableComponent implements AfterViewInit {
     }));
 
     requests.forEach(req => {
+      console.log('Amount antes de enviar:', req.amount, typeof req.amount);
       this.fundingService.addFundingRequest(req).subscribe({
-        next: () => {},
+        next: (request) => {
+          console.log('Payload enviado:', request);
+        },
         error: err => {
           console.error('Error al enviar una solicitud:', err);
           this.messageBox.show('Ocurrió un error al enviar una solicitud. Informe a Tesoreria.', 'error', 'Error de servidor.');

@@ -38,11 +38,13 @@ export class MoneyFieldComponent implements ControlValueAccessor {
 
   constructor() {
     merge(this.moneyField.statusChanges, this.moneyField.valueChanges)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.updateErrorMessage();
-        this.onChange(this.moneyField.value);
-      });
+  .pipe(takeUntilDestroyed())
+  .subscribe(() => {
+    this.updateErrorMessage();
+
+    const parsedValue = this.parseToNumber(this.moneyField.value);
+    this.onChange(parsedValue);
+  });
   }
 
   writeValue(value: any): void {
@@ -97,4 +99,12 @@ export class MoneyFieldComponent implements ControlValueAccessor {
 
     this.moneyField.setValue(formatted, { emitEvent: false });
   }
+
+  private parseToNumber(value: string | null): number | null {
+  if (!value) return null;
+  const numericString = value.replace(/\./g, '').replace(',', '.').replace(/[^0-9.-]/g, '');
+  const num = parseFloat(numericString);
+  return isNaN(num) ? null : num;
+}
+
 }
