@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton, MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,21 +17,18 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 })
 export class LoginComponent {
   loginValid:boolean = true;
-  user={
-    email:"",
-    password:""
-  };
-  userToTest={
-    email:"test@gmail.com",
-    password:"pass123"
-  };
 
-  validateLogin(email:string, password:string){
-    return this.user == this.userToTest;
+  email:string = "";
+  password:string = "";
+
+  constructor(private authService: AuthService, private router: Router){
+    
   }
 
-  login(){
-    if(this.validateLogin(this.user.email,this.user.password))
-    alert("Login correcto");
+  login():void{
+    this.authService.login(this.email, this.password).subscribe({
+      next: () => this.router.navigate(["/form-table"]),
+      error: (err) => console.error("Fallo el login", err)
+    })
   }
 }
