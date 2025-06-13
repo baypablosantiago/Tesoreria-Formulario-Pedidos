@@ -13,7 +13,6 @@ export class AuthService {
   constructor(private httpClient : HttpClient, private router: Router) { }
 
   login(email:string, password:string):Observable<any>{
-      console.log("Enviando:", { email, password });
     return this.httpClient.post<any>(this.LOGIN_URL,{email,password}).pipe(
       tap(response => {
         if(response.token){
@@ -44,6 +43,6 @@ export class AuthService {
 
   logout():void{
     localStorage.removeItem(this.tokenKey);
-    //this.router.navigate("/login");
+    this.router.navigate(["/"]);
   }
 }

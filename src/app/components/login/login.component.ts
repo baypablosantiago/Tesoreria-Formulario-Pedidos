@@ -28,7 +28,7 @@ export class LoginComponent {
   login():void{
     this.authService.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(["/form-table"]),
-      error: (err) => console.error("Fallo el login", err)
+      error: (err) => this.loginValid = false
     })
   }
 }
