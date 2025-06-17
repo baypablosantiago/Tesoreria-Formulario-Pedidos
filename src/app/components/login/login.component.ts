@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -26,7 +26,7 @@ export class LoginComponent {
 
   login():void{
     this.authService.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(["/home"]),
+      next: () => this.router.navigate(["/news"]),
       error: (err) => this.loginValid = false
     })
   }

@@ -8,15 +8,15 @@ nav {
 ul {
     display: flex;
     list-style-type: none;
-    width: 400px;
+    width: 500px;
     justify-content: space-between;
 }
 
-ul li a {
+ul li {
     text-decoration: none;
     white-space: nowrap; 
 }
 
 .active {
-    background-color: blanchedalmond;
+    background-color: rgb(193, 248, 255);
 }

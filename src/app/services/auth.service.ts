@@ -30,7 +30,7 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  isAuthenticate():boolean{
+  isAuthenticated():boolean{
     const token = this.getToken();
     if(!token){
       return false;

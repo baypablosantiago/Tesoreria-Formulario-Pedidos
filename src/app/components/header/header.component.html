@@ -2,13 +2,16 @@
     <h2>Logo</h2>
     <ul>
         <li>
-            <a routerLinkActive="active" routerLink="/home">Solicitudes enviadas</a>
+            <button mat-button routerLinkActive="active" routerLink="/news">Novedades</button>
         </li>
         <li>
-            <a routerLinkActive="active" routerLink="/form-table">Nueva solicitud</a>
+            <button mat-button routerLinkActive="active" routerLink="/requested-table">Solicitudes enviadas</button>
         </li>
         <li>
-            <a>Cerrar Sesion</a>
+            <button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button>
+        </li>
+        <li>
+              <button mat-button (click)="logout()">Cerrar sesión</button>
         </li>
     </ul>
 </nav>
