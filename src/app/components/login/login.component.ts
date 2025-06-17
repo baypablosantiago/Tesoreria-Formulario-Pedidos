@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -27,7 +26,7 @@ export class LoginComponent {
 
   login():void{
     this.authService.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(["/form-table"]),
+      next: () => this.router.navigate(["/home"]),
       error: (err) => this.loginValid = false
     })
   }
