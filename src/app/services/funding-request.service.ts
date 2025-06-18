@@ -9,13 +9,22 @@ import { Observable } from 'rxjs';
 export class FundingRequestService {
   private apiUrl = 'http://localhost:5254/api/FundingRequest';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   addFundingRequest(request: FundingRequest): Observable<FundingRequest> {
     const token = localStorage.getItem('authToken');
-     const headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
     return this.http.post<FundingRequest>(`${this.apiUrl}`, request, { headers });
   }
+
+  getMyFundingRequests(): Observable<FundingRequest[]> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`, { headers });
+  }
+  
 }
