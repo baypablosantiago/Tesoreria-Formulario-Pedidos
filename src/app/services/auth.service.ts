@@ -10,38 +10,46 @@ export class AuthService {
 
   private LOGIN_URL = "http://localhost:5254/login";
   private tokenKey = "authToken";
-  constructor(private httpClient : HttpClient, private router: Router) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
-  login(email:string, password:string):Observable<any>{
-    return this.httpClient.post<any>(this.LOGIN_URL,{email,password}).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.httpClient.post<any>(this.LOGIN_URL, { email, password }).pipe(
       tap(response => {
-        if(response.accessToken){
-          this.setToken(response.accessToken);
+        if (response.accessToken && response.expiresIn) {
+          this.setToken(response.accessToken, response.expiresIn);
         }
       })
-    )
+    );
   }
 
-  private setToken(token:string):void{
-    localStorage.setItem(this.tokenKey,token)
+  private setToken(token: string, expiresIn: number): void {
+    const expirationTime = Date.now() + expiresIn * 1000;
+    localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem("tokenExpiration", expirationTime.toString());
   }
 
-  private getToken():string | null {
+  private getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  isAuthenticated():boolean{
+  isAuthenticated(): boolean {
     const token = this.getToken();
-    if(!token){
+    const expiration = localStorage.getItem("tokenExpiration");
+
+    if (!token || !expiration) {
       return false;
-    }else{
-      const payload = JSON.parse(token);
-      const exp = payload.expiresIn;
-      return Date.now() < exp;
     }
+
+    const isValid = Date.now() < Number(expiration);
+
+    if (!isValid) {
+      this.logout();
+    }
+
+    return isValid;
   }
 
-  logout():void{
+  logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(["/"]);
   }
