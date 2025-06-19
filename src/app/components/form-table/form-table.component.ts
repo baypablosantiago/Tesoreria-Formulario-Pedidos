@@ -60,7 +60,7 @@ export class FormTableComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    Array.from({ length: 3 }).forEach(() => this.addRow());
+    Array.from({ length: 1 }).forEach(() => this.addRow());
     this.table.dataSource = this.rows.controls;
   }
 
