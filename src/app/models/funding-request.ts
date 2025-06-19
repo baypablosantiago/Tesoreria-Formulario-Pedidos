@@ -15,4 +15,5 @@ export interface FundingRequest {
   checkingAccount: string;
 
   comments?: string;
+  isActive?:boolean;
 }
