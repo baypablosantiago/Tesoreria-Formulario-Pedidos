@@ -21,6 +21,7 @@ export class UserRequestsComponent implements OnInit {
   constructor(private fundingRequestService: FundingRequestService) { }
 
   activeRequests: FundingRequest[] = [];
+  partialPaymentRequests : FundingRequest[] = [];
   inactiveRequests: FundingRequest[] = [];
 
   ngOnInit(): void {
@@ -28,9 +29,9 @@ export class UserRequestsComponent implements OnInit {
       next: requests => {
         this.myRequests = requests;
 
-        // Separar en activos e inactivos
         this.activeRequests = this.myRequests.filter(r => r.isActive);
         this.inactiveRequests = this.myRequests.filter(r => !r.isActive);
+        //this.partialPaymentRequests = this.activeRequests.filter(r => r.partialPayment > 0);
       },
       error: err => {
         console.error('Error al cargar solicitudes del usuario:', err);
