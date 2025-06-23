@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/header/header.component";
 import { filter } from 'rxjs';
@@ -20,5 +20,10 @@ export class AppComponent {
       .subscribe((event: NavigationEnd) => {
         this.showHeader = !event.urlAfterRedirects.startsWith('/login');
       });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    localStorage.removeItem('authToken');
   }
 }
