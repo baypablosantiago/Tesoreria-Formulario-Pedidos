@@ -15,5 +15,7 @@ export interface FundingRequest {
   checkingAccount: string;
 
   comments?: string;
+  partialPayment:number;
   isActive?:boolean;
+  receivedAt?:Date;
 }

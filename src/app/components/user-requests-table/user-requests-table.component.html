@@ -1,12 +1,12 @@
 <mat-card appearance="outlined" class="mb-4">
-  <mat-card-header>
-    <mat-card-subtitle>{{ title }}</mat-card-subtitle>
-  </mat-card-header>
+    <mat-card-header>
+        <mat-card-subtitle>{{ title }}</mat-card-subtitle>
+    </mat-card-header>
 
-  <mat-card-content>
-    <table mat-table [dataSource]="data" class="mat-elevation-z1 full-width-table">
-      
-         <!-- D.A. -->
+    <mat-card-content>
+        <table mat-table [dataSource]="data" class="mat-elevation-z1 full-width-table">
+
+            <!-- D.A. -->
             <ng-container matColumnDef="da">
                 <th mat-header-cell *matHeaderCellDef>D.A.</th>
                 <td mat-cell *matCellDef="let req"> {{ req.da }} </td>
@@ -22,6 +22,15 @@
             <ng-container matColumnDef="fiscalYear">
                 <th mat-header-cell *matHeaderCellDef>Ejercicio</th>
                 <td mat-cell *matCellDef="let req"> {{ req.fiscalYear }} </td>
+            </ng-container>
+
+            <!-- Recibido a las: -->
+            <ng-container matColumnDef="receivedAt">
+                <th mat-header-cell *matHeaderCellDef>Fecha Recibido</th>
+                <td mat-cell *matCellDef="let req"> 
+                        {{ req.receivedAt | date: 'dd/MM/yyyy' }}<br>
+                        {{ req.receivedAt | date: 'HH:mm' }} hs
+                </td>
             </ng-container>
 
             <!-- Orden de pago -->
@@ -65,9 +74,9 @@
                 <th mat-header-cell *matHeaderCellDef>Notas / Comentarios</th>
                 <td mat-cell *matCellDef="let req"> {{ req.comments }} </td>
             </ng-container>
-            
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </mat-card-content>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-card-content>
 </mat-card>

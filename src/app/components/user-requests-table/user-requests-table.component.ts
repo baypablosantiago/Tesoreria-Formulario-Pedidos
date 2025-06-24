@@ -21,6 +21,7 @@ export class UserRequestsTableComponent {
     'da',
     'requestNumber',
     'fiscalYear',
+    'receivedAt',
     'paymentOrderNumber',
     'concept',
     'dueDate',

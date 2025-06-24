@@ -128,6 +128,7 @@ export class FormTableComponent implements AfterViewInit {
       amount: +row.get('importe')?.value,
       fundingSource: row.get('fuenteFinanciamiento')?.value,
       checkingAccount: row.get('cuentaCorriente')?.value,
+      partialPayment:0,
       comments: row.get('comentarios')?.value || ''
     }));
 
