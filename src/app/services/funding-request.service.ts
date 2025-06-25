@@ -26,5 +26,9 @@ export class FundingRequestService {
     });
     return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`, { headers });
   }
+
+  getAllFundingRequest(): Observable<FundingRequest[]> {
+    return this.http.get<FundingRequest[]>(this.apiUrl);
+  }
   
 }
