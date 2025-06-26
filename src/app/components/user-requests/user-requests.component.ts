@@ -33,9 +33,6 @@ export class UserRequestsComponent implements OnInit {
         this.inactiveRequests = this.myRequests.filter(r => !r.isActive);
         this.partialPaymentRequests = this.activeRequests.filter(r => r.partialPayment > 0);
 
-      },
-      error: err => {
-        console.error('Error al cargar solicitudes del usuario:', err);
       }
     });
   }

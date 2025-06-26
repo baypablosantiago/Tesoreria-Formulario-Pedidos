@@ -128,30 +128,36 @@ export class FormTableComponent implements AfterViewInit {
       amount: +row.get('importe')?.value,
       fundingSource: row.get('fuenteFinanciamiento')?.value,
       checkingAccount: row.get('cuentaCorriente')?.value,
-      partialPayment:0,
+      partialPayment: 0,
       comments: row.get('comentarios')?.value || ''
     }));
 
+    let hasError = false;
+    let responses = 0;
+
     requests.forEach(req => {
-      console.log('Amount antes de enviar:', req.amount, typeof req.amount);
       this.fundingService.addFundingRequest(req).subscribe({
-        next: (request) => {
-          console.log('Payload enviado:', request);
+        next: () => {
+          responses++;
+          if (responses === requests.length && !hasError) {
+            this.messageBox.show(
+              'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
+              'success',
+              'Formulario enviado.'
+            );
+            this.isDisabled = true;
+          }
         },
-        error: err => {
-          console.error('Error al enviar una solicitud:', err);
-          this.messageBox.show('Ocurrió un error al enviar una solicitud. Informe a Tesoreria.', 'error', 'Error de servidor.');
+        error: (err) => {
+          hasError = true;
+          this.messageBox.show(
+            'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
+            'error',
+            'Error de servidor.'
+          );
         }
       });
     });
-
-    this.messageBox.show(
-      'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
-      'success',
-      'Formulario enviado.'
-    );
-
-    this.isDisabled = true;
   } else {
     this.messageBox.show(
       'Por favor, complete todos los campos requeridos. Use "Eliminar última fila" si tiene filas vacías.',
