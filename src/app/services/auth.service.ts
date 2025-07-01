@@ -10,7 +10,7 @@ export class AuthService {
 
   private LOGIN_URL = "http://localhost:5254/login";
   private tokenKey = "authToken";
-  private roleKey = "userRoles";
+
   constructor(private httpClient: HttpClient, private router: Router) { }
 
   login(email: string, password: string): Observable<any> {
@@ -18,21 +18,9 @@ export class AuthService {
     tap(response => {
       if (response.accessToken && response.expiresIn) {
         this.setToken(response.accessToken, response.expiresIn);
-        if (response.roles) {
-          this.setRoles(response.roles);
-        }
       }
     })
   );
-}
-
-private setRoles(roles: string[]): void {
-  localStorage.setItem(this.roleKey, JSON.stringify(roles));
-}
-
-getRoles(): string[] {
-  const roles = localStorage.getItem(this.roleKey);
-  return roles ? JSON.parse(roles) : [];
 }
 
   private setToken(token: string, expiresIn: number): void {

@@ -7,27 +7,39 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { RolesService } from '../../services/roles.service';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule,MatCardModule,MatInputModule,MatButtonModule, MatIconModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule, MatCardModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  loginValid:boolean = true;
+  loginValid: boolean = true;
 
-  email:string = "";
-  password:string = "";
+  email: string = "";
+  password: string = "";
 
-  constructor(private authService: AuthService, private router: Router){
-    
-  }
+  constructor(
+    private authService: AuthService,
+    private rolesService: RolesService,
+    private router: Router
+  ) {}
 
-  login():void{
+  login(): void {
     this.authService.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(["/news"]),
-      error: (err) => this.loginValid = false
-    })
+      next: () => {
+        this.rolesService.getRoles().subscribe({
+          next: () => this.router.navigate(['/news']),
+          error: () => {
+            console.error('No se pudo obtener el rol del usuario.');
+            this.loginValid = false;
+          }
+        });
+      },
+      error: () => this.loginValid = false
+    });
   }
 }
