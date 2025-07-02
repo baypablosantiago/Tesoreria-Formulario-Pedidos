@@ -12,6 +12,15 @@
         <td mat-cell *matCellDef="let req"> {{ req.requestNumber }} </td>
       </ng-container>
 
+      <!-- Fecha Recibido -->
+      <ng-container matColumnDef="Fecha Recibido">
+        <th mat-header-cell *matHeaderCellDef>Fecha Recibido</th>
+                <td mat-cell *matCellDef="let req"> 
+                        {{ req.receivedAt | date: 'dd/MM/yyyy' }}<br>
+                        {{ req.receivedAt | date: 'HH:mm' }} hs
+                </td>
+      </ng-container>
+
       <!-- Año fiscal -->
       <ng-container matColumnDef="Ejercicio">
         <th mat-header-cell *matHeaderCellDef>Ejercicio</th>

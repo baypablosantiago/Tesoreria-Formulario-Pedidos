@@ -9,8 +9,12 @@
             <button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button>
         </li>
 
-        <li>
+        <li *hasRole="'user'">
             <button mat-button routerLinkActive="active" routerLink="/user-requests">Solicitudes enviadas</button>
+        </li>
+
+        <li *hasRole="'admin'">
+            <button mat-button routerLinkActive="active" routerLink="/all-requests">Solicitudes recibidas</button>
         </li>
         
         <li>

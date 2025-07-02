@@ -28,7 +28,11 @@ export class FundingRequestService {
   }
 
   getAllFundingRequest(): Observable<FundingRequest[]> {
-    return this.http.get<FundingRequest[]>(this.apiUrl);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`, { headers });
   }
-  
+
 }

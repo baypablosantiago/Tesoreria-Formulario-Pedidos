@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { FundingRequest } from '../../models/FundingRequest';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { FundingRequest } from '../../models/funding-request';
 
 @Component({
   selector: 'app-da-card',
@@ -26,6 +26,7 @@ export class DaCardComponent {
 displayedColumns = [
     'N° de Solicitud',
     'Ejercicio',
+    'Fecha Recibido',
     'N° de Orden de Pago',
     'Concepto, Proveedor o Contratista',
     'Vencimiento y/o Periodo',

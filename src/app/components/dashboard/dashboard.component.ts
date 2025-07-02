@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FundingRequest } from '../../models/FundingRequest';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
+import { FundingRequest } from '../../models/funding-request';
 import { FundingRequestService } from '../../services/funding-request.service';
 
 
