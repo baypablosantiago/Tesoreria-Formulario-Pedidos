@@ -1,0 +1,13 @@
+.row-hover {
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: #f0f8ff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+    border-left: 4px solid #2196f3;
+    transform: scale(1.01);
+    cursor: pointer;
+    z-index: 1;
+    position: relative;
+  }
+}

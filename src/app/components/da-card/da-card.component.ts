@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -9,21 +9,22 @@ import { FundingRequest } from '../../models/funding-request';
 @Component({
   selector: 'app-da-card',
   templateUrl: 'da-card.component.html',
+  styleUrls: ['da-card.component.scss'],
   imports: [
     CommonModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatTableModule 
+    MatTableModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DaCardComponent {
 
-@Input() requests: FundingRequest[] = [];
+  @Input() requests: FundingRequest[] = [];
 
-@Input() daTitle: string = '';
-displayedColumns = [
+  @Input() daTitle: string = '';
+  displayedColumns = [
     'N° de Solicitud',
     'Ejercicio',
     'Fecha Recibido',
@@ -34,8 +35,10 @@ displayedColumns = [
     'Fuente de Financiamiento',
     'Cuenta Corriente a la cual acreditar',
     'Notas / Comentarios',
-    'Acciones'
+    'Pago Parcial'
   ];
 
-
+  onRowClick(row: FundingRequest): void {
+    alert(`Solicitud N°: ${row.requestNumber}\nID: ${row.id}`);
+  }
 }

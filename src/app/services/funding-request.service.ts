@@ -35,4 +35,12 @@ export class FundingRequestService {
     return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`, { headers });
   }
 
+  addPartialPayment(id: number, partialPayment: number): Observable<void> {
+  const token = localStorage.getItem('authToken');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.patch<void>(`${this.apiUrl}/partial-payment/${id}`, partialPayment, { headers });
+}
+
 }
