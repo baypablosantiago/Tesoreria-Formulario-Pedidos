@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>
+    <mat-icon color="primary" style="vertical-align: middle; margin-right: 8px;">description</mat-icon>
+    Detalles de la Solicitud
+</h2>
+
+<mat-dialog-content class="modal-content">
+      <div class="modal-content">
+    <div class="leftSide">
+        <table class="details-table">
+            <tr>
+                <td><strong>ID:</strong></td>
+                <td>{{ data.id ?? '—' }}</td>
+            </tr>
+            <tr>
+                <td><strong>DA:</strong></td>
+                <td>{{ data.da }}</td>
+            </tr>
+            <tr>
+                <td><strong>N° de Solicitud:</strong></td>
+                <td>{{ data.requestNumber }}</td>
+            </tr>
+            <tr>
+                <td><strong>Ejercicio:</strong></td>
+                <td>{{ data.fiscalYear }}</td>
+            </tr>
+            <tr>
+                <td><strong>N° Orden de Pago:</strong></td>
+                <td>{{ data.paymentOrderNumber }}</td>
+            </tr>
+            <tr>
+                <td><strong>Concepto:</strong></td>
+                <td>{{ data.concept }}</td>
+            </tr>
+            <tr>
+                <td><strong>Vencimiento:</strong></td>
+                <td>{{ data.dueDate | date }}</td>
+            </tr>
+            <tr>
+                <td><strong>Importe Solicitado:</strong></td>
+                <td>${{ data.amount | number: '1.2-2' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Fuente de Financiamiento:</strong></td>
+                <td>{{ data.fundingSource }}</td>
+            </tr>
+            <tr>
+                <td><strong>Cuenta Corriente:</strong></td>
+                <td>{{ data.checkingAccount }}</td>
+            </tr>
+            <tr>
+                <td><strong>Comentarios:</strong></td>
+                <td>{{ data.comments || '—' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Pago Parcial:</strong></td>
+                <td>{{ data.partialPayment > 0 ? ('$' + (data.partialPayment | number: '1.2-2')) : 'No' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Recibido:</strong></td>
+                <td>{{ data.receivedAt ? (data.receivedAt | date:'shortDate') : '—' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Activo:</strong></td>
+                <td>{{ data.isActive ? 'Sí' : 'No' }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="rightSide">
+        <a>Ingresar pago parcial</a>
+        <input type="number" #money>
+        <button mat-flat-button>Ingresar</button>
+    </div>
+
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button color="primary" (click)="close()">Cerrar</button>
+</mat-dialog-actions>

@@ -1,0 +1,30 @@
+.modal-content {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  td {
+    padding: 6px 12px;
+    vertical-align: top;
+  }
+
+  tr td:first-child {
+    font-weight: bold;
+    width: 40%;
+    white-space: nowrap;
+  }
+}
+
+.leftSide {
+    width: 45%;
+}
+
+.rightSide{
+    width: 55%;
+}

@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { FundingRequest } from '../../models/funding-request';
+import { MatDialog } from '@angular/material/dialog';
+import { ActionsModalComponent } from '../actions-modal/actions-modal.component';
 
 @Component({
   selector: 'app-da-card',
@@ -20,6 +22,8 @@ import { FundingRequest } from '../../models/funding-request';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DaCardComponent {
+
+  constructor(private dialog: MatDialog) { }
 
   @Input() requests: FundingRequest[] = [];
 
@@ -39,6 +43,11 @@ export class DaCardComponent {
   ];
 
   onRowClick(row: FundingRequest): void {
-    alert(`Solicitud N°: ${row.requestNumber}\nID: ${row.id}`);
+    this.dialog.open(ActionsModalComponent, {
+      data: row,
+      width: '90vw',         
+      maxWidth: '90vw',      
+      disableClose: true
+    });
   }
 }
