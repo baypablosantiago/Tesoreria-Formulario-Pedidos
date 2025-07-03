@@ -23,8 +23,8 @@ export class FundingRequestService {
     return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`);
   }
 
-  addPartialPayment(id: number, partialPayment: number): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/partial-payment/${id}`, partialPayment);
+  addPartialPayment(id: number, partialPayment: number): Observable<FundingRequest> {
+    return this.http.patch<FundingRequest>(`${this.apiUrl}/partial-payment/${id}`, partialPayment);
   }
 
   changeIsActive(id: number): Observable<FundingRequest> {
