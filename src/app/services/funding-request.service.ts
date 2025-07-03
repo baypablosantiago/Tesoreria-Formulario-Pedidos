@@ -12,35 +12,24 @@ export class FundingRequestService {
   constructor(private http: HttpClient) { }
 
   addFundingRequest(request: FundingRequest): Observable<FundingRequest> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.post<FundingRequest>(`${this.apiUrl}`, request, { headers });
+    return this.http.post<FundingRequest>(`${this.apiUrl}`, request);
   }
 
   getMyFundingRequests(): Observable<FundingRequest[]> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`, { headers });
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`);
   }
 
   getAllFundingRequest(): Observable<FundingRequest[]> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`, { headers });
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`);
   }
 
   addPartialPayment(id: number, partialPayment: number): Observable<void> {
-  const token = localStorage.getItem('authToken');
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.http.patch<void>(`${this.apiUrl}/partial-payment/${id}`, partialPayment, { headers });
-}
+    return this.http.patch<void>(`${this.apiUrl}/partial-payment/${id}`, partialPayment);
+  }
+
+  changeIsActive(id: number): Observable<FundingRequest> {
+    return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/is-active/${id}`);
+  }
+
 
 }
