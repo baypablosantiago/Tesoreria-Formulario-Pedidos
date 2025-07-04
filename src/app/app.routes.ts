@@ -6,6 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { UserRequestsComponent } from './components/user-requests/user-requests.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FinishedRequestsComponent } from './components/finished-requests/finished-requests.component';
 
 export const routes: Routes = [
 
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'form-table', component: FormTableComponent, canActivate: [AuthGuard] },
     { path: 'user-requests', component: UserRequestsComponent, canActivate: [AuthGuard] },
     { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
-    { path: 'all-requests', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'finished-requests', component: FinishedRequestsComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: 'login' }
 ];

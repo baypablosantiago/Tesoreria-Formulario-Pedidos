@@ -31,5 +31,8 @@ export class FundingRequestService {
     return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/is-active/${id}`);
   }
 
+  getAllInactiveFundingRequest():Observable<FundingRequest[]>{
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/inactive-requests`);
+  }
 
 }

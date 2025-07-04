@@ -14,7 +14,11 @@
         </li>
 
         <li *hasRole="'admin'">
-            <button mat-button routerLinkActive="active" routerLink="/all-requests">Solicitudes recibidas</button>
+            <button mat-button routerLinkActive="active" routerLink="/dashboard">Solicitudes pendientes</button>
+        </li>
+
+        <li *hasRole="'admin'">
+            <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes aprobadas</button>
         </li>
         
         <li>
