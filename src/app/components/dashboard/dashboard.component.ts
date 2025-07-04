@@ -17,7 +17,7 @@ export class DashboardComponent {
   allRequests: FundingRequest[] = []
 
   ngOnInit(){
-    this.fundingService.getAllFundingRequest().subscribe(
+    this.fundingService.getAllActiveFundingRequests().subscribe(
     (requests) => { 
       this.allRequests = requests;
       this.groupedRequests = this.groupByDA(requests);

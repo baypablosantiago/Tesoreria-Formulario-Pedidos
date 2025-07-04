@@ -19,8 +19,8 @@ export class FundingRequestService {
     return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`);
   }
 
-  getAllFundingRequest(): Observable<FundingRequest[]> {
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/all`);
+  getAllActiveFundingRequests(): Observable<FundingRequest[]> {
+    return this.http.get<FundingRequest[]>(`${this.apiUrl}/active-requests`);
   }
 
   addPartialPayment(id: number, partialPayment: number): Observable<FundingRequest> {
@@ -31,7 +31,7 @@ export class FundingRequestService {
     return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/is-active/${id}`);
   }
 
-  getAllInactiveFundingRequest():Observable<FundingRequest[]>{
+  getAllInactiveFundingRequests():Observable<FundingRequest[]>{
     return this.http.get<FundingRequest[]>(`${this.apiUrl}/inactive-requests`);
   }
 

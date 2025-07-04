@@ -16,10 +16,10 @@ import { CommonModule } from '@angular/common';
 export class FinishedRequestsComponent implements OnInit {
   groupedRequests: MonthGroup[] = [];
 
-  constructor(private fundingRequestService: FundingRequestService) {}
+  constructor(private fundingRequestService: FundingRequestService) { }
 
   ngOnInit(): void {
-    this.fundingRequestService.getAllInactiveFundingRequest()
+    this.fundingRequestService.getAllInactiveFundingRequests()
       .subscribe(requests => {
         const grouped: { [month: string]: { [da: string]: FundingRequest[] } } = {};
 
@@ -44,18 +44,17 @@ export class FinishedRequestsComponent implements OnInit {
   }
 
   getTotalRequests(monthGroup: MonthGroup): number {
-  return monthGroup.groupedByDA.reduce((total, daGroup) => total + daGroup.requests.length, 0);
-}
+    return monthGroup.groupedByDA.reduce((total, daGroup) => total + daGroup.requests.length, 0);
+  }
 
- formatYearMonth(date: Date): string {
-  const month = date.toLocaleString('es-AR', { month: 'long' });
-  const year = date.getFullYear();
-  return `${year} - ${this.capitalize(month)}`;
-}
+  formatYearMonth(date: Date): string {
+    const month = date.toLocaleString('es-AR', { month: 'long' });
+    const year = date.getFullYear();
+    return `${year} - ${this.capitalize(month)}`;
+  }
 
-capitalize(word: string): string {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
+  capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 
 }

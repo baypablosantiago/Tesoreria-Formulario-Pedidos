@@ -67,8 +67,11 @@
     </div>
 
     <div class="rightSide">
-        <a>Marcar solicitud como aprobada en su totalidad.</a>
-        
+        <p><mat-slide-toggle 
+            labelPosition="before"
+            [checked]="!data.isActive"
+            (change)="onToggleActive()">
+            Solicitud aprobada </mat-slide-toggle></p>
     </div>
 
     </div>

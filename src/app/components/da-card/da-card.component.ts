@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
@@ -42,12 +42,15 @@ export class DaCardComponent {
     'Pago Parcial'
   ];
 
+  @Output() requestUpdated = new EventEmitter<void>();
+
   onRowClick(row: FundingRequest): void {
-    this.dialog.open(ActionsModalComponent, {
+    const dialogRef = this.dialog.open(ActionsModalComponent, {
       data: row,
-      width: '90vw',         
-      maxWidth: '90vw',      
+      width: '90vw',
+      maxWidth: '90vw',
       disableClose: true
     });
+
   }
 }
