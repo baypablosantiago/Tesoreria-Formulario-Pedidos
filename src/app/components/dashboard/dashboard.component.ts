@@ -3,12 +3,13 @@ import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
 import { FundingRequest } from '../../models/funding-request';
 import { FundingRequestService } from '../../services/funding-request.service';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  imports: [DaCardComponent,CommonModule]
+  imports: [DaCardComponent,CommonModule,MatButtonModule]
 })
 export class DashboardComponent {
 

@@ -7,6 +7,8 @@ import { MatTableModule } from '@angular/material/table';
 import { FundingRequest } from '../../models/funding-request';
 import { MatDialog } from '@angular/material/dialog';
 import { ActionsModalComponent } from '../actions-modal/actions-modal.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-da-card',
@@ -17,7 +19,8 @@ import { ActionsModalComponent } from '../actions-modal/actions-modal.component'
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,8 +32,9 @@ export class DaCardComponent {
 
   @Input() daTitle: string = '';
   displayedColumns = [
+    'select',
     'N° de Solicitud',
-    'Ejercicio',
+    // 'Ejercicio',
     'Fecha Recibido',
     'N° de Orden de Pago',
     'Concepto, Proveedor o Contratista',
@@ -51,6 +55,25 @@ export class DaCardComponent {
       maxWidth: '90vw',
       disableClose: true
     });
-
   }
+
+  selection = new SelectionModel<any>(true, []);
+
+  toggleSelection(row: any) {
+    this.selection.toggle(row);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.requests.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.requests.forEach(row => this.selection.select(row));
+  }
+
+
 }

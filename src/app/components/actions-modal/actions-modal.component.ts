@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actions-modal',
+  standalone: true,
   imports: [CommonModule, MatIconModule, MatDialogModule, MatButtonModule, MatSlideToggleModule],
   templateUrl: './actions-modal.component.html',
   styleUrls: ['./actions-modal.component.scss']
@@ -20,32 +21,16 @@ export class ActionsModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: FundingRequest,
     private fundingRequestService: FundingRequestService,
     private router: Router
-  ) { }
+  ) {}
 
   close(): void {
-  this.dialogRef.close();
+    this.dialogRef.close();      
+  }
 
-  if (this.data.isActive) {
-    this.router.navigateByUrl('/dashboard');
-  } else {
-    this.router.navigateByUrl('/finished-requests');
+  private reloadCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 }
-
-
-  onToggleActive(): void {
-  if (!this.data?.id) return;
-
-  this.fundingRequestService.changeIsActive(this.data.id).subscribe({
-    next: updatedRequest => {
-      this.data.isActive = updatedRequest.isActive; 
-    },
-    error: err => {
-      console.error('Error al cambiar estado activo', err);
-    }
-  });
-}
-
-
-}
-

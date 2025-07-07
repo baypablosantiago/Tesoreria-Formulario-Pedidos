@@ -2,18 +2,14 @@
   <mat-expansion-panel *ngFor="let monthGroup of groupedRequests">
     <mat-expansion-panel-header>
       <mat-panel-title>{{ monthGroup.month | titlecase }}</mat-panel-title>
-      <mat-panel-description>
-        {{ getTotalRequests(monthGroup) }} solicitud{{ getTotalRequests(monthGroup) === 1 ? '' : 'es' }}
-      </mat-panel-description>
+
     </mat-expansion-panel-header>
 
     <mat-accordion>
       <mat-expansion-panel *ngFor="let daGroup of monthGroup.groupedByDA">
         <mat-expansion-panel-header>
           <mat-panel-title>D.A. {{ daGroup.da }}</mat-panel-title>
-          <mat-panel-description>
-            {{ daGroup.requests.length }} solicitud{{ daGroup.requests.length === 1 ? '' : 'es' }}
-          </mat-panel-description>
+          
         </mat-expansion-panel-header>
 
         <app-da-card
