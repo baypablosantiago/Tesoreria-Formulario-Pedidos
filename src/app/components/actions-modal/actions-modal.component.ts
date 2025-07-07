@@ -24,7 +24,8 @@ export class ActionsModalComponent {
   ) {}
 
   close(): void {
-    this.dialogRef.close();      
+    this.dialogRef.close();
+    this.reloadCurrentRoute();      
   }
 
   private reloadCurrentRoute(): void {

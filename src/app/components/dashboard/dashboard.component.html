@@ -1,6 +1,6 @@
-<button mat-button>Generar Excel</button>
+<button mat-button (click)="generateExcel()">Generar Excel</button>
 
-<button mat-button>Cambiar estado a aprobado</button>
+<button mat-button (click)="changeIsActiveState()">Cambiar estado a aprobado / finalizado</button>
 
 <div *ngFor="let group of groupedRequests" style="margin-bottom: 20px;">
   <app-da-card
