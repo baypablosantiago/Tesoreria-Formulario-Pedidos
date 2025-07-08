@@ -49,6 +49,7 @@ export class DaCardComponent {
   onRowClick(row: FundingRequest): void {
     const dialogRef = this.dialog.open(ActionsModalComponent, {
       data: row,
+      autoFocus: false,
       width: '90vw',
       maxWidth: '90vw',
       disableClose: true

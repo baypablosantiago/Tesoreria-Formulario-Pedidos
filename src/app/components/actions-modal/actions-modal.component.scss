@@ -22,9 +22,49 @@
 }
 
 .leftSide {
-    width: 45%;
+  width: 45%;
 }
 
-.rightSide{
-    width: 55%;
+.rightSide {
+  width: 55%;
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+    
+  }
+}
+
+.partial-form {
+  display: flex;
+  gap: 12px;
+  align-items: center; 
+  align-items: flex-end;
+  max-width: 400px;
+}
+
+.partial-form button {
+  margin-bottom: 28px; 
+}
+
+.full-width {
+  flex: 1;
+}
+
+.payment-message {
+  margin-top: -20px;
+
+  .success-message {
+    color: green;
+  }
+
+  .error-message {
+    color: red;
+  }
 }
