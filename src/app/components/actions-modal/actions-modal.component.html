@@ -8,10 +8,6 @@
         <div class="leftSide">
             <table class="details-table">
                 <tr>
-                    <td><strong>ID:</strong></td>
-                    <td>{{ data.id ?? '—' }}</td>
-                </tr>
-                <tr>
                     <td><strong>DA:</strong></td>
                     <td>{{ data.da }}</td>
                 </tr>
@@ -33,11 +29,11 @@
                 </tr>
                 <tr>
                     <td><strong>Vencimiento:</strong></td>
-                    <td>{{ data.dueDate | date }}</td>
+                    <td>{{ data.dueDate }}</td>
                 </tr>
                 <tr>
                     <td><strong>Importe Solicitado:</strong></td>
-                    <td>${{ data.amount | number: '1.2-2' }}</td>
+                    <td>{{ data.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</td>
                 </tr>
                 <tr>
                     <td><strong>Fuente de Financiamiento:</strong></td>
@@ -53,15 +49,25 @@
                 </tr>
                 <tr>
                     <td><strong>Pago Parcial:</strong></td>
-                    <td>{{ data.partialPayment > 0 ? ('$' + (data.partialPayment | number: '1.2-2')) : 'No' }}</td>
+                    <td>{{ data.partialPayment > 0 ? (data.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR') : 'No' }}</td>
                 </tr>
                 <tr>
                     <td><strong>Recibido:</strong></td>
-                    <td>{{ data.receivedAt ? (data.receivedAt | date:'shortDate') : '—' }}</td>
+                    <td>
+                        <ng-container *ngIf="data.receivedAt; else noDate">
+                            {{ data.receivedAt | date: 'dd/MM/yyyy' }}<br>
+                            {{ data.receivedAt | date: 'HH:mm' }} hs
+                        </ng-container>
+                        <ng-template #noDate>—</ng-template>
+                    </td>
                 </tr>
                 <tr>
                     <td><strong>Activo:</strong></td>
                     <td>{{ data.isActive ? 'Sí' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>ID Interno:</strong></td>
+                    <td>{{ data.id ?? '—' }}</td>
                 </tr>
             </table>
         </div>
