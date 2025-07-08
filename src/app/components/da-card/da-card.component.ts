@@ -46,8 +46,6 @@ export class DaCardComponent {
     'Pago Parcial'
   ];
 
-  @Output() requestUpdated = new EventEmitter<void>();
-
   onRowClick(row: FundingRequest): void {
     const dialogRef = this.dialog.open(ActionsModalComponent, {
       data: row,
@@ -57,10 +55,17 @@ export class DaCardComponent {
     });
   }
 
-  selection = new SelectionModel<any>(true, []);
+  @Output() selectedRequestsChanged = new EventEmitter<FundingRequest[]>();
 
-  toggleSelection(row: any) {
+  selection = new SelectionModel<FundingRequest>(true, []);
+
+  emitSelected() {
+    this.selectedRequestsChanged.emit(this.selection.selected);
+  }
+
+  toggleSelection(row: FundingRequest) {
     this.selection.toggle(row);
+    this.emitSelected();
   }
 
   isAllSelected() {
@@ -73,6 +78,7 @@ export class DaCardComponent {
     this.isAllSelected()
       ? this.selection.clear()
       : this.requests.forEach(row => this.selection.select(row));
+      this.emitSelected();
   }
 
 

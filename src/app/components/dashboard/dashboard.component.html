@@ -6,5 +6,6 @@
   <app-da-card
     [daTitle]="'D.A. ' + group.da"
     [requests]="group.requests"
+    (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)"
   ></app-da-card>
 </div>

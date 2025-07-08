@@ -5,6 +5,8 @@ import { FundingRequest } from '../../models/funding-request';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { MessageBoxService } from '../../services/message-box.service';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -13,7 +15,10 @@ import { Router } from '@angular/router';
   imports: [DaCardComponent, CommonModule, MatButtonModule]
 })
 export class DashboardComponent {
-  constructor(private fundingService: FundingRequestService,private router: Router) { }
+  constructor(
+    private fundingService: FundingRequestService, 
+    private router: Router,
+    private messageBox: MessageBoxService) { }
 
   allRequests: FundingRequest[] = []
 
@@ -51,12 +56,38 @@ export class DashboardComponent {
     });
   }
 
-  changeIsActiveState() {
-    this.reloadCurrentRoute();
-  }
-
   generateExcel() {
     alert("Aca se va a generar un excel");
   }
 
+  selectedRequestsMap = new Map<string, FundingRequest[]>(); 
+
+  onSelectedRequestsChanged(daTitle: string, selected: FundingRequest[]) {
+    this.selectedRequestsMap.set(daTitle, selected);
+  }
+
+  changeIsActiveState() {
+    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+
+    if (allSelected.length === 0) {
+      this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atencion');
+      return;
+    }
+
+    const requests = allSelected.map(req =>
+      this.fundingService.changeIsActive(req.id!)
+    );
+
+    forkJoin(requests).subscribe({
+      next: updatedList => {
+        console.log('Todos los cambios completados', updatedList);
+        this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
+        this.reloadCurrentRoute(); 
+      },
+      error: err => {
+        console.error('Error al cambiar uno o más estados', err);
+        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo.', 'error');
+      }
+    });
+  }
 }
