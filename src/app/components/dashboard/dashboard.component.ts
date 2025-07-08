@@ -80,13 +80,11 @@ export class DashboardComponent {
 
     forkJoin(requests).subscribe({
       next: updatedList => {
-        console.log('Todos los cambios completados', updatedList);
         this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
         this.reloadCurrentRoute(); 
       },
       error: err => {
-        console.error('Error al cambiar uno o más estados', err);
-        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo.', 'error');
+        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo '+err, 'error');
       }
     });
   }
