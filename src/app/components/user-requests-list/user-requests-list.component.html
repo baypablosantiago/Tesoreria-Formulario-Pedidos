@@ -1,0 +1,42 @@
+<div *ngIf="requests.length === 0" class="empty">
+  No hay solicitudes para mostrar.
+</div>
+
+<div *ngFor="let req of requests" class="request-card" [ngClass]="getStatusClass(req)">
+  <mat-card>
+    <mat-card-header>
+      <div class="header-content">
+        <span><strong>D.A.:</strong> {{ req.da }}</span>
+        <span class="chip" [ngClass]="getChipClass(req)">
+          {{ getRequestStatus(req) }}
+        </span>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-row">
+        <span><strong>N° Solicitud:</strong> {{ req.requestNumber }}</span>
+        <span><strong>Ejercicio:</strong> {{ req.fiscalYear }}</span>
+        <span><strong>Importe:</strong> {{ req.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</span>
+      </div>
+
+      <div class="info-row">
+        <span><strong>Concepto:</strong> {{ req.concept }}</span>
+        <span><strong>Vencimiento:</strong> {{ req.dueDate }}</span>
+        <span><strong>Recibido:</strong> {{ req.receivedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+
+      <div *ngIf="req.partialPayment > 0" class="highlight warning">
+        💰 <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS' }}
+      </div>
+
+      <div *ngIf="req.commentsFromTeso" class="highlight info">
+        📝 <strong>Comentarios de Tesorería:</strong> {{ req.commentsFromTeso }}
+      </div>
+
+      <div *ngIf="req.comments">
+        <strong>Notas del usuario:</strong> {{ req.comments }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
