@@ -14,17 +14,17 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-actions-modal',
   standalone: true,
-  imports: 
-  [ CommonModule, 
-    MatIconModule, 
-    MatDialogModule, 
-    MatButtonModule, 
-    MatSlideToggleModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
+  imports:
+    [CommonModule,
+      MatIconModule,
+      MatDialogModule,
+      MatButtonModule,
+      MatSlideToggleModule,
+      FormsModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatButtonModule,
+    ],
   templateUrl: './actions-modal.component.html',
   styleUrls: ['./actions-modal.component.scss']
 })
@@ -34,16 +34,21 @@ export class ActionsModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: FundingRequest,
     private fundingRequestService: FundingRequestService,
     private router: Router
-  ) {}
+  ) { }
 
   partialPaymentAmount?: number;
   isSubmitting = false;
   success = false;
   error = false;
 
+  newComment = '';
+  isCommentSubmitting = false;
+  commentSuccess = false;
+  commentError = false;
+
   close(): void {
     this.dialogRef.close();
-    this.reloadCurrentRoute();      
+    this.reloadCurrentRoute();
   }
 
   private reloadCurrentRoute(): void {
@@ -74,4 +79,30 @@ export class ActionsModalComponent {
       }
     });
   }
+
+
+  submitComment() {
+  const trimmedComment = this.newComment.trim();
+
+  if (!trimmedComment || !this.data.id) return;
+
+  this.isCommentSubmitting = true;
+  this.commentSuccess = false;
+  this.commentError = false;
+
+  this.fundingRequestService.addComment(this.data.id, trimmedComment).subscribe({
+    next: () => {
+      this.isCommentSubmitting = false;
+      this.commentSuccess = true;
+      this.data.commentsFromTeso = trimmedComment; 
+    },
+    error: err => {
+      console.error('Error al agregar comentario', err);
+      this.isCommentSubmitting = false;
+      this.commentError = true;
+    }
+  });
+}
+
+
 }

@@ -47,6 +47,12 @@
                     <td><strong>Comentarios:</strong></td>
                     <td>{{ data.comments || '—' }}</td>
                 </tr>
+
+                <tr>
+                    <td><strong>Comentarios para la DA:</strong></td>
+                    <td>{{ data.commentsFromTeso || '—' }}</td>
+                </tr>
+
                 <tr>
                     <td><strong>Pago Parcial:</strong></td>
                     <td>{{ data.partialPayment > 0 ? (data.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR') :
@@ -74,31 +80,47 @@
         </div>
 
         <div class="rightSide">
-            <h3>Registrar pago parcial</h3>
 
+            <!-- FORMULARIO DE PAGO PARCIAL -->
             <form #partialForm="ngForm" (ngSubmit)="submitPartialPayment()" class="partial-form">
+                <h3>Agregar pago parcial:</h3>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Importe</mat-label>
                     <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount"
                         [ngModelOptions]="{ standalone: true }" required min="0" />
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" type="submit" [disabled]="!partialForm.valid || isSubmitting">
-                    Confirmar
-                </button>
+                <div class="form-footer">
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="!partialForm.valid || isSubmitting">
+                        Confirmar
+                    </button>
+                    <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
+                    <p *ngIf="error" class="error-message">Error al registrar el pago.</p>
+                </div>
             </form>
 
-            <div class="payment-message">
-                <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
-                <p *ngIf="error" class="error-message">Error al registrar el pago. Informe a desarrollo.</p>
+            <!-- FORMULARIO DE COMENTARIO -->
+            <form #commentForm="ngForm" (ngSubmit)="submitComment()" class="comment-form">
+                <h3>Agregar comentario general:</h3>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Comentario</mat-label>
+                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }"
+                        required rows="2"></textarea>
+                </mat-form-field>
+
+                <div class="form-footer">
+                    <button mat-raised-button color="accent" type="submit"
+                        [disabled]="!commentForm.valid || isCommentSubmitting">
+                        Guardar comentario
+                    </button>
+                    <p *ngIf="commentSuccess" class="success-message">Comentario agregado.</p>
+                    <p *ngIf="commentError" class="error-message">Error al agregar el comentario.</p>
+                </div>
+            </form>
+
+
+            <mat-dialog-actions align="end">
+                <button mat-button color="primary" (click)="close()">Cerrar</button>
+            </mat-dialog-actions>
             </div>
-        </div>
-
-
-
-    </div>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-    <button mat-button color="primary" (click)="close()">Cerrar</button>
-</mat-dialog-actions>
