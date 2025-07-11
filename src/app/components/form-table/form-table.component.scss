@@ -1,3 +1,32 @@
+.table-limit {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
+.left-buttons, .right-button {
+  display: flex;
+  gap: 16px;
+}
+
+.right-button {
+  margin-left: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
 th, td {
   border-right: 1px solid #ccc; 
   padding-left: 0 !important;
@@ -7,29 +36,10 @@ th, td {
   border-top: none;
   border-bottom: none;
   text-align: center;
+  padding: 8px;
+  border: none;
   }
   
-.table-limit {
-  width: 95%;
-  margin: 0 auto;
-}
-
-.buttons-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  gap: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-bottom: 25px;
-}
-
-.spaced-right {
-  margin-left: auto;
-}
-
 .col-da {
   width: 100px;
   text-align: center;
@@ -84,4 +94,13 @@ th, td {
   pointer-events: none;
 }
 
-//MORE IN THE GLOBAL STYLES.SCSS
+
+:host ::ng-deep .mat-mdc-form-field {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field-infix {
+  width: 100% !important;
+}

@@ -2,16 +2,3 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-//to remove white space in the inputs, right side
-.mat-mdc-form-field {
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 100% !important;
-}
-
-.mat-mdc-form-field-infix {
-  width: 100% !important;
-}
-
