@@ -26,21 +26,21 @@ import { FundingRequest } from '../../models/funding-request';
     UnrequiredTextFieldComponent,
     AddRowButtonComponent,
     RemoveRowButtonComponent
-],
+  ],
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {
   isDisabled = false;
   @ViewChild(MatTable) table!: MatTable<any>;
   private readonly messageBox = inject(MessageBoxService);
-  
+
   form = signal<FormGroup>(
     new FormGroup({
       rows: new FormArray([])
     })
   );
 
-  constructor(private fundingService: FundingRequestService) {}
+  constructor(private fundingService: FundingRequestService) { }
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
@@ -78,17 +78,16 @@ export class FormTableComponent implements AfterViewInit {
       comentarios: new FormControl('')
     });
 
-    if (this.rows.length < 10)
-    {
+    if (this.rows.length < 10) {
       this.rows.push(row);
 
       if (this.table) {
         this.table.renderRows();
       }
     } else {
-      this.messageBox.show('Puede enviar formularios de hasta 10 filas como máximo.','info', 'Máximo de filas alcanzado.');
+      this.messageBox.show('Puede enviar formularios de hasta 10 filas como máximo.', 'info', 'Máximo de filas alcanzado.');
     }
-    
+
   }
 
   private isRowEmpty(row: FormGroup): boolean {
@@ -103,7 +102,7 @@ export class FormTableComponent implements AfterViewInit {
     const lastRow = this.rows.at(lastIndex) as FormGroup;
 
     if (lastIndex == 0) {
-      this.messageBox.show('Debe haber por lo menos una fila en existencia.','info', 'Minimo de celdas alcanzado.');
+      this.messageBox.show('Debe haber por lo menos una fila en existencia.', 'info', 'Minimo de celdas alcanzado.');
     } else {
       if (this.isRowEmpty(lastRow)) {
         this.rows.removeAt(lastIndex);
@@ -115,66 +114,57 @@ export class FormTableComponent implements AfterViewInit {
   }
 
   submitRequest(): void {
-  const formGroup = this.form();
+    const formGroup = this.form();
 
-  if (formGroup.valid) {
-    const requests: FundingRequest[] = this.rows.controls.map(row => ({
-      da: +row.get('DA')?.value,
-      requestNumber: +row.get('nroSolicitud')?.value,
-      fiscalYear: +row.get('ejercicio')?.value,
-      paymentOrderNumber: +row.get('ordenPago')?.value,
-      concept: row.get('concepto')?.value,
-      dueDate: row.get('vencimiento')?.value,
-      amount: +row.get('importe')?.value,
-      fundingSource: row.get('fuenteFinanciamiento')?.value,
-      checkingAccount: row.get('cuentaCorriente')?.value,
-      partialPayment: 0,
-      comments: row.get('comentarios')?.value || ''
-    }));
+    if (formGroup.valid) {
+      const requests: FundingRequest[] = this.rows.controls.map(row => ({
+        da: +row.get('DA')?.value,
+        requestNumber: +row.get('nroSolicitud')?.value,
+        fiscalYear: +row.get('ejercicio')?.value,
+        paymentOrderNumber: +row.get('ordenPago')?.value,
+        concept: row.get('concepto')?.value,
+        dueDate: row.get('vencimiento')?.value,
+        amount: +row.get('importe')?.value,
+        fundingSource: row.get('fuenteFinanciamiento')?.value,
+        checkingAccount: row.get('cuentaCorriente')?.value,
+        partialPayment: 0,
+        comments: row.get('comentarios')?.value || ''
+      }));
 
-    let hasError = false;
-    let responses = 0;
+      let hasError = false;
+      let responses = 0;
 
-    requests.forEach(req => {
-      this.fundingService.addFundingRequest(req).subscribe({
-        next: () => {
-          responses++;
-          if (responses === requests.length && !hasError) {
+      requests.forEach(req => {
+        this.fundingService.addFundingRequest(req).subscribe({
+          next: () => {
+            responses++;
+            if (responses === requests.length && !hasError) {
+              this.messageBox.show(
+                'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
+                'success',
+                'Formulario enviado.'
+              );
+              this.isDisabled = true;
+            }
+          },
+          error: (err) => {
+            hasError = true;
             this.messageBox.show(
-              'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
-              'success',
-              'Formulario enviado.'
+              'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
+              'error',
+              'Error de servidor.'
             );
-            this.isDisabled = true;
           }
-        },
-        error: (err) => {
-          hasError = true;
-          this.messageBox.show(
-            'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
-            'error',
-            'Error de servidor.'
-          );
-        }
+        });
       });
-    });
-  } else {
-    this.messageBox.show(
-      'Por favor, complete todos los campos requeridos. Use "Eliminar última fila" si tiene filas vacías.',
-      'error',
-      'Formulario incompleto.'
-    );
-    this.markAllControlsAsTouched(formGroup);
+    } else {
+      this.messageBox.show(
+        'Por favor, complete todos los campos requeridos. Use "Eliminar última fila" si tiene filas vacías.',
+        'error',
+        'Formulario incompleto.'
+      );
+    }
   }
-}
 
-  private markAllControlsAsTouched(formGroup: FormGroup | FormArray): void {
-    Object.values(formGroup.controls).forEach(control => {
-      if (control instanceof FormGroup || control instanceof FormArray) {
-        this.markAllControlsAsTouched(control);
-      } else {
-        control.markAsTouched();
-      }
-    })
-  }
+
 }

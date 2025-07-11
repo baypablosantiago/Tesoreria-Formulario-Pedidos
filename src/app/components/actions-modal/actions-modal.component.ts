@@ -59,7 +59,7 @@ export class ActionsModalComponent {
   }
 
   submitPartialPayment() {
-    if (!this.partialPaymentAmount || this.partialPaymentAmount <= 0 || !this.data.id) return;
+    if (this.partialPaymentAmount == null|| !this.data.id) return;
 
     this.isSubmitting = true;
     this.success = false;
@@ -70,7 +70,6 @@ export class ActionsModalComponent {
         this.isSubmitting = false;
         this.success = true;
         this.data.partialPayment = updated.partialPayment;
-        this.partialPaymentAmount = 0;
       },
       error: err => {
         console.error('Error al registrar pago parcial', err);

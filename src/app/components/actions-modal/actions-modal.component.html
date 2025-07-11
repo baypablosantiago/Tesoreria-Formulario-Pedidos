@@ -87,7 +87,7 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Importe</mat-label>
                     <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount"
-                        [ngModelOptions]="{ standalone: true }" required min="0" />
+                        [ngModelOptions]="{ standalone: true }" min="0" required    />
                 </mat-form-field>
 
                 <div class="form-footer">
@@ -123,4 +123,5 @@
             <mat-dialog-actions align="end">
                 <button mat-button color="primary" (click)="close()">Cerrar</button>
             </mat-dialog-actions>
-            </div>
+        </div>
+    </div>    
