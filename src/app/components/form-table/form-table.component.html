@@ -2,9 +2,20 @@
   <div formArrayName="rows" class="table-limit">
 
     <div class="buttons-container">
-      <app-add-row-button (add)="addRow()"></app-add-row-button>
-      <app-remove-row-button (remove)="removeRow()"></app-remove-row-button>
-      <app-send-button class="spaced-right" (send)="submitRequest()"></app-send-button>
+      <button mat-fab extended type="button" (click)="addRow()">
+      <mat-icon>remove</mat-icon>
+        Agregar fila
+      </button>
+      
+      <button mat-fab extended type="button" (click)="removeRow()">
+        <mat-icon>remove</mat-icon>
+          Eliminar última fila
+        </button>
+
+      <button mat-fab extended type="button" class="spaced-right" (click)="submitRequest()">
+        <mat-icon>send</mat-icon>
+            Enviar solicitud
+        </button>
     </div>
 
     <table mat-table [dataSource]="rows.controls" aria-label="Elements">

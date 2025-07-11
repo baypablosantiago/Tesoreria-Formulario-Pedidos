@@ -4,13 +4,12 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { TextFieldComponent } from '../text-field/text-field.component';
 import { NumberFieldComponent } from '../number-field/number-field.component';
 import { MoneyFieldComponent } from '../money-field/money-field.component';
-import { SendButtonComponent } from '../send-button/send-button.component';
 import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
-import { AddRowButtonComponent } from "../add-row-button/add-row-button.component";
-import { RemoveRowButtonComponent } from "../remove-row-button/remove-row-button.component";
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { FundingRequest } from '../../models/funding-request';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-form-table',
@@ -22,11 +21,10 @@ import { FundingRequest } from '../../models/funding-request';
     TextFieldComponent,
     NumberFieldComponent,
     MoneyFieldComponent,
-    SendButtonComponent,
     UnrequiredTextFieldComponent,
-    AddRowButtonComponent,
-    RemoveRowButtonComponent
-  ],
+    MatIconModule,
+    MatButtonModule
+],
   standalone: true
 })
 export class FormTableComponent implements AfterViewInit {
