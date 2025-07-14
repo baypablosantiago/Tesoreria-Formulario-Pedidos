@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
 
   private LOGIN_URL = "http://localhost:5254/login";
-  private tokenKey = "authToken";
+  private TOKEN_KEY = "loginToken";
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
@@ -25,12 +25,12 @@ export class AuthService {
 
   private setToken(token: string, expiresIn: number): void {
     const expirationTime = Date.now() + expiresIn * 1000;
-    localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.TOKEN_KEY, token);
     localStorage.setItem("tokenExpiration", expirationTime.toString());
   }
 
   private getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   isAuthenticated(): boolean {
@@ -51,7 +51,8 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.clear();
     this.router.navigate(["/"]);
   }
 

@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 export class RolesService {
 
   private LOGIN_URL = "http://localhost:5254/roles";
-  private ROLE_KEY = 'Role';
+  private ROLE_KEY = 'role';
 
   constructor(private httpClient: HttpClient) { }
 
