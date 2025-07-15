@@ -1,11 +1,12 @@
-<button mat-button (click)="generateExcel()">Generar Excel</button>
+<div class="buttons-container">
 
-<button mat-button (click)="changeIsActiveState()">Cambiar estado a aprobado / finalizado</button>
+  <button mat-button class="action-button" (click)="generateExcel()">Generar Excel</button>
 
-<div *ngFor="let group of groupedRequests" style="margin-bottom: 20px;">
-  <app-da-card
-    [daTitle]="'D.A. ' + group.da"
-    [requests]="group.requests"
-    (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)"
-  ></app-da-card>
+  <button mat-button class="action-button" (click)="changeIsActiveState()">Cambiar estado a aprobado / finalizado</button>
+  
+</div>
+
+<div *ngFor="let group of groupedRequests">
+  <app-da-card [daTitle]="'D.A. ' + group.da" [requests]="group.requests"
+    (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)"></app-da-card>
 </div>

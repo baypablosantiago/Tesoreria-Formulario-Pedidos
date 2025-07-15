@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
   imports: [DaCardComponent, CommonModule, MatButtonModule]
 })
 export class DashboardComponent {
