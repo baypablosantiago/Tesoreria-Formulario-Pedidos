@@ -1,28 +1,24 @@
-<nav>
-    <h2>Logo</h2>
-    <ul>
-        <li>
-            <button mat-button routerLinkActive="active" routerLink="/news">Novedades</button>
-        </li>
+<nav class="nav-container">
+  <h2 class="logo">Logo</h2>
 
-        <li>
-            <button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button>
-        </li>
+  <ul class="nav-links">
+    <li><button mat-button routerLinkActive="active" routerLink="/news">Novedades</button></li>
+    <li><button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button></li>
 
-        <li *hasRole="'user'">
-            <button mat-button routerLinkActive="active" routerLink="/user-requests">Solicitudes enviadas</button>
-        </li>
+    <li *hasRole="'user'">
+      <button mat-button routerLinkActive="active" routerLink="/user-requests">Solicitudes enviadas</button>
+    </li>
 
-        <li *hasRole="'admin'">
-            <button mat-button routerLinkActive="active" routerLink="/dashboard">Solicitudes pendientes</button>
-        </li>
+    <li *hasRole="'admin'">
+      <button mat-button routerLinkActive="active" routerLink="/dashboard">Solicitudes pendientes</button>
+    </li>
 
-        <li *hasRole="'admin'">
-            <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes aprobadas</button>
-        </li>
-        
-        <li>
-              <button mat-button (click)="logout()">Cerrar sesión</button>
-        </li>
-    </ul>
+    <li *hasRole="'admin'">
+      <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes aprobadas</button>
+    </li>
+
+    <li>
+      <button mat-button (click)="logout()">Cerrar sesión</button>
+    </li>
+  </ul>
 </nav>
