@@ -15,7 +15,7 @@ export class UserRequestsListComponent {
   @Input() showCompleted: boolean = false;
 
   getRequestStatus(req: FundingRequest): string {
-    if (!req.isActive) return 'Finalizada';
+    if (!req.isActive) return 'Aprobada';
     if (req.partialPayment > 0) return 'Pago parcial';
     return 'Pendiente';
   }
