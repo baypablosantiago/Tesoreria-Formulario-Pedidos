@@ -86,13 +86,11 @@
                 <h3>Agregar pago parcial:</h3>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Importe</mat-label>
-                    <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount"
-                        [ngModelOptions]="{ standalone: true }" min="0" required    />
+                    <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount" [ngModelOptions]="{ standalone: true }" min="0" required />
                 </mat-form-field>
 
                 <div class="form-footer">
-                    <button mat-raised-button color="primary" type="submit"
-                        [disabled]="!partialForm.valid || isSubmitting">
+                    <button mat-raised-button type="submit" [disabled]="!partialForm.valid || isSubmitting">
                         Confirmar
                     </button>
                     <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
@@ -105,13 +103,11 @@
                 <h3>Agregar comentario general:</h3>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Comentario</mat-label>
-                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }"
-                        required rows="2"></textarea>
+                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" required rows="2"></textarea>
                 </mat-form-field>
 
                 <div class="form-footer">
-                    <button mat-raised-button color="accent" type="submit"
-                        [disabled]="!commentForm.valid || isCommentSubmitting">
+                    <button mat-raised-button type="submit" [disabled]="!commentForm.valid || isCommentSubmitting">
                         Guardar comentario
                     </button>
                     <p *ngIf="commentSuccess" class="success-message">Comentario agregado.</p>
@@ -121,7 +117,7 @@
 
 
             <mat-dialog-actions align="end">
-                <button mat-button color="primary" (click)="close()">Cerrar</button>
+                <button mat-raised-button (click)="close()">Cerrar</button>
             </mat-dialog-actions>
         </div>
     </div>    
