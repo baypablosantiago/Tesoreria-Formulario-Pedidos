@@ -59,7 +59,10 @@ export class ActionsModalComponent {
   }
 
   submitPartialPayment() {
-    if (this.partialPaymentAmount == null|| !this.data.id) return;
+    if (this.partialPaymentAmount == null || !this.data.id) {
+    this.error = true;
+    return;
+  }
 
     this.isSubmitting = true;
     this.success = false;
@@ -72,7 +75,6 @@ export class ActionsModalComponent {
         this.data.partialPayment = updated.partialPayment;
       },
       error: err => {
-        console.error('Error al registrar pago parcial', err);
         this.isSubmitting = false;
         this.error = true;
       }
@@ -95,8 +97,7 @@ export class ActionsModalComponent {
       this.commentSuccess = true;
       this.data.commentsFromTeso = trimmedComment; 
     },
-    error: err => {
-      console.error('Error al agregar comentario', err);
+    error: () => {
       this.isCommentSubmitting = false;
       this.commentError = true;
     }

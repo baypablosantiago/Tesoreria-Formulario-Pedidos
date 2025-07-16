@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>
-    <mat-icon color="primary" style="vertical-align: middle; margin-right: 8px;">description</mat-icon>
-    Detalles de la Solicitud
+<h2 mat-dialog-title class="modal-title">
+  <mat-icon class="modal-icon">description</mat-icon>
+  Detalles de la Solicitud
 </h2>
 
 <mat-dialog-content class="modal-content">
@@ -86,7 +86,7 @@
                 <h3>Agregar pago parcial:</h3>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Importe</mat-label>
-                    <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount" [ngModelOptions]="{ standalone: true }" min="0" required />
+                    <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount" [ngModelOptions]="{ standalone: true }" min="0" />
                 </mat-form-field>
 
                 <div class="form-footer">
@@ -94,7 +94,7 @@
                         Confirmar
                     </button>
                     <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
-                    <p *ngIf="error" class="error-message">Error al registrar el pago.</p>
+                    <p *ngIf="error" class="error-message">Error al registrar el pago parcial.</p>
                 </div>
             </form>
 
@@ -103,7 +103,7 @@
                 <h3>Agregar comentario general:</h3>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Comentario</mat-label>
-                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" required rows="2"></textarea>
+                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" rows="2"></textarea>
                 </mat-form-field>
 
                 <div class="form-footer">
