@@ -81,7 +81,7 @@ selectedRequestsMap = new Map<string, FundingRequest[]>();
     const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
-      this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atencion');
+      this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');
       return;
     }
 

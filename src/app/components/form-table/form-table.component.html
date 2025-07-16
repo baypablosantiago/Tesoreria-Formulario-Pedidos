@@ -4,19 +4,19 @@
     <!-- Botones -->
     <div class="buttons-container">
       <div class="left-buttons">
-        <button mat-raised-button color="primary" type="button" (click)="addRow()">
+        <button mat-raised-button class="action-button" (click)="addRow()">
           <mat-icon>add</mat-icon>
           Agregar fila
         </button>
 
-        <button mat-raised-button color="warn" type="button" (click)="removeRow()">
+        <button mat-raised-button class="action-button" (click)="removeRow()">
           <mat-icon>remove</mat-icon>
           Eliminar última fila
         </button>
       </div>
 
       <div class="right-button">
-        <button mat-raised-button color="accent" type="button" (click)="submitRequest()">
+        <button mat-raised-button class="action-button" (click)="submitRequest()">
           <mat-icon>send</mat-icon>
           Enviar solicitud
         </button>

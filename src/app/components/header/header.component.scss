@@ -8,12 +8,13 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 2px solid #007b8a; 
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #0a0a0a;
+  color: #007b8a;
   margin: 0;
 }
 
@@ -41,5 +42,8 @@
 .nav-links li .active {
   background-color: #c9e5e9;
   color: #007b8a;
+}
 
+.main-content {
+  padding-bottom: 10px;
 }

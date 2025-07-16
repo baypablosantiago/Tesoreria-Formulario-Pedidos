@@ -1,4 +1,6 @@
-<button mat-button (click)="changeIsActiveState()">Cambiar estado a pendiente</button>
+<div class="buttons-container">
+  <button mat-button class="action-button" (click)="changeIsActiveState()">Cambiar estado a pendiente</button>
+</div>
 
 <mat-accordion>
   <mat-expansion-panel *ngFor="let monthGroup of groupedRequests">

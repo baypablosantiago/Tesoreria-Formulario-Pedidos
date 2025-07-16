@@ -1,24 +1,26 @@
-<nav class="nav-container">
-  <h2 class="logo">Logo</h2>
+<div class="main-content">
+  <nav class="nav-container">
+    <h2 class="logo">Solicitudes de Fondos</h2>
 
-  <ul class="nav-links">
-    <li><button mat-button routerLinkActive="active" routerLink="/news">Novedades</button></li>
-    <li><button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button></li>
+    <ul class="nav-links">
+      <li><button mat-button routerLinkActive="active" routerLink="/news">Novedades</button></li>
+      <li><button mat-button routerLinkActive="active" routerLink="/form-table">Nueva solicitud</button></li>
 
-    <li *hasRole="'user'">
-      <button mat-button routerLinkActive="active" routerLink="/user-requests">Solicitudes enviadas</button>
-    </li>
+      <li *hasRole="'user'">
+        <button mat-button routerLinkActive="active" routerLink="/user-requests">Solicitudes enviadas</button>
+      </li>
 
-    <li *hasRole="'admin'">
-      <button mat-button routerLinkActive="active" routerLink="/dashboard">Solicitudes pendientes</button>
-    </li>
+      <li *hasRole="'admin'">
+        <button mat-button routerLinkActive="active" routerLink="/dashboard">Solicitudes pendientes</button>
+      </li>
 
-    <li *hasRole="'admin'">
-      <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes aprobadas</button>
-    </li>
+      <li *hasRole="'admin'">
+        <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes aprobadas</button>
+      </li>
 
-    <li>
-      <button mat-button (click)="logout()">Cerrar sesión</button>
-    </li>
-  </ul>
-</nav>
+      <li>
+        <button mat-button (click)="logout()">Cerrar sesión</button>
+      </li>
+    </ul>
+  </nav>
+</div>
