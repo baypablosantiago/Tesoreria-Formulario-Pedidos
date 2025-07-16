@@ -1,20 +1,76 @@
+@use '@angular/material' as mat;
+
 :host {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+  height: 100vh; 
+  width: 100vw; 
+  background-color: #8fcc60; /* fondo principal */
+  box-sizing: border-box;   
 }
 
-mat-card{
+mat-card {
   max-width: 400px;
   width: 100%;
   text-align: center;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(120, 166, 79, 0.4); /* sombra con color 4 */
+  background-color: #ffffff;
+  transform: translateY(-10%); 
 }
 
-mat-form-field{
-    display: block;
+mat-card-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #78a64f; /* Título en color 4 */
+  font-weight: 600;
 }
 
-mat-error{
-  padding-bottom: 15px;
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  @include mat.form-field-overrides((
+      filled-focus-active-indicator-color: #78a64f,
+      filled-focus-label-text-color: #78a64f
+    ));
+}
+
+.error-space {
+  min-height: 24px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+button[mat-raised-button] {
+  background-color: #85c652; /* color 3 */
+  color: white;
+  width: 100%;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #adda00; /* color 2 como acento */
+  }
+}
+
+mat-card-header {
+  margin-bottom: 1rem; 
+}
+
+.footer-text {
+  margin-top: 1.5rem; /* Espacio superior para separarlo del botón */
+  font-size: 0.8rem; /* Tamaño de fuente más pequeño */
+  color: #4c6b32; /* Color del texto (puedes ajustar) */
+  opacity: 0.8; /* Ligeramente transparente para que no sea tan intrusivo */
+
+  p {
+    margin: 0; /* Elimina márgenes por defecto de los párrafos */
+    line-height: 1.4; /* Espaciado entre líneas si hay varios párrafos */
+  }
 }

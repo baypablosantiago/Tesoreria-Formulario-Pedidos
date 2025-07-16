@@ -17,6 +17,7 @@ import { RolesService } from '../../services/roles.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  
   loginValid: boolean = true;
 
   email: string = "";
@@ -34,7 +35,6 @@ export class LoginComponent {
         this.rolesService.getRoles().subscribe({
           next: () => this.router.navigate(['/news']),
           error: () => {
-            console.error('No se pudo obtener el rol del usuario.');
             this.loginValid = false;
           }
         });
@@ -42,4 +42,10 @@ export class LoginComponent {
       error: () => this.loginValid = false
     });
   }
+  
+  currentYear: number = 0;
+  ngOnInit() {
+    this.currentYear = new Date().getFullYear(); // Asigna el año actual al inicializar
+  }
+
 }
