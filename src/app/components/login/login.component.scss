@@ -15,7 +15,7 @@ mat-card {
   max-width: 400px;
   width: 100%;
   text-align: center;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 4px 12px rgba(120, 166, 79, 0.4); /* sombra con color 4 */
   background-color: #ffffff;
@@ -35,7 +35,9 @@ mat-form-field {
   margin-bottom: 1rem;
   @include mat.form-field-overrides((
       filled-focus-active-indicator-color: #78a64f,
-      filled-focus-label-text-color: #78a64f
+      filled-focus-label-text-color: #78a64f,
+      filled-container-color:white,
+      leading-icon-color: rgb(121, 121, 121)
     ));
 }
 
