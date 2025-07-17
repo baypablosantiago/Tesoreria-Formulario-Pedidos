@@ -50,8 +50,10 @@ export class DaCardComponent {
     const dialogRef = this.dialog.open(ActionsModalComponent, {
       data: row,
       autoFocus: false,
-      width: '90vw',
-      maxWidth: '90vw',
+      width: '95vw',
+      maxWidth: '95vw',
+      height: '600px',
+      maxHeight: '600px',
       disableClose: true
     });
   }

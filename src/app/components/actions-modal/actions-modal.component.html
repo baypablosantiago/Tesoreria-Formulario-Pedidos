@@ -1,123 +1,216 @@
-<h2 mat-dialog-title class="modal-title">
-  <mat-icon class="modal-icon">description</mat-icon>
-  Detalles de la Solicitud
-</h2>
+<div class="modal-header">
+    <div class="title-group">
+        <mat-icon class="modal-icon">description</mat-icon>
+        <h2 class="modal-title">Detalles de la Solicitud</h2>
+    </div>
+
+    <button mat-raised-button class="action-button" (click)="close()">
+        <mat-icon class="modal-icon">arrow_back_2</mat-icon>
+        Volver
+    </button>
+</div>
 
 <mat-dialog-content class="modal-content">
     <div class="modal-content">
+
+
         <div class="leftSide">
             <table class="details-table">
                 <tr>
-                    <td><strong>DA:</strong></td>
-                    <td>{{ data.da }}</td>
-                </tr>
-                <tr>
-                    <td><strong>N° de Solicitud:</strong></td>
-                    <td>{{ data.requestNumber }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Ejercicio:</strong></td>
-                    <td>{{ data.fiscalYear }}</td>
-                </tr>
-                <tr>
-                    <td><strong>N° Orden de Pago:</strong></td>
-                    <td>{{ data.paymentOrderNumber }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Concepto:</strong></td>
-                    <td>{{ data.concept }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Vencimiento:</strong></td>
-                    <td>{{ data.dueDate }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Importe Solicitado:</strong></td>
-                    <td>{{ data.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Fuente de Financiamiento:</strong></td>
-                    <td>{{ data.fundingSource }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Cuenta Corriente:</strong></td>
-                    <td>{{ data.checkingAccount }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Comentarios:</strong></td>
-                    <td>{{ data.comments || '—' }}</td>
-                </tr>
-
-                <tr>
-                    <td><strong>Comentarios para la DA:</strong></td>
-                    <td>{{ data.commentsFromTeso || '—' }}</td>
-                </tr>
-
-                <tr>
-                    <td><strong>Pago Parcial:</strong></td>
-                    <td>{{ data.partialPayment > 0 ? (data.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR') :
-                        'No' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Recibido:</strong></td>
-                    <td>
-                        <ng-container *ngIf="data.receivedAt; else noDate">
-                            {{ data.receivedAt | date: 'dd/MM/yyyy' }}<br>
-                            {{ data.receivedAt | date: 'HH:mm' }} hs
-                        </ng-container>
-                        <ng-template #noDate>—</ng-template>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">DA:</span>
+                            <span class="value">{{ data.da }}</span>
+                        </div>
                     </td>
                 </tr>
+
                 <tr>
-                    <td><strong>Activo:</strong></td>
-                    <td>{{ data.isActive ? 'Sí' : 'No' }}</td>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">N° de Solicitud:</span>
+                            <span class="value">{{ data.requestNumber }}</span>
+                        </div>
+                    </td>
                 </tr>
+
                 <tr>
-                    <td><strong>ID Interno:</strong></td>
-                    <td>{{ data.id ?? '—' }}</td>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Ejercicio:</span>
+                            <span class="value">{{ data.fiscalYear }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">N° Orden de Pago:</span>
+                            <span class="value">{{ data.paymentOrderNumber }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Concepto:</span>
+                            <span class="value">{{ data.concept }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Vencimiento:</span>
+                            <span class="value">{{ data.dueDate }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Importe Solicitado:</span>
+                            <span class="value">{{ data.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Fuente de Financiamiento:</span>
+                            <span class="value">{{ data.fundingSource }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Cuenta Corriente:</span>
+                            <span class="value">{{ data.checkingAccount }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Comentarios:</span>
+                            <span class="value">{{ data.comments || '—' }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Comentarios para la DA:</span>
+                            <span class="value">{{ data.commentsFromTeso || '—' }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Pago Parcial:</span>
+                            <span class="value">
+                                {{ data.partialPayment > 0 ? (data.partialPayment |
+                                currency:'ARS':'symbol':'1.2-2':'es-AR') : 'No' }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Recibido:</span>
+                            <span class="value">
+                                <ng-container *ngIf="data.receivedAt; else noDate">
+                                    {{ data.receivedAt | date: 'dd/MM/yyyy' }}<br />
+                                    {{ data.receivedAt | date: 'HH:mm' }} hs
+                                </ng-container>
+                                <ng-template #noDate>—</ng-template>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">Activo:</span>
+                            <span class="value">{{ data.isActive ? 'Sí' : 'No' }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="detail-card">
+                            <span class="label">ID Interno:</span>
+                            <span class="value">{{ data.id ?? '—' }}</span>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>
 
-        <div class="rightSide">
+<div class="rightSide">
 
-            <!-- FORMULARIO DE PAGO PARCIAL -->
-            <form #partialForm="ngForm" (ngSubmit)="submitPartialPayment()" class="partial-form">
-                <h3>Agregar pago parcial:</h3>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Importe</mat-label>
-                    <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount" [ngModelOptions]="{ standalone: true }" min="0" />
-                </mat-form-field>
+  <!-- FORMULARIO DE PAGO PARCIAL -->
+  <div class="form-card">
+    <form #partialForm="ngForm" (ngSubmit)="submitPartialPayment()" class="partial-form">
+      <h3 class="form-title">Agregar pago parcial</h3>
 
-                <div class="form-footer">
-                    <button mat-raised-button type="submit" [disabled]="!partialForm.valid || isSubmitting">
-                        Confirmar
-                    </button>
-                    <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
-                    <p *ngIf="error" class="error-message">Error al registrar el pago parcial.</p>
-                </div>
-            </form>
+      <mat-form-field class="full-width">
+        <mat-label>Importe</mat-label>
+        <input matInput type="number" name="partialPayment" [(ngModel)]="partialPaymentAmount"
+          [ngModelOptions]="{ standalone: true }" min="0" />
+      </mat-form-field>
 
-            <!-- FORMULARIO DE COMENTARIO -->
-            <form #commentForm="ngForm" (ngSubmit)="submitComment()" class="comment-form">
-                <h3>Agregar comentario general:</h3>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Comentario</mat-label>
-                    <textarea matInput name="comment" [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" rows="2"></textarea>
-                </mat-form-field>
+      <div class="form-footer">
+        <button mat-raised-button type="submit" class="action-button"
+          [disabled]="!partialForm.valid || isSubmitting">
+          Confirmar
+        </button>
+        <p *ngIf="success" class="success-message">Pago parcial registrado.</p>
+        <p *ngIf="error" class="error-message">Error al registrar el pago parcial.</p>
+      </div>
+    </form>
+  </div>
 
-                <div class="form-footer">
-                    <button mat-raised-button type="submit" [disabled]="!commentForm.valid || isCommentSubmitting">
-                        Guardar comentario
-                    </button>
-                    <p *ngIf="commentSuccess" class="success-message">Comentario agregado.</p>
-                    <p *ngIf="commentError" class="error-message">Error al agregar el comentario.</p>
-                </div>
-            </form>
+  <!-- FORMULARIO DE COMENTARIO -->
+  <div class="form-card">
+    <form #commentForm="ngForm" (ngSubmit)="submitComment()" class="comment-form">
+      <h3 class="form-title">Agregar comentario general</h3>
+
+      <mat-form-field class="full-width">
+        <mat-label>Comentario</mat-label>
+        <textarea matInput name="comment" [(ngModel)]="newComment"
+          [ngModelOptions]="{ standalone: true }" rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="form-footer">
+        <button mat-raised-button type="submit" class="action-button"
+          [disabled]="!commentForm.valid || isCommentSubmitting">
+          Guardar comentario
+        </button>
+        <p *ngIf="commentSuccess" class="success-message">Comentario agregado.</p>
+        <p *ngIf="commentError" class="error-message">Error al agregar el comentario.</p>
+      </div>
+    </form>
+  </div>
+
+</div>
 
 
-            <mat-dialog-actions align="end">
-                <button mat-raised-button (click)="close()">Cerrar</button>
-            </mat-dialog-actions>
-        </div>
-    </div>    
+        
+
+    </div>
