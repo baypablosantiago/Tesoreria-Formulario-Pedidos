@@ -16,7 +16,6 @@ import { merge } from 'rxjs';
   ],
   templateUrl: './money-field.component.html',
   styleUrl: './money-field.component.scss',
-  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,7 +26,6 @@ import { merge } from 'rxjs';
 })
 export class MoneyFieldComponent implements ControlValueAccessor {
   readonly moneyField = new FormControl('', [
-    Validators.required,
     Validators.pattern(/^\d{1,3}(\.\d{3})*(,\d{0,2})?$/)
   ]);
 

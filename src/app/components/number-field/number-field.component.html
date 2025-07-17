@@ -5,7 +5,7 @@
         [formControl]="field"
         (blur)="updateErrorMessage()"
         (keypress)="allowOnlyNumbers($event)"
-        required
+        
     />
     @if (field.invalid) {
       <mat-error>{{errorMessage()}}</mat-error>

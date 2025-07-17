@@ -3,7 +3,7 @@
         matInput
         [formControl]="field"
         (blur)="updateErrorMessage()"
-        required
+        
     />
     @if (field.invalid) {
       <mat-error>{{errorMessage()}}</mat-error>

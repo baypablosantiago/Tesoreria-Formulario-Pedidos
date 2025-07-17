@@ -15,7 +15,6 @@ import { merge } from 'rxjs';
   ],
   templateUrl: './number-field.component.html',
   styleUrl: './number-field.component.scss',
-  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -26,7 +25,7 @@ import { merge } from 'rxjs';
 })
 
 export class NumberFieldComponent implements ControlValueAccessor {
-  readonly field = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), this.numberRequiredValidator()]);
+  readonly field = new FormControl('', [Validators.pattern(/^\d+$/), this.numberRequiredValidator()]);
   errorMessage = signal('');
 
   private onChange: (_: any) => void = () => {};

@@ -15,7 +15,6 @@ import { merge } from 'rxjs';
   ],
   templateUrl: './text-field.component.html',
   styleUrl: './text-field.component.scss',
-  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -26,7 +25,7 @@ import { merge } from 'rxjs';
 })
 
 export class TextFieldComponent implements ControlValueAccessor {
-  readonly field = new FormControl('', [Validators.required]);
+  readonly field = new FormControl('');
   errorMessage = signal('');
 
   private onChange: (_: any) => void = () => {};

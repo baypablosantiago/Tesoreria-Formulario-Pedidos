@@ -4,7 +4,7 @@
     [formControl]="moneyField"
     (input)="onMoneyInput()"
     (blur)="formatMoneyField()"
-    required
+    
   />
   <span matTextPrefix>$&nbsp;</span>
   @if (moneyField.invalid) {

@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 .mdc-text-field--outlined {
     height: 56px;
     padding-right: 5px !important;
@@ -9,4 +10,15 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+
+:host mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  @include mat.form-field-overrides((
+      outlined-focus-outline-color: #007b8a,
+      outlined-caret-color: #007b8a
+    ));
 }

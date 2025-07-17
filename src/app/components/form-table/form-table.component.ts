@@ -4,7 +4,6 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { TextFieldComponent } from '../text-field/text-field.component';
 import { NumberFieldComponent } from '../number-field/number-field.component';
 import { MoneyFieldComponent } from '../money-field/money-field.component';
-import { UnrequiredTextFieldComponent } from "../unrequired-text-field/unrequired-text-field.component";
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { FundingRequest } from '../../models/funding-request';
@@ -21,11 +20,9 @@ import { MatButtonModule } from '@angular/material/button';
     TextFieldComponent,
     NumberFieldComponent,
     MoneyFieldComponent,
-    UnrequiredTextFieldComponent,
     MatIconModule,
     MatButtonModule
 ],
-  standalone: true
 })
 export class FormTableComponent implements AfterViewInit {
   isDisabled = false;
