@@ -1,11 +1,12 @@
+
+
 .row-hover {
   transition: box-shadow 0.2s ease;
 
   &:hover {
     background-color: #c0ebe3;
     box-shadow: 0 2px 6px rgba(0, 139, 120, 0.3); 
-    border-left: 4px solid #008b78;
-    border-right: 4px solid #008b78;
+
     cursor: pointer;
     z-index: 1;
     position: relative;
@@ -15,3 +16,27 @@
 .container{
   margin-bottom: 20px;
 }
+
+mat-card {
+  background-color: #e0f4f0;
+
+  mat-card-header {
+    background-color: #e0f4f0;
+    border-radius: 12px;
+  }
+
+  mat-card-content {
+    background-color: #e0f4f0;
+    border-radius: 12px;
+
+    th {
+      background-color:#e0f4f0; 
+    }
+
+    td {
+      
+    }
+  }
+}
+
+

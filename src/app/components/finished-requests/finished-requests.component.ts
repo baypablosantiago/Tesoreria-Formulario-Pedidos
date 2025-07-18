@@ -9,11 +9,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MessageBoxService } from '../../services/message-box.service';
 import { forkJoin } from 'rxjs';
+import { MatIconModule } from "@angular/material/icon";
 
 
 @Component({
   selector: 'app-finished-request',
-  imports: [DaCardComponent, MatExpansionModule, CommonModule, MatButtonModule],
+  imports: [DaCardComponent, MatExpansionModule, CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './finished-requests.component.html',
   styleUrls: ['./finished-requests.component.scss']
 })

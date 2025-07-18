@@ -33,9 +33,9 @@ export class DaCardComponent {
   @Input() daTitle: string = '';
   displayedColumns = [
     'select',
+    'Fecha Recibido',
     'N° de Solicitud',
     // 'Ejercicio',
-    'Fecha Recibido',
     'N° de Orden de Pago',
     'Concepto, Proveedor o Contratista',
     'Vencimiento y/o Periodo',

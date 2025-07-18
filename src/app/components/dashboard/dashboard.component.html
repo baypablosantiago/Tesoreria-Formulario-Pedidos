@@ -1,8 +1,14 @@
 <div class="buttons-container">
 
-  <button mat-button class="action-button" (click)="generateExcel()">Generar Excel</button>
+  <button mat-button class="action-button" (click)="generateExcel()">
+    <mat-icon class="icon">content_copy</mat-icon>
+    Copiar al portapapeles
+  </button>
 
-  <button mat-button class="action-button" (click)="changeIsActiveState()">Cambiar estado a aprobado / finalizado</button>
+  <button mat-button class="action-button" (click)="changeIsActiveState()">
+    <mat-icon class="icon">done_outline</mat-icon>
+    Cambiar estado a aprobado / finalizado
+  </button>
   
 </div>
 

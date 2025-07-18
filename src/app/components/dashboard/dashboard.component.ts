@@ -7,13 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MessageBoxService } from '../../services/message-box.service';
 import { forkJoin } from 'rxjs';
+import { MatIconModule } from "@angular/material/icon";
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [DaCardComponent, CommonModule, MatButtonModule]
+  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule]
 })
 export class DashboardComponent {
   constructor(

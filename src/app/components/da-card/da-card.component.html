@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card appearance="outlined">
+<mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-subtitle>{{ daTitle }}</mat-card-subtitle>
     </mat-card-header>
@@ -20,12 +20,6 @@
           </td>
         </ng-container>
 
-        <!-- Número de solicitud -->
-        <ng-container matColumnDef="N° de Solicitud">
-          <th mat-header-cell *matHeaderCellDef>N° Solicitud</th>
-          <td mat-cell *matCellDef="let req"> {{ req.requestNumber }} </td>
-        </ng-container>
-
         <!-- Fecha Recibido -->
         <ng-container matColumnDef="Fecha Recibido">
           <th mat-header-cell *matHeaderCellDef>Fecha Recibido</th>
@@ -34,6 +28,14 @@
             {{ req.receivedAt | date: 'HH:mm' }} hs
           </td>
         </ng-container>
+
+        <!-- Número de solicitud -->
+        <ng-container matColumnDef="N° de Solicitud">
+          <th mat-header-cell *matHeaderCellDef>N° Solicitud</th>
+          <td mat-cell *matCellDef="let req"> {{ req.requestNumber }} </td>
+        </ng-container>
+
+        
 
         <!-- Año fiscal
       <ng-container matColumnDef="Ejercicio">
