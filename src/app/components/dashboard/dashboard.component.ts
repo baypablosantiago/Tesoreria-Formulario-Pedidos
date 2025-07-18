@@ -58,10 +58,6 @@ export class DashboardComponent {
     });
   }
 
-  generateExcel() {
-    alert("Aca se va a generar un excel");
-  }
-
   selectedRequestsMap = new Map<string, FundingRequest[]>(); 
 
   onSelectedRequestsChanged(daTitle: string, selected: FundingRequest[]) {
@@ -90,4 +86,46 @@ export class DashboardComponent {
       }
     });
   }
+
+
+copyToClipboard() {
+  const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+
+  if (allSelected.length === 0) {
+    this.messageBox.show('No hay solicitudes seleccionadas para copiar.', 'info', 'Atención');
+    return;
+  }
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      minimumFractionDigits: 2
+    }).format(amount);
+  };
+
+  const rows = allSelected.map(req => [
+    req.da,
+    req.requestNumber,
+    req.fiscalYear,
+    req.paymentOrderNumber,
+    req.concept,
+    req.dueDate || '', 
+    formatCurrency(req.amount),
+    req.fundingSource,
+    req.checkingAccount
+  ]);
+
+  const tsvContent = rows.map(row => row.join('\t')).join('\n');
+
+  navigator.clipboard.writeText(tsvContent).then(() => {
+    this.messageBox.show('Datos copiados al portapapeles. Ahora podés pegarlos en Excel.', 'success');
+  }).catch(err => {
+    console.error('Error al copiar:', err);
+    this.messageBox.show('No se pudo copiar al portapapeles.', 'error');
+  });
+}
+
+
+
 }
