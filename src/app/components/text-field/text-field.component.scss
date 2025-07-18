@@ -18,7 +18,7 @@
   width: 100%;
   margin-bottom: 1rem;
   @include mat.form-field-overrides((
-      outlined-focus-outline-color: #007b8a,
-      outlined-caret-color: #007b8a
+      outlined-focus-outline-color: #26a69a,
+      outlined-caret-color: #26a69a
     ));
 }

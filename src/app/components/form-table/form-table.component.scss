@@ -6,7 +6,7 @@
 .action-button {
     font-weight: 400;
     font-size: 0.95rem;
-    color: #333;
+    color: #000000;
     background-color: #f8f9fa;
     border-radius: 18px;
     padding: 0.5rem 1rem;
@@ -18,6 +18,10 @@
         color: #007b8a;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
+}
+
+.icon{
+  color:#008b78;
 }
 
 .buttons-container {
@@ -120,8 +124,4 @@ th, td {
 
 :host ::ng-deep .mat-mdc-form-field-infix {
   width: 100% !important;
-}
-
-  mat-form-field {
-  --mdc-filled-text-field-container-color: rgb(109, 67, 67);
 }
