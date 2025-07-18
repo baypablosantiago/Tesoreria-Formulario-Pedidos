@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 html, body { height: 100%; }
 body {
   font-family: 'Roboto', sans-serif;
@@ -12,3 +14,10 @@ body {
 * {
   scrollbar-width: none; /* Para Firefox */
 }
+
+
+@include mat.tabs-overrides((
+  active-indicator-color: #26a69a ,
+  active-focus-indicator-color:#26a69a,
+  active-hover-indicator-color: #26a69a
+));
