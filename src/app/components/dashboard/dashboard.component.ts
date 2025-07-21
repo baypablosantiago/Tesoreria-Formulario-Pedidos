@@ -126,6 +126,8 @@ copyToClipboard() {
   });
 }
 
-
+getTotalAmount(requests: FundingRequest[]): number {
+  return requests.reduce((sum, req) => sum + req.amount, 0);
+}
 
 }

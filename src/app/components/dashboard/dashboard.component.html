@@ -13,6 +13,17 @@
 </div>
 
 <div *ngFor="let group of groupedRequests">
-  <app-da-card [daTitle]="'D.A. ' + group.da" [requests]="group.requests"
-    (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)"></app-da-card>
+  <app-da-card
+    [daTitle]="'D.A. ' + group.da"
+    [requests]="group.requests"
+    (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)">
+  </app-da-card>
+
+  <!-- Este bloque es visible solo en Dashboard -->
+  <div class="total-row">
+    Total solicitado:
+    <strong>
+      {{ getTotalAmount(group.requests) | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+    </strong>
+  </div>
 </div>
