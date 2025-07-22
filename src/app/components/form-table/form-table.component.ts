@@ -145,7 +145,7 @@ private isRowEmpty(row: FormGroup): boolean {
         da: +row.get('DA')?.value,
         requestNumber: +row.get('nroSolicitud')?.value,
         fiscalYear: +row.get('ejercicio')?.value,
-        paymentOrderNumber: +row.get('ordenPago')?.value,
+        paymentOrderNumber: row.get('ordenPago')?.value,
         concept: row.get('concepto')?.value,
         dueDate: row.get('vencimiento')?.value,
         amount: +row.get('importe')?.value,

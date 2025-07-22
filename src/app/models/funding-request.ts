@@ -4,7 +4,7 @@ export interface FundingRequest {
   da: number;
   requestNumber: number;
   fiscalYear: number;
-  paymentOrderNumber: number;
+  paymentOrderNumber: string;
 
   concept: string;
   dueDate: string; 
