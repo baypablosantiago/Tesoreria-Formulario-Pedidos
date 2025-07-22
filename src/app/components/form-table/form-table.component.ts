@@ -1,27 +1,35 @@
 import { AfterViewInit, Component, ViewChild, inject, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTable, MatTableModule } from '@angular/material/table';
-import { TextFieldComponent } from '../text-field/text-field.component';
-import { NumberFieldComponent } from '../number-field/number-field.component';
-import { MoneyFieldComponent } from '../money-field/money-field.component';
+import { TextFieldComponent } from '../form-table-components/text-field/text-field.component';
+import { NumberFieldComponent } from '../form-table-components/number-field/number-field.component';
+import { MoneyFieldComponent } from '../form-table-components/money-field/money-field.component';
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { FundingRequest } from '../../models/funding-request';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { DateFieldComponent } from '../form-table-components/date-field/date-field.component';
 
 @Component({
   selector: 'app-form-table',
   templateUrl: './form-table.component.html',
   styleUrl: './form-table.component.scss',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatTableModule,
     TextFieldComponent,
     NumberFieldComponent,
     MoneyFieldComponent,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    DateFieldComponent
 ],
 })
 export class FormTableComponent implements AfterViewInit {
@@ -37,6 +45,14 @@ export class FormTableComponent implements AfterViewInit {
 
   constructor(private fundingService: FundingRequestService) { }
 
+  conceptOptions: string[] = [
+  'Pago a proveedor',
+  'Servicios contratados',
+  'Obra pública',
+  'Honorarios profesionales',
+  'Otros'
+];
+
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
   }
@@ -47,7 +63,7 @@ export class FormTableComponent implements AfterViewInit {
     'Ejercicio',
     'N° de Orden de Pago',
     'Concepto, Proveedor o Contratista',
-    'Vencimiento y/o Periodo',
+    'Vencimiento',
     'Importe Solicitado',
     'Fuente de Financiamiento',
     'Cuenta Corriente a la cual acreditar',
@@ -85,12 +101,25 @@ export class FormTableComponent implements AfterViewInit {
 
   }
 
-  private isRowEmpty(row: FormGroup): boolean {
-    return Object.values(row.controls).every(control => {
-      const value = control.value;
-      return value === null || value === undefined || String(value).trim() === '';
-    });
-  }
+private isRowEmpty(row: FormGroup): boolean {
+  const keysToCheck = [
+    'nroSolicitud',
+    'ejercicio',
+    'ordenPago',
+    'importe',
+    'fuenteFinanciamiento',
+    'cuentaCorriente',
+    'comentarios'
+  ];
+
+  return keysToCheck.every(key => {
+    const control = row.get(key);
+    if (!control) return true; // si no existe el control, lo consideramos vacío
+    const value = control.value;
+    return value === null || value === undefined || String(value).trim() === '';
+  });
+}
+
 
   removeRow() {
     const lastIndex = this.rows.length - 1;
