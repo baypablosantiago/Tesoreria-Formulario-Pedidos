@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 .table-limit {
   width: 95%;
   margin: 0 auto;
@@ -60,6 +61,18 @@ th, td {
   padding: 8px;
   border: none;
   }
+
+  :host mat-form-field {
+  @include mat.form-field-overrides((
+    outlined-focus-outline-color: #26a69a,
+    outlined-caret-color: #26a69a,
+  ));
+  @include mat.select-overrides((
+    focused-arrow-color: #26a69a
+  ));
+}
+
+
   
 .col-da {
   width: 80px;
