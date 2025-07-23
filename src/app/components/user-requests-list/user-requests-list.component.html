@@ -44,8 +44,8 @@
         📝 <strong>Comentarios de Tesorería:</strong> {{ req.commentsFromTeso }}
       </div>
 
-      <div *ngIf="isEditable(req)" class="edit-button">
-        <button mat-stroked-button color="primary" (click)="onEdit(req)">
+      <div *ngIf="isEditable(req)" class="edit-container" >
+        <button mat-stroked-button class="action-button" (click)="onEdit(req)">
            Modificar ✏️
         </button>
       </div>

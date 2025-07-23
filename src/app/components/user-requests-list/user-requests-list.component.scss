@@ -2,7 +2,7 @@
   margin-bottom: 1.5rem;
 
   &.pending {
-    border-left: 5px solid #1976d2;
+    border-left: 5px solid #26a69a; 
   }
 
   &.partial {
@@ -10,7 +10,7 @@
   }
 
   &.completed {
-    border-left: 5px solid #26a69a;
+    border-left: 5px solid #1976d2; 
   }
 
   mat-card {
@@ -32,8 +32,8 @@
     text-transform: uppercase;
 
     &.pending {
-      background-color: #e3f2fd;
-      color: #1976d2;
+      background-color: #e8f5e9;
+      color: #26a69a;           
     }
 
     &.partial {
@@ -42,8 +42,8 @@
     }
 
     &.completed {
-      background-color: #e8f5e9;
-      color: #26a69a;
+      background-color: #e3f2fd; 
+      color: #1976d2;            
     }
   }
 
@@ -83,16 +83,28 @@
   font-style: italic;
 }
 
-.edit-button {
+.edit-container{
   display: flex;
   justify-content: flex-end;
-
-  button {
-    font-weight: 500;
-    border-radius: 20px;
-    padding: 0.4rem 1.2rem;
-    padding-right: 0.7rem;
-    border: 2px solid #1976d2
-  }
 }
 
+.action-button {
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #f8f9fa;
+    border-radius: 18px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        background-color: #e0f7fa;
+        color: #007b8a;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .icon{
+    color:#26a69a;
+    }
+}
