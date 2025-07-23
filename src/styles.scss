@@ -20,3 +20,12 @@ body {
   active-focus-indicator-color:#007b8a,
   active-hover-indicator-color: #007b8a
 ));
+
+@include mat.datepicker-overrides((
+  calendar-date-focus-state-background-color: #c0ebe3,
+  calendar-date-outline-color: #c0ebe3,
+  calendar-date-hover-state-background-color: #c0ebe3,
+  calendar-date-selected-state-background-color: #26a69a,
+  calendar-date-today-selected-state-outline-color: #26a69a,
+  calendar-date-today-outline-color: #26a69a
+));

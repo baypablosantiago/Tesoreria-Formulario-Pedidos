@@ -3,6 +3,9 @@
 :host mat-form-field {
   @include mat.form-field-overrides((
     outlined-focus-outline-color: #26a69a,
-    outlined-caret-color: #26a69a,
+    outlined-caret-color: #26a69a
   ));
 }
+
+
+
