@@ -82,3 +82,17 @@
   color: #888;
   font-style: italic;
 }
+
+.edit-button {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 0.4rem 1.2rem;
+    padding-right: 0.7rem;
+    border: 2px solid #1976d2
+  }
+}
+

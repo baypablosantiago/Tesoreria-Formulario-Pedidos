@@ -58,15 +58,10 @@
       <ng-container matColumnDef="Concepto, Proveedor o Contratista">
         <th mat-header-cell *matHeaderCellDef class="col-cpc">Concepto, Proveedor o Contratista</th>
         <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <mat-form-field appearance="outline" class="dropdown-field">
-            <mat-select formControlName="concepto" placeholder="Seleccione una opción">
-              <mat-option *ngFor="let option of conceptOptions" [value]="option">
-                {{ option }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-dropdown-field formControlName="concepto"></app-dropdown-field>
         </td>
       </ng-container>
+
 
       <ng-container matColumnDef="Vencimiento">
         <th mat-header-cell *matHeaderCellDef class="col-venc">Vencimiento</th>

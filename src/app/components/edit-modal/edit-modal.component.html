@@ -1,0 +1,23 @@
+<h2>Modificar solicitud</h2>
+
+<form [formGroup]="form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Concepto</mat-label>
+    <input matInput formControlName="concept" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Importe</mat-label>
+    <input matInput type="number" formControlName="amount" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Comentarios</mat-label>
+    <textarea matInput formControlName="comments" rows="3"></textarea>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+  </div>
+</form>

@@ -37,11 +37,17 @@
       </div>
 
       <div *ngIf="req.partialPayment > 0" class="highlight warning">
-        💰 <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR'  }}
+        💰 <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
       </div>
 
       <div *ngIf="req.commentsFromTeso" class="highlight info">
         📝 <strong>Comentarios de Tesorería:</strong> {{ req.commentsFromTeso }}
+      </div>
+
+      <div *ngIf="isEditable(req)" class="edit-button">
+        <button mat-stroked-button color="primary" (click)="onEdit(req)">
+           Modificar ✏️
+        </button>
       </div>
 
     </mat-card-content>

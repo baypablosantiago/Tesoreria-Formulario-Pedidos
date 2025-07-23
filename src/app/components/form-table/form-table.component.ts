@@ -13,6 +13,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { DateFieldComponent } from '../form-table-components/date-field/date-field.component';
+import { DropdownFieldComponent } from "../form-table-components/dropdown-field/dropdown-field.component";
 
 @Component({
   selector: 'app-form-table',
@@ -29,7 +30,8 @@ import { DateFieldComponent } from '../form-table-components/date-field/date-fie
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    DateFieldComponent
+    DateFieldComponent,
+    DropdownFieldComponent
 ],
 })
 export class FormTableComponent implements AfterViewInit {
@@ -44,14 +46,6 @@ export class FormTableComponent implements AfterViewInit {
   );
 
   constructor(private fundingService: FundingRequestService) { }
-
-  conceptOptions: string[] = [
-  'Pago a proveedor',
-  'Servicios contratados',
-  'Obra pública',
-  'Honorarios profesionales',
-  'Otros'
-];
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
