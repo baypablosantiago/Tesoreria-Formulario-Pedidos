@@ -1,23 +1,71 @@
-<h2>Modificar solicitud</h2>
+<div class="modal-header">
+  <div class="title-group">
+    <mat-icon class="modal-icon">edit</mat-icon>
+    <h2 class="modal-title">Modificar Solicitud</h2>
+  </div>
 
-<form [formGroup]="form">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Concepto</mat-label>
-    <input matInput formControlName="concept" />
-  </mat-form-field>
+  <div class="header-actions">
+    <button mat-raised-button class="action-button" (click)="cancel()">
+      <mat-icon class="modal-icon">arrow_back_2</mat-icon>
+      Volver
+    </button>
+    <button mat-raised-button class="action-button" (click)="save()">
+      <mat-icon class="modal-icon">done_outline</mat-icon> Guardar cambios
+    </button>
+  </div>
+</div>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Importe</mat-label>
-    <input matInput type="number" formControlName="amount" />
-  </mat-form-field>
+<mat-dialog-content class="modal-content">
+  <div class="modal-content">
+    <form [formGroup]="form" class="edit-form">
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Comentarios</mat-label>
-    <textarea matInput formControlName="comments" rows="3"></textarea>
-  </mat-form-field>
+  <div class="form-card">
+    <h3>Comentarios</h3>
+    <app-text-field formControlName="comments" />
+  </div>
 
-  <div class="actions">
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+  <div class="form-columns">
+    <div class="column">
+      <div class="form-card">
+        <h3>N° de Solicitud</h3>
+        <app-number-field formControlName="requestNumber" />
+      </div>
+      <div class="form-card">
+        <h3>Ejercicio</h3>
+        <app-number-field formControlName="fiscalYear" />
+      </div>
+      <div class="form-card">
+        <h3>N° Orden de Pago</h3>
+        <app-text-field formControlName="paymentOrderNumber" />
+      </div>
+      <div class="form-card">
+        <h3>Concepto</h3>
+        <app-dropdown-field formControlName="concept" />
+      </div>
+    </div>
+
+    <div class="column">
+      
+      <div class="form-card">
+        <h3>Importe</h3>
+        <app-money-field formControlName="amount" />
+      </div>
+      <div class="form-card">
+        <h3>Fuente de Financiamiento</h3>
+        <app-text-field formControlName="fundingSource" />
+      </div>
+      <div class="form-card">
+        <h3>Cuenta Corriente</h3>
+        <app-text-field formControlName="checkingAccount" />
+      </div>
+      <div class="form-card">
+        <h3>Vencimiento</h3>
+        <app-date-field formControlName="dueDate" />
+      </div>
+    </div>
   </div>
 </form>
+
+
+  </div>
+</mat-dialog-content>

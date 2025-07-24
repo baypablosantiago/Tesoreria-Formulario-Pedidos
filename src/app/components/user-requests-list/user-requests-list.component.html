@@ -45,8 +45,8 @@
       </div>
 
       <div *ngIf="isEditable(req)" class="edit-container" >
-        <button mat-stroked-button class="action-button" (click)="onEdit(req)">
-           Modificar ✏️
+        <button mat-raised-button class="action-button" (click)="onEdit(req)">
+           <mat-icon class="icon">edit</mat-icon> Modificar
         </button>
       </div>
 

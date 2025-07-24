@@ -1,6 +1,8 @@
 @use '@angular/material' as mat;
 
 :host mat-form-field {
+    width: 100%;
+    margin-bottom: -1rem;
     @include mat.form-field-overrides((
         outlined-focus-outline-color: #26a69a,
         outlined-caret-color: #26a69a,
@@ -8,6 +10,7 @@
         outlined-error-focus-outline-color:none,
         outlined-error-hover-outline-color:none,
     ));
+    margin-bottom: -1rem;
     @include mat.select-overrides((
         focused-arrow-color: #26a69a,
         invalid-arrow-color:none));

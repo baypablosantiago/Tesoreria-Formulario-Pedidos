@@ -85,7 +85,7 @@ export class MoneyFieldComponent implements ControlValueAccessor {
       this.updateErrorMessage();
       return;
     }
-
+    
     const numericString = value.replace(/\./g, '').replace(',', '.');
     const number = parseFloat(numericString);
     if (isNaN(number)) return;
@@ -98,11 +98,12 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     this.moneyField.setValue(formatted, { emitEvent: false });
   }
 
-  private parseToNumber(value: string | null): number | null {
-  if (!value) return null;
-  const numericString = value.replace(/\./g, '').replace(',', '.').replace(/[^0-9.-]/g, '');
-  const num = parseFloat(numericString);
-  return isNaN(num) ? null : num;
+parseToNumber(value: any): number {
+  if (value == null) return 0;
+
+  const strValue = String(value);
+  const cleaned = strValue.replace(/[^\d,.-]/g, '').replace(',', '.');
+  return parseFloat(cleaned) || 0;
 }
 
 }

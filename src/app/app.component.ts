@@ -3,11 +3,12 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/header/header.component";
 import { filter } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, NgIf],
+  imports: [RouterOutlet, HeaderComponent, NgIf,MatNativeDateModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

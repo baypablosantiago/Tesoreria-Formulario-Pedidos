@@ -91,7 +91,7 @@
   width: 100%;
   max-height: 500px;
   overflow-y: auto;
-   scrollbar-width: thin;           // Firefox
+  scrollbar-width: thin;           // Firefox
   scrollbar-color: #999 #f0f0f0;   // Firefox
 
   &::-webkit-scrollbar {

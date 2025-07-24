@@ -5,11 +5,11 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { EditModalComponent } from '../edit-modal/edit-modal.component';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-requests-list',
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './user-requests-list.component.html',
   styleUrls: ['./user-requests-list.component.scss']
 })
@@ -23,10 +23,10 @@ onEdit(req: FundingRequest): void {
   const dialogRef = this.dialog.open(EditModalComponent, {
       data: req,
       autoFocus: false,
-      width: '95vw',
-      maxWidth: '95vw',
-      height: '600px',
-      maxHeight: '600px',
+      width: '70vw',
+      maxWidth: '70vw',
+      height: '500px',
+      maxHeight: '500px',
       disableClose: true
   });
 

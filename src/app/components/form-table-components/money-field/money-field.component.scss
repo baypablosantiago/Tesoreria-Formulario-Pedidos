@@ -11,7 +11,7 @@
 :host mat-form-field {
   display: block;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: -1rem;
   @include mat.form-field-overrides((
       outlined-focus-outline-color: #26a69a,
       outlined-caret-color: #26a69a
