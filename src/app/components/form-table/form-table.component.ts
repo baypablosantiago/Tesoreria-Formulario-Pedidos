@@ -45,7 +45,7 @@ export class FormTableComponent implements AfterViewInit {
     })
   );
 
-  constructor(private fundingService: FundingRequestService) { }
+  constructor(private fundingRequestService: FundingRequestService) { }
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
@@ -153,7 +153,7 @@ private isRowEmpty(row: FormGroup): boolean {
       let responses = 0;
 
       requests.forEach(req => {
-        this.fundingService.addFundingRequest(req).subscribe({
+        this.fundingRequestService.addFundingRequest(req).subscribe({
           next: () => {
             responses++;
             if (responses === requests.length && !hasError) {

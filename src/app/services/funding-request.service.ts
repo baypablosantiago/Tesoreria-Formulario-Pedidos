@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FundingRequest } from '../models/funding-request';
 import { Observable } from 'rxjs';
+import { FundingRequestUpdateDto } from '../models/FundingRequestUpdateDto';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,13 @@ export class FundingRequestService {
 
   addComment(id: number, comment:string):Observable<FundingRequest>{
     return this.http.patch<FundingRequest>(`${this.apiUrl}/add-comment/${id}`,{ comment });
+  }
+
+  updateFundingRequest(request: FundingRequestUpdateDto):Observable<FundingRequestUpdateDto>{
+    return this.http.put<FundingRequestUpdateDto>(`${this.apiUrl}/update-request`,request);
+  }
+
+  changeOnWork(id: number): Observable<FundingRequest> {
+    return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/on-work/${id}`);
   }
 }

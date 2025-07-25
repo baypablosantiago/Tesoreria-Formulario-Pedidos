@@ -17,6 +17,7 @@ export interface FundingRequest {
   comments?: string;
   partialPayment:number;
   isActive?:boolean;
+  onWork?:boolean;
   receivedAt?:Date;
   commentsFromTeso?:string;
 }

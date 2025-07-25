@@ -12,6 +12,10 @@ import { DateFieldComponent } from '../form-table-components/date-field/date-fie
 import { DropdownFieldComponent } from '../form-table-components/dropdown-field/dropdown-field.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FundingRequestService } from '../../services/funding-request.service';
+import { FundingRequestUpdateDto } from '../../models/FundingRequestUpdateDto';
+import { Router } from '@angular/router';
+import { MessageBoxService } from '../../services/message-box.service';
 
 @Component({
   selector: 'app-edit-modal',
@@ -37,7 +41,10 @@ export class EditModalComponent {
   form: FormGroup;
 
   constructor(
+    private fundingRequestService: FundingRequestService,
+    private router: Router,
     private dialogRef: MatDialogRef<EditModalComponent>,
+    private messageBox: MessageBoxService,
     @Inject(MAT_DIALOG_DATA) public data: FundingRequest,
     private fb: FormBuilder
   ) {
@@ -54,15 +61,33 @@ export class EditModalComponent {
     });
   }
 
-  save(): void {
-    if (this.form.valid) {
-      const updated = {
-        ...this.data,
-        ...this.form.value
-      };
-      this.dialogRef.close(updated);
-    }
+  private reloadCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
+
+  save(): void {
+  if (this.form.valid) {
+    const updated: FundingRequestUpdateDto = {
+      ...this.data,
+      ...this.form.value
+    };
+
+    this.fundingRequestService.updateFundingRequest(updated).subscribe({
+      next: () => {
+        this.dialogRef.close(updated);
+        this.messageBox.show("La solicitud fue modificada correctamente.",'success','Exito')
+        this.reloadCurrentRoute();
+      },
+      error: (err) => {
+        console.error('Error al actualizar solicitud', err);
+      }
+    });
+  }
+}
+
 
   cancel(): void {
     this.dialogRef.close();

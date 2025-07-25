@@ -19,53 +19,56 @@
   <div class="modal-content">
     <form [formGroup]="form" class="edit-form">
 
-  <div class="form-card">
-    <h3>Comentarios</h3>
-    <app-text-field formControlName="comments" />
-  </div>
+      <div class="form-card comments">
+        <h3>Comentarios</h3>
+        <app-text-field formControlName="comments" />
+      </div>
 
-  <div class="form-columns">
-    <div class="column">
-      <div class="form-card">
-        <h3>N° de Solicitud</h3>
-        <app-number-field formControlName="requestNumber" />
-      </div>
-      <div class="form-card">
-        <h3>Ejercicio</h3>
-        <app-number-field formControlName="fiscalYear" />
-      </div>
-      <div class="form-card">
-        <h3>N° Orden de Pago</h3>
-        <app-text-field formControlName="paymentOrderNumber" />
-      </div>
-      <div class="form-card">
-        <h3>Concepto</h3>
-        <app-dropdown-field formControlName="concept" />
-      </div>
-    </div>
+      <div class="form-columns columns-3">
+        <!-- Columna 1: Identificación -->
+        <div class="column">
+          <div class="form-card">
+            <h3>N° de Solicitud</h3>
+            <app-number-field formControlName="requestNumber" />
+          </div>
+          <div class="form-card">
+            <h3>Ejercicio</h3>
+            <app-number-field formControlName="fiscalYear" />
+          </div>
+          <div class="form-card">
+            <h3>Vencimiento</h3>
+            <app-date-field formControlName="dueDate" />
+          </div>
+        </div>
 
-    <div class="column">
-      
-      <div class="form-card">
-        <h3>Importe</h3>
-        <app-money-field formControlName="amount" />
-      </div>
-      <div class="form-card">
-        <h3>Fuente de Financiamiento</h3>
-        <app-text-field formControlName="fundingSource" />
-      </div>
-      <div class="form-card">
-        <h3>Cuenta Corriente</h3>
-        <app-text-field formControlName="checkingAccount" />
-      </div>
-      <div class="form-card">
-        <h3>Vencimiento</h3>
-        <app-date-field formControlName="dueDate" />
-      </div>
-    </div>
-  </div>
-</form>
+        <!-- Columna 2: Información financiera -->
+        <div class="column">
+          <div class="form-card">
+            <h3>Importe</h3>
+            <app-money-field formControlName="amount" />
+          </div>
+          <div class="form-card">
+            <h3>Fuente de Financiamiento</h3>
+            <app-text-field formControlName="fundingSource" />
+          </div>
+          <div class="form-card">
+            <h3>Cuenta Corriente</h3>
+            <app-text-field formControlName="checkingAccount" />
+          </div>
+        </div>
 
-
+        <!-- Columna 3: Detalles administrativos -->
+        <div class="column">
+          <div class="form-card">
+            <h3>N° Orden de Pago</h3>
+            <app-text-field formControlName="paymentOrderNumber" />
+          </div>
+          <div class="form-card">
+            <h3>Concepto</h3>
+            <app-dropdown-field formControlName="concept" />
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </mat-dialog-content>
