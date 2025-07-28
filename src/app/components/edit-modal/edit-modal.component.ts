@@ -33,7 +33,7 @@ import { MessageBoxService } from '../../services/message-box.service';
     MatDialogModule,
     MatNativeDateModule,
     MatDatepickerModule
-],
+  ],
   templateUrl: './edit-modal.component.html',
   styleUrls: ['./edit-modal.component.scss']
 })
@@ -59,6 +59,14 @@ export class EditModalComponent {
       fundingSource: [data.fundingSource],
       checkingAccount: [data.checkingAccount]
     });
+
+    if (data.onWork) {
+      Object.keys(this.form.controls).forEach(key => {
+        if (key !== 'comments') {
+          this.form.controls[key].disable();
+        }
+      });
+    }
   }
 
   private reloadCurrentRoute(): void {
@@ -69,24 +77,24 @@ export class EditModalComponent {
   }
 
   save(): void {
-  if (this.form.valid) {
-    const updated: FundingRequestUpdateDto = {
-      ...this.data,
-      ...this.form.value
-    };
+    if (this.form.valid) {
+      const updated: FundingRequestUpdateDto = {
+        ...this.data,
+        ...this.form.value
+      };
 
-    this.fundingRequestService.updateFundingRequest(updated).subscribe({
-      next: () => {
-        this.dialogRef.close(updated);
-        this.messageBox.show("La solicitud fue modificada correctamente.",'success','Exito')
-        this.reloadCurrentRoute();
-      },
-      error: (err) => {
-        console.error('Error al actualizar solicitud', err);
-      }
-    });
+      this.fundingRequestService.updateFundingRequest(updated).subscribe({
+        next: () => {
+          this.dialogRef.close(updated);
+          this.messageBox.show("La solicitud fue modificada correctamente.", 'success', 'Exito')
+          this.reloadCurrentRoute();
+        },
+        error: (err) => {
+          console.error('Error al actualizar solicitud', err);
+        }
+      });
+    }
   }
-}
 
 
   cancel(): void {

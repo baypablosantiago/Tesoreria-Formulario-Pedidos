@@ -42,6 +42,7 @@ onEdit(req: FundingRequest): void {
   getRequestStatus(req: FundingRequest): string {
     if (!req.isActive) return 'Finalizada';
     if (req.partialPayment > 0) return 'Pago parcial';
+    if (req.onWork) return 'En revisión'
     return 'Pendiente';
   }
 

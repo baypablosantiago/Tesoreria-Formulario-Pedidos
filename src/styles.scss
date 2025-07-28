@@ -29,3 +29,12 @@ body {
   calendar-date-today-selected-state-outline-color: #26a69a,
   calendar-date-today-outline-color: #26a69a
 ));
+
+
+@include mat.checkbox-overrides((
+    selected-checkmark-color: #ffffff,
+    selected-icon-color: #008b78,
+    selected-hover-icon-color: #009d86,
+    selected-focus-icon-color: #007a6b,
+    selected-pressed-icon-color: #005f51
+  ));

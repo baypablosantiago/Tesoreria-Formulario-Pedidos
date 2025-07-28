@@ -18,6 +18,10 @@
 <mat-dialog-content class="modal-content">
   <div class="modal-content">
     <form [formGroup]="form" class="edit-form">
+      
+      <div *ngIf="data.onWork" class="alert-info">
+        Solo se puede modificar el comentario debido a que la solicitud está en revisión.
+      </div>
 
       <div class="form-card comments">
         <h3>Comentarios</h3>

@@ -34,9 +34,13 @@ import { CommonModule } from '@angular/common';
 export class DateFieldComponent implements ControlValueAccessor {
   @Input() placeholder = 'Seleccione';
   value: Date | null = null;
-
+  disabled = false
   onChange = (_: any) => {};
   onTouched = () => {};
+
+   setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
 
   writeValue(obj: string | null): void {
     this.value = obj ? this.parseDate(obj) : null;
