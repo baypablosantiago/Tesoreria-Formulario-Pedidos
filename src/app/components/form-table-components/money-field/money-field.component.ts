@@ -45,9 +45,15 @@ export class MoneyFieldComponent implements ControlValueAccessor {
   });
   }
 
-  writeValue(value: any): void {
-    this.moneyField.setValue(value, { emitEvent: false });
-  }
+ writeValue(value: any): void {
+  const numberValue = this.parseToNumber(value);
+  const formatted = numberValue.toLocaleString('de-DE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+  this.moneyField.setValue(formatted, { emitEvent: false });
+}
+
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
