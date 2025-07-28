@@ -35,4 +35,21 @@ mat-card {
   }
 }
 
+.select-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: inherit;
+}
+
+.on-work-row {
+  background-color: #9eddd3;
+}
+
+.on-work-icon {
+  color: #008b78;
+}
+
+
 

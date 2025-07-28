@@ -18,7 +18,7 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class DashboardComponent {
   constructor(
-    private fundingService: FundingRequestService, 
+    private fundingService: FundingRequestService,
     private router: Router,
     private messageBox: MessageBoxService) { }
 
@@ -58,7 +58,7 @@ export class DashboardComponent {
     });
   }
 
-  selectedRequestsMap = new Map<string, FundingRequest[]>(); 
+  selectedRequestsMap = new Map<string, FundingRequest[]>();
 
   onSelectedRequestsChanged(daTitle: string, selected: FundingRequest[]) {
     this.selectedRequestsMap.set(daTitle, selected);
@@ -79,6 +79,72 @@ export class DashboardComponent {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
+        this.reloadCurrentRoute();
+      },
+      error: err => {
+        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo ' + err, 'error');
+      }
+    });
+  }
+
+
+  copyToClipboard() {
+    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+
+    if (allSelected.length === 0) {
+      this.messageBox.show('No hay solicitudes seleccionadas para copiar.', 'info', 'Atención');
+      return;
+    }
+
+    const formatCurrency = (amount: number) => {
+      return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        minimumFractionDigits: 2
+      }).format(amount);
+    };
+
+    const rows = allSelected.map(req => [
+      req.da,
+      req.requestNumber,
+      req.fiscalYear,
+      req.paymentOrderNumber,
+      req.concept,
+      req.dueDate || '',
+      formatCurrency(req.amount),
+      req.fundingSource,
+      req.checkingAccount
+    ]);
+
+    const tsvContent = rows.map(row => row.join('\t')).join('\n');
+
+    navigator.clipboard.writeText(tsvContent).then(() => {
+      this.messageBox.show('Datos copiados al portapapeles. Ahora podés pegarlos en Excel.', 'success');
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+      this.messageBox.show('No se pudo copiar al portapapeles.', 'error');
+    });
+  }
+
+  getTotalAmount(requests: FundingRequest[]): number {
+    return requests.reduce((sum, req) => sum + req.amount, 0);
+  }
+
+  changeOnWorkState() {
+    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+
+    if (allSelected.length === 0) {
+      this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');
+      return;
+    }
+
+    const requests = allSelected.map(req =>
+      this.fundingService.changeOnWork(req.id!)
+    );
+
+    forkJoin(requests).subscribe({
+      next: updatedList => {
+        this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
         this.reloadCurrentRoute(); 
       },
       error: err => {
@@ -86,48 +152,5 @@ export class DashboardComponent {
       }
     });
   }
-
-
-copyToClipboard() {
-  const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
-
-  if (allSelected.length === 0) {
-    this.messageBox.show('No hay solicitudes seleccionadas para copiar.', 'info', 'Atención');
-    return;
-  }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: 'ARS',
-      minimumFractionDigits: 2
-    }).format(amount);
-  };
-
-  const rows = allSelected.map(req => [
-    req.da,
-    req.requestNumber,
-    req.fiscalYear,
-    req.paymentOrderNumber,
-    req.concept,
-    req.dueDate || '', 
-    formatCurrency(req.amount),
-    req.fundingSource,
-    req.checkingAccount
-  ]);
-
-  const tsvContent = rows.map(row => row.join('\t')).join('\n');
-
-  navigator.clipboard.writeText(tsvContent).then(() => {
-    this.messageBox.show('Datos copiados al portapapeles. Ahora podés pegarlos en Excel.', 'success');
-  }).catch(err => {
-    console.error('Error al copiar:', err);
-    this.messageBox.show('No se pudo copiar al portapapeles.', 'error');
-  });
-}
-
-getTotalAmount(requests: FundingRequest[]): number {
-  return requests.reduce((sum, req) => sum + req.amount, 0);
-}
 
 }

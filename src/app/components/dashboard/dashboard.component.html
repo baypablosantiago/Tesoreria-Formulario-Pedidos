@@ -5,6 +5,11 @@
     Copiar al portapapeles
   </button>
 
+  <button mat-button class="action-button" (click)="changeOnWorkState()">
+    <mat-icon class="icon">construction</mat-icon>
+    Cambiar estado "En revisión"
+  </button>
+
   <button mat-button class="action-button" (click)="changeIsActiveState()">
     <mat-icon class="icon">done_outline</mat-icon>
     Cambiar estado a aprobado / finalizado
