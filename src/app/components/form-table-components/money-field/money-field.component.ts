@@ -1,6 +1,13 @@
 import { Component, signal, ViewEncapsulation, forwardRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
@@ -32,28 +39,26 @@ export class MoneyFieldComponent implements ControlValueAccessor {
   errorMessage = signal('');
 
   private onChange = (_: any) => {};
-  private onTouched = () => {};
+  public onTouched = () => {};
 
   constructor() {
     merge(this.moneyField.statusChanges, this.moneyField.valueChanges)
-  .pipe(takeUntilDestroyed())
-  .subscribe(() => {
-    this.updateErrorMessage();
-
-    const parsedValue = this.parseToNumber(this.moneyField.value);
-    this.onChange(parsedValue);
-  });
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.updateErrorMessage();
+        const parsedValue = this.parseToNumber(this.moneyField.value);
+        this.onChange(parsedValue);
+      });
   }
 
- writeValue(value: any): void {
-  const numberValue = this.parseToNumber(value);
-  const formatted = numberValue.toLocaleString('de-DE', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-  this.moneyField.setValue(formatted, { emitEvent: false });
-}
-
+  writeValue(value: any): void {
+    const numberValue = this.parseToNumber(value);
+    const formatted = numberValue.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    this.moneyField.setValue(formatted, { emitEvent: false });
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -75,23 +80,36 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     }
   }
 
+  // 🔹 Limpia caracteres no válidos mientras se edita
   onMoneyInput() {
     let raw = this.moneyField.value || '';
     raw = raw.replace(/[^0-9,]/g, '');
+
     const parts = raw.split(',');
     if (parts.length > 2) {
       raw = parts[0] + ',' + parts[1];
     }
+
     this.moneyField.setValue(raw, { emitEvent: false });
   }
 
+  // 🔹 Al hacer foco: quitar puntos de miles
+  unformatMoneyField() {
+    const value = this.moneyField.value;
+    if (!value) return;
+
+    const cleaned = value.replace(/\./g, '');
+    this.moneyField.setValue(cleaned, { emitEvent: false });
+  }
+
+  // 🔹 Al salir del foco: aplicar formato con puntos
   formatMoneyField() {
     let value = this.moneyField.value;
     if (!value) {
       this.updateErrorMessage();
       return;
     }
-    
+
     const numericString = value.replace(/\./g, '').replace(',', '.');
     const number = parseFloat(numericString);
     if (isNaN(number)) return;
@@ -104,12 +122,14 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     this.moneyField.setValue(formatted, { emitEvent: false });
   }
 
-parseToNumber(value: any): number {
-  if (value == null) return 0;
+  parseToNumber(value: any): number {
+    if (value == null) return 0;
 
-  const strValue = String(value);
-  const cleaned = strValue.replace(/[^\d,.-]/g, '').replace(',', '.');
-  return parseFloat(cleaned) || 0;
-}
+    const strValue = String(value)
+      .replace(/\./g, '')
+      .replace(',', '.');
 
+    const num = Number(strValue);
+    return isNaN(num) ? 0 : num;
+  }
 }

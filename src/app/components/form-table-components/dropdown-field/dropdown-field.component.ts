@@ -37,11 +37,22 @@ export class DropdownFieldComponent implements ControlValueAccessor {
   readonly field = new FormControl('', [Validators.required]);
 
   readonly conceptOptions: string[] = [
-    'Pago a proveedor',
-    'Servicios contratados',
-    'Obra pública',
-    'Honorarios profesionales',
-    'Otros'
+    'Proveedores',
+    'Gastos varios',
+    'Subsidios',
+    'Viáticos',
+    'Servicios',
+    'Compensaciones por residencia',
+    'Publicidad',
+    'Alquiler de inmueble',
+    'ENERSA',
+    'Contratos: de Pasantía - de obra',
+    'Juntas de Gobierno',
+    'Deuda por obra pública',
+    'Subsidio al transporte público',
+    'Ley 4035',
+    'Partida Hospitales y Centros de Salud',
+    'Guardias Hospitalarias',
   ];
 
   readonly placeholder = 'Seleccione una opción';
