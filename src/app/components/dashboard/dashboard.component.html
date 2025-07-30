@@ -1,5 +1,4 @@
-<div class="buttons-container">
-
+<div class="sticky-buttons buttons-container">
   <button mat-button class="action-button" (click)="copyToClipboard()">
     <mat-icon class="icon">content_copy</mat-icon>
     Copiar al portapapeles
@@ -14,8 +13,8 @@
     <mat-icon class="icon">done_outline</mat-icon>
     Cambiar estado a aprobado / finalizado
   </button>
-  
 </div>
+
 
 <div *ngFor="let group of groupedRequests">
   <app-da-card
@@ -24,11 +23,10 @@
     (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + group.da, $event)">
   </app-da-card>
 
-  <!-- Este bloque es visible solo en Dashboard -->
   <div class="total-row">
     Total solicitado:
-    <strong>
+    
       {{ getTotalAmount(group.requests) | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
-    </strong>
+    
   </div>
 </div>

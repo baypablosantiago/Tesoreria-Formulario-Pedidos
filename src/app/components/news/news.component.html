@@ -1,10 +1,28 @@
+<div class="full-background">
+  <div class="welcome-container">
+    <div class="welcome-card" *hasRole="'user'">
+      <h2 class="welcome-title">¡Bienvenido!</h2>
+      <p class="welcome-subtitle">Has ingresado como <strong>Usuario</strong>.</p>
+      <div class="info-box">
+        <h3>Información útil</h3>
+        <ul>
+          <li>Usted es parte de la test version 1.0 ¡Gracias por su colaboración!</li>
+          <li>Estamos abiertos a sugerencias para seguir mejorando la plataforma.</li>
+          <li>Las solicitudes que realice por este medio serán efectivas.</li>
+        </ul>
+      </div>
+    </div>
 
-<!-- Solo visible para usuarios con rol "user" -->
-<div *hasRole="'user'">
-  Bienvenido Usuario.
-</div>
-
-<!-- Solo visible para usuarios con rol "admin" -->
-<div *hasRole="'admin'">
-  Bienvenido Administrador.
+    <div class="welcome-card" *hasRole="'admin'">
+      <h2 class="welcome-title">¡Bienvenido!</h2>
+      <p class="welcome-subtitle">Has ingresado como <strong>Administrador</strong>.</p>
+      <div class="info-box">
+        <h3>Información útil</h3>
+        <ul>
+          <li>Usted es parte de la test version 1.0 ¡Gracias por su colaboracion!</li>
+          <li>Estamos abiertos a sugerencias para seguir mejorando la plataforma.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

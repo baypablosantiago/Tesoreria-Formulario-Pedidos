@@ -1,0 +1,72 @@
+.full-background {
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 3rem 4rem;
+  background-color: #ffffff; // fondo blanco general
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.welcome-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 550px;
+  width: 100%;
+  animation: fadeIn 0.6s ease;
+  border-left: 6px solid #007b8a;
+
+  .welcome-title {
+    font-size: 2rem;
+    color: #007b8a;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 1rem;
+  }
+
+  .info-box {
+    background-color: #f4fdfd; // sutil verde muy claro para destacar
+    border: 1px solid #c0ebe3;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: 1rem;
+
+    h3 {
+      margin-bottom: 0.5rem;
+      color: #007b8a;
+      font-size: 1.1rem;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+
+      li {
+        margin-bottom: 0.4rem;
+        color: #333;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

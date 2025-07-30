@@ -11,28 +11,6 @@
   }
 }
 
-mat-card {
-  background-color: #e0f4f0;
-
-  mat-card-header {
-    background-color: #e0f4f0;
-    border-radius: 12px;
-  }
-
-  mat-card-content {
-    background-color: #e0f4f0;
-    border-radius: 12px;
-
-    th {
-      background-color:#e0f4f0; 
-    }
-
-    td {
-      
-    }
-  }
-}
-
 .select-cell {
   display: flex;
   flex-direction: row;
@@ -48,3 +26,17 @@ mat-card {
 .on-work-icon {
   color: #008b78;
 }
+
+mat-card {
+  border: 1px solid #26a69a;
+}
+
+mat-card-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #26a69a;
+  margin-bottom: 1rem;
+  border-left: 4px solid #26a69a;
+  padding-left: 0.75rem;
+}
+

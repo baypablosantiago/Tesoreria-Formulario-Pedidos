@@ -34,8 +34,19 @@
   margin-bottom: 2rem;
   margin-top: 0.2rem;
   text-align: center;
-  background-color: #e0f4f0;
-  border-radius: 10px;
-  font-size:larger;
+  background-color: #26a69a;
+  border-radius: 8px;
+  font-size:large;
+  color: white;
+}
+
+.sticky-buttons {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+  padding: 1rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); // muy sutil
+  border-bottom: none; // asegurate de que no tenga borde también
 }
 
