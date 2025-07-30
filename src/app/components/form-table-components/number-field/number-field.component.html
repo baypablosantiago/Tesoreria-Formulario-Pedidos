@@ -3,8 +3,6 @@
         matInput
         type="number"
         [formControl]="field"
-        (blur)="updateErrorMessage()"
-        (keypress)="allowOnlyNumbers($event)"
-        
+        (keypress)="allowOnlyNumbers($event)"     
     />
 </mat-form-field>

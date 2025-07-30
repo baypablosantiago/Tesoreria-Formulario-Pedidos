@@ -45,7 +45,6 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     merge(this.moneyField.statusChanges, this.moneyField.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
-        this.updateErrorMessage();
         const parsedValue = this.parseToNumber(this.moneyField.value);
         this.onChange(parsedValue);
       });
@@ -72,15 +71,6 @@ export class MoneyFieldComponent implements ControlValueAccessor {
     isDisabled ? this.moneyField.disable() : this.moneyField.enable();
   }
 
-  updateErrorMessage() {
-    if (this.moneyField.hasError('required')) {
-      this.errorMessage.set('Requerido.');
-    } else {
-      this.errorMessage.set('');
-    }
-  }
-
-  // 🔹 Limpia caracteres no válidos mientras se edita
   onMoneyInput() {
     let raw = this.moneyField.value || '';
     raw = raw.replace(/[^0-9,]/g, '');
@@ -106,7 +96,6 @@ export class MoneyFieldComponent implements ControlValueAccessor {
   formatMoneyField() {
     let value = this.moneyField.value;
     if (!value) {
-      this.updateErrorMessage();
       return;
     }
 

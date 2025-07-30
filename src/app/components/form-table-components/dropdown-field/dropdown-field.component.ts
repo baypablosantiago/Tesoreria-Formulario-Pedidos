@@ -65,17 +65,8 @@ export class DropdownFieldComponent implements ControlValueAccessor {
     merge(this.field.statusChanges, this.field.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
-        this.updateErrorMessage();
         this.onChange(this.field.value);
       });
-  }
-
-  updateErrorMessage() {
-    if (this.field.hasError('required')) {
-      this.errorMessage.set('Requerido.');
-    } else {
-      this.errorMessage.set('');
-    }
   }
 
   writeValue(value: any): void {

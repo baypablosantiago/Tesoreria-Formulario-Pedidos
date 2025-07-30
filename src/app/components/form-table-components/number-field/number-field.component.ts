@@ -35,7 +35,6 @@ export class NumberFieldComponent implements ControlValueAccessor {
     merge(this.field.statusChanges, this.field.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
-        this.updateErrorMessage();
         this.onChange(this.field.value);
       });
   }
@@ -54,14 +53,6 @@ export class NumberFieldComponent implements ControlValueAccessor {
     const isNumber = /^[0-9]$/.test(event.key);
     if (!isNumber && !allowedKeys.includes(event.key)) {
       event.preventDefault();
-    }
-  }
-
-  updateErrorMessage() {
-    if (this.field.hasError('required')) {
-      this.errorMessage.set('Requerido.');
-    } else {
-      this.errorMessage.set('');
     }
   }
 

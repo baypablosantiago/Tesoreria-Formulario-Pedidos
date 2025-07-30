@@ -32,7 +32,7 @@ import { DropdownFieldComponent } from "../form-table-components/dropdown-field/
     MatSelectModule,
     DateFieldComponent,
     DropdownFieldComponent
-],
+  ],
 })
 export class FormTableComponent implements AfterViewInit {
   isDisabled = false;
@@ -95,24 +95,24 @@ export class FormTableComponent implements AfterViewInit {
 
   }
 
-private isRowEmpty(row: FormGroup): boolean {
-  const keysToCheck = [
-    'nroSolicitud',
-    'ejercicio',
-    'ordenPago',
-    'importe',
-    'fuenteFinanciamiento',
-    'cuentaCorriente',
-    'comentarios'
-  ];
+  private isRowEmpty(row: FormGroup): boolean {
+    const keysToCheck = [
+      'nroSolicitud',
+      'ejercicio',
+      'ordenPago',
+      'importe',
+      'fuenteFinanciamiento',
+      'cuentaCorriente',
+      'comentarios'
+    ];
 
-  return keysToCheck.every(key => {
-    const control = row.get(key);
-    if (!control) return true; // si no existe el control, lo consideramos vacío
-    const value = control.value;
-    return value === null || value === undefined || String(value).trim() === '';
-  });
-}
+    return keysToCheck.every(key => {
+      const control = row.get(key);
+      if (!control) return true; // si no existe el control, lo consideramos vacío
+      const value = control.value;
+      return value === null || value === undefined || String(value).trim() === '';
+    });
+  }
 
 
   removeRow() {
