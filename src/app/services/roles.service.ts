@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
 
-  private LOGIN_URL = "http://localhost:5254/roles";
+  private LOGIN_URL = `${environment.apiUrl}/roles`;
   private ROLE_KEY = 'role';
 
   constructor(private httpClient: HttpClient) { }

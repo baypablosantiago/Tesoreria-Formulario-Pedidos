@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private LOGIN_URL = "http://localhost:5254/login";
+  private LOGIN_URL = `${environment.apiUrl}/login`;
   private TOKEN_KEY = "loginToken";
 
   constructor(private httpClient: HttpClient, private router: Router) { }

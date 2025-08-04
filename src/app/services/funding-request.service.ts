@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { FundingRequest } from '../models/funding-request';
 import { Observable } from 'rxjs';
 import { FundingRequestUpdateDto } from '../models/FundingRequestUpdateDto';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FundingRequestService {
-  private apiUrl = 'http://localhost:5254/api/FundingRequest';
+  private apiUrl = `${environment.apiUrl}/api/FundingRequest`;
 
   constructor(private http: HttpClient) { }
 
