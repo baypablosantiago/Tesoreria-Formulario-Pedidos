@@ -30,12 +30,12 @@ onEdit(req: FundingRequest): void {
       disableClose: true
   });
 
-  dialogRef.afterClosed().subscribe((result: FundingRequest | undefined) => {
-    if (result) {
-      console.log('Solicitud actualizada:', result);
-      // Acá podrías emitir el cambio, llamar un servicio o refrescar la lista
-    }
-  });
+  // dialogRef.afterClosed().subscribe((result: FundingRequest | undefined) => {
+  //   if (result) {
+  //     console.log('Solicitud actualizada:', result);
+  //     // Comentado, podria ser util mas adelante
+  //   }
+  // });
 }
 
 
