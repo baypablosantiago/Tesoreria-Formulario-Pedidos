@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestAdminResponseDto, PartialPaymentUpdateDto, CommentsFromTesoDto } from '../../models';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,7 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 export class ActionsModalComponent {
   constructor(
     public dialogRef: MatDialogRef<ActionsModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: FundingRequest,
+    @Inject(MAT_DIALOG_DATA) public data: FundingRequestAdminResponseDto,
     private fundingRequestService: FundingRequestService,
     private router: Router
   ) { }
@@ -68,7 +68,8 @@ export class ActionsModalComponent {
     this.success = false;
     this.error = false;
 
-    this.fundingRequestService.addPartialPayment(this.data.id, this.partialPaymentAmount).subscribe({
+    const dto: PartialPaymentUpdateDto = { partialPayment: this.partialPaymentAmount };
+    this.fundingRequestService.addPartialPayment(this.data.id, dto).subscribe({
       next: updated => {
         this.isSubmitting = false;
         this.success = true;
@@ -91,7 +92,8 @@ export class ActionsModalComponent {
   this.commentSuccess = false;
   this.commentError = false;
 
-  this.fundingRequestService.addComment(this.data.id, trimmedComment).subscribe({
+  const dto: CommentsFromTesoDto = { comment: trimmedComment };
+  this.fundingRequestService.addComment(this.data.id, dto).subscribe({
     next: () => {
       this.isCommentSubmitting = false;
       this.commentSuccess = true;

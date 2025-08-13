@@ -6,7 +6,7 @@ import { NumberFieldComponent } from '../form-table-components/number-field/numb
 import { MoneyFieldComponent } from '../form-table-components/money-field/money-field.component';
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestCreateDto } from '../../models';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from "@angular/material/input";
@@ -135,7 +135,7 @@ export class FormTableComponent implements AfterViewInit {
     const formGroup = this.form();
 
     if (formGroup.valid) {
-      const requests: FundingRequest[] = this.rows.controls.map(row => ({
+      const requests: FundingRequestCreateDto[] = this.rows.controls.map(row => ({
         da: +row.get('DA')?.value,
         requestNumber: +row.get('nroSolicitud')?.value,
         fiscalYear: +row.get('ejercicio')?.value,
@@ -145,7 +145,6 @@ export class FormTableComponent implements AfterViewInit {
         amount: +row.get('importe')?.value,
         fundingSource: row.get('fuenteFinanciamiento')?.value,
         checkingAccount: row.get('cuentaCorriente')?.value,
-        partialPayment: 0,
         comments: row.get('comentarios')?.value || ''
       }));
 

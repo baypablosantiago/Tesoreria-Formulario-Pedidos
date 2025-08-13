@@ -1,9 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FundingRequest } from '../models/funding-request';
 import { Observable } from 'rxjs';
-import { FundingRequestUpdateDto } from '../models/FundingRequestUpdateDto';
 import { environment } from '../environments/environment';
+import {
+  FundingRequestCreateDto,
+  FundingRequestResponseDto,
+  FundingRequestAdminResponseDto,
+  FundingRequestUpdateDto,
+  PartialPaymentUpdateDto,
+  CommentsFromTesoDto
+} from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,39 +19,39 @@ export class FundingRequestService {
 
   constructor(private http: HttpClient) { }
 
-  addFundingRequest(request: FundingRequest): Observable<FundingRequest> {
-    return this.http.post<FundingRequest>(`${this.apiUrl}`, request);
+  addFundingRequest(request: FundingRequestCreateDto): Observable<FundingRequestResponseDto> {
+    return this.http.post<FundingRequestResponseDto>(`${this.apiUrl}`, request);
   }
 
-  getMyFundingRequests(): Observable<FundingRequest[]> {
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/user`);
+  getMyFundingRequests(): Observable<FundingRequestResponseDto[]> {
+    return this.http.get<FundingRequestResponseDto[]>(`${this.apiUrl}/user`);
   }
 
-  getAllActiveFundingRequests(): Observable<FundingRequest[]> {
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/active-requests`);
+  getAllActiveFundingRequests(): Observable<FundingRequestAdminResponseDto[]> {
+    return this.http.get<FundingRequestAdminResponseDto[]>(`${this.apiUrl}/active-requests`);
   }
 
-  getAllInactiveFundingRequests():Observable<FundingRequest[]>{
-    return this.http.get<FundingRequest[]>(`${this.apiUrl}/inactive-requests`);
+  getAllInactiveFundingRequests(): Observable<FundingRequestAdminResponseDto[]> {
+    return this.http.get<FundingRequestAdminResponseDto[]>(`${this.apiUrl}/inactive-requests`);
   }
 
-  addPartialPayment(id: number, partialPayment: number): Observable<FundingRequest> {
-    return this.http.patch<FundingRequest>(`${this.apiUrl}/partial-payment/${id}`, partialPayment);
+  addPartialPayment(id: number, dto: PartialPaymentUpdateDto): Observable<FundingRequestResponseDto> {
+    return this.http.patch<FundingRequestResponseDto>(`${this.apiUrl}/partial-payment/${id}`, dto);
   }
 
-  changeIsActive(id: number): Observable<FundingRequest> {
-    return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/is-active/${id}`);
+  changeIsActive(id: number): Observable<FundingRequestResponseDto> {
+    return this.http.request<FundingRequestResponseDto>('PATCH', `${this.apiUrl}/is-active/${id}`);
   }
 
-  addComment(id: number, comment:string):Observable<FundingRequest>{
-    return this.http.patch<FundingRequest>(`${this.apiUrl}/add-comment/${id}`,{ comment });
+  addComment(id: number, dto: CommentsFromTesoDto): Observable<FundingRequestResponseDto> {
+    return this.http.patch<FundingRequestResponseDto>(`${this.apiUrl}/add-comment/${id}`, dto);
   }
 
-  updateFundingRequest(request: FundingRequestUpdateDto):Observable<FundingRequestUpdateDto>{
-    return this.http.put<FundingRequestUpdateDto>(`${this.apiUrl}/update-request`,request);
+  updateFundingRequest(request: FundingRequestUpdateDto): Observable<FundingRequestResponseDto> {
+    return this.http.put<FundingRequestResponseDto>(`${this.apiUrl}/update-request`, request);
   }
 
-  changeOnWork(id: number): Observable<FundingRequest> {
-    return this.http.request<FundingRequest>('PATCH', `${this.apiUrl}/on-work/${id}`);
+  changeOnWork(id: number): Observable<FundingRequestResponseDto> {
+    return this.http.request<FundingRequestResponseDto>('PATCH', `${this.apiUrl}/on-work/${id}`);
   }
 }

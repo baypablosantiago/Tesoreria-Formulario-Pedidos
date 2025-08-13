@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FundingRequestService } from '../../services/funding-request.service';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestAdminResponseDto } from '../../models';
 import { MonthGroup } from '../../models/month-group';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,7 +29,7 @@ export class FinishedRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.fundingRequestService.getAllInactiveFundingRequests()
       .subscribe(requests => {
-        const grouped: { [month: string]: { [da: string]: FundingRequest[] } } = {};
+        const grouped: { [month: string]: { [da: string]: FundingRequestAdminResponseDto[] } } = {};
 
         for (const req of requests) {
           const date = new Date(req.receivedAt!);
@@ -72,14 +72,14 @@ export class FinishedRequestsComponent implements OnInit {
     });
 }
 
-selectedRequestsMap = new Map<string, FundingRequest[]>(); 
+selectedRequestsMap = new Map<string, FundingRequestAdminResponseDto[]>(); 
 
-  onSelectedRequestsChanged(daTitle: string, selected: FundingRequest[]) {
+  onSelectedRequestsChanged(daTitle: string, selected: FundingRequestAdminResponseDto[]) {
     this.selectedRequestsMap.set(daTitle, selected);
   }
 
   changeIsActiveState() {
-    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+    const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
       this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');

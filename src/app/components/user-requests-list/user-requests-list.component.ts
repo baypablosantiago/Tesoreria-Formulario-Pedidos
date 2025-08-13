@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestResponseDto } from '../../models';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,12 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./user-requests-list.component.scss']
 })
 export class UserRequestsListComponent {
-  @Input() requests: FundingRequest[] = [];
+  @Input() requests: FundingRequestResponseDto[] = [];
   @Input() showCompleted: boolean = false;
 
   constructor(private dialog: MatDialog){}
 
-onEdit(req: FundingRequest): void {
+onEdit(req: FundingRequestResponseDto): void {
   const dialogRef = this.dialog.open(EditModalComponent, {
       data: req,
       autoFocus: false,
@@ -39,24 +39,24 @@ onEdit(req: FundingRequest): void {
 }
 
 
-  getRequestStatus(req: FundingRequest): string {
+  getRequestStatus(req: FundingRequestResponseDto): string {
     if (!req.isActive) return 'Finalizada';
     if (req.partialPayment > 0) return 'Pago parcial';
     if (req.onWork) return 'En revisión'
     return 'Pendiente';
   }
 
-  getStatusClass(req: FundingRequest): string {
+  getStatusClass(req: FundingRequestResponseDto): string {
     if (!req.isActive) return 'completed';
     if (req.partialPayment > 0) return 'partial';
     return 'pending';
   }
 
-  getChipClass(req: FundingRequest): string {
+  getChipClass(req: FundingRequestResponseDto): string {
     return `chip ${this.getStatusClass(req)}`;
   }
 
-  isEditable(req: FundingRequest): boolean {
-    return req.isActive! && req.partialPayment === 0;
+  isEditable(req: FundingRequestResponseDto): boolean {
+    return req.isActive && req.partialPayment === 0;
   }
 }

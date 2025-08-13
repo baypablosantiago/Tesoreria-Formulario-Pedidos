@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { FundingRequest } from '../../models/funding-request';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +12,7 @@ import { DropdownFieldComponent } from '../form-table-components/dropdown-field/
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FundingRequestService } from '../../services/funding-request.service';
-import { FundingRequestUpdateDto } from '../../models/FundingRequestUpdateDto';
+import { FundingRequestResponseDto, FundingRequestUpdateDto } from '../../models';
 import { Router } from '@angular/router';
 import { MessageBoxService } from '../../services/message-box.service';
 
@@ -45,7 +44,7 @@ export class EditModalComponent {
     private router: Router,
     private dialogRef: MatDialogRef<EditModalComponent>,
     private messageBox: MessageBoxService,
-    @Inject(MAT_DIALOG_DATA) public data: FundingRequest,
+    @Inject(MAT_DIALOG_DATA) public data: FundingRequestResponseDto,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({

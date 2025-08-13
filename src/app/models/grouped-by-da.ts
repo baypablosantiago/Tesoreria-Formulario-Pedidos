@@ -1,6 +1,6 @@
-import { FundingRequest } from "./funding-request";
+import { FundingRequestAdminResponseDto } from "./dtos";
 
 export interface GroupedByDA {
   da: string;
-  requests: FundingRequest[];
+  requests: FundingRequestAdminResponseDto[];
 }

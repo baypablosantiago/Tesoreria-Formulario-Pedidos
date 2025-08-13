@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestAdminResponseDto } from '../../models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActionsModalComponent } from '../actions-modal/actions-modal.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,7 +28,7 @@ export class DaCardComponent {
 
   constructor(private dialog: MatDialog) { }
 
-  @Input() requests: FundingRequest[] = [];
+  @Input() requests: FundingRequestAdminResponseDto[] = [];
 
   @Input() daTitle: string = '';
   displayedColumns = [
@@ -46,7 +46,7 @@ export class DaCardComponent {
     'Pago Parcial'
   ];
 
-  onRowClick(row: FundingRequest): void {
+  onRowClick(row: FundingRequestAdminResponseDto): void {
     const dialogRef = this.dialog.open(ActionsModalComponent, {
       data: row,
       autoFocus: false,
@@ -58,15 +58,15 @@ export class DaCardComponent {
     });
   }
 
-  @Output() selectedRequestsChanged = new EventEmitter<FundingRequest[]>();
+  @Output() selectedRequestsChanged = new EventEmitter<FundingRequestAdminResponseDto[]>();
 
-  selection = new SelectionModel<FundingRequest>(true, []);
+  selection = new SelectionModel<FundingRequestAdminResponseDto>(true, []);
 
   emitSelected() {
     this.selectedRequestsChanged.emit(this.selection.selected);
   }
 
-  toggleSelection(row: FundingRequest) {
+  toggleSelection(row: FundingRequestAdminResponseDto) {
     this.selection.toggle(row);
     this.emitSelected();
   }

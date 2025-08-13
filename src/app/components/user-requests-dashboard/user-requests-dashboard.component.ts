@@ -4,7 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { UserRequestsListComponent } from '../user-requests-list/user-requests-list.component';
 import { FundingRequestService } from '../../services/funding-request.service';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestResponseDto } from '../../models';
 
 @Component({
   selector: 'app-user-requests-dashboard',
@@ -19,9 +19,9 @@ import { FundingRequest } from '../../models/funding-request';
   styleUrls: ['./user-requests-dashboard.component.scss']
 })
 export class UserRequestsDashboardComponent implements OnInit {
-  myRequests: FundingRequest[] = [];
-  activeAndPartialRequests: FundingRequest[] = [];
-  inactiveRequests: FundingRequest[] = [];
+  myRequests: FundingRequestResponseDto[] = [];
+  activeAndPartialRequests: FundingRequestResponseDto[] = [];
+  inactiveRequests: FundingRequestResponseDto[] = [];
 
   constructor(private fundingRequestService: FundingRequestService) {}
 

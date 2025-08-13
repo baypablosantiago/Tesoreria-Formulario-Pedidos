@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
-import { FundingRequest } from '../../models/funding-request';
+import { FundingRequestAdminResponseDto } from '../../models';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class DashboardComponent {
     private router: Router,
     private messageBox: MessageBoxService) { }
 
-  allRequests: FundingRequest[] = []
+  allRequests: FundingRequestAdminResponseDto[] = []
 
   ngOnInit() {
     this.fundingService.getAllActiveFundingRequests().subscribe(
@@ -33,10 +33,10 @@ export class DashboardComponent {
     );
   }
 
-  groupedRequests: { da: number; requests: FundingRequest[] }[] = [];
+  groupedRequests: { da: number; requests: FundingRequestAdminResponseDto[] }[] = [];
 
-  private groupByDA(requests: FundingRequest[]) {
-    const grouped: { [da: number]: FundingRequest[] } = {};
+  private groupByDA(requests: FundingRequestAdminResponseDto[]) {
+    const grouped: { [da: number]: FundingRequestAdminResponseDto[] } = {};
 
     for (const req of requests) {
       if (!grouped[req.da]) {
@@ -58,14 +58,14 @@ export class DashboardComponent {
     });
   }
 
-  selectedRequestsMap = new Map<string, FundingRequest[]>();
+  selectedRequestsMap = new Map<string, FundingRequestAdminResponseDto[]>();
 
-  onSelectedRequestsChanged(daTitle: string, selected: FundingRequest[]) {
+  onSelectedRequestsChanged(daTitle: string, selected: FundingRequestAdminResponseDto[]) {
     this.selectedRequestsMap.set(daTitle, selected);
   }
 
   changeIsActiveState() {
-    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+    const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
       this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');
@@ -89,7 +89,7 @@ export class DashboardComponent {
 
 
   copyToClipboard() {
-    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+    const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
       this.messageBox.show('No hay solicitudes seleccionadas para copiar.', 'info', 'Atención');
@@ -126,12 +126,12 @@ export class DashboardComponent {
     });
   }
 
-  getTotalAmount(requests: FundingRequest[]): number {
+  getTotalAmount(requests: FundingRequestAdminResponseDto[]): number {
     return requests.reduce((sum, req) => sum + req.amount, 0);
   }
 
   changeOnWorkState() {
-    const allSelected: FundingRequest[] = Array.from(this.selectedRequestsMap.values()).flat();
+    const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
       this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');
