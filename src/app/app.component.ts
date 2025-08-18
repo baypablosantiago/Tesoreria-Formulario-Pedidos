@@ -25,6 +25,6 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadHandler(event: Event) {
-    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
   }
 }

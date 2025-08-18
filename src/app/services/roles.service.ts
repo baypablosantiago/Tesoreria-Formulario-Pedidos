@@ -22,11 +22,11 @@ export class RolesService {
   }
 
   setRole(role: string): void {
-    localStorage.setItem(this.ROLE_KEY, role);
+    sessionStorage.setItem(this.ROLE_KEY, role);
   }
 
   getRole(): string | null {
-    return localStorage.getItem(this.ROLE_KEY);
+    return sessionStorage.getItem(this.ROLE_KEY);
   }
 
   hasRole(role: string): boolean {
