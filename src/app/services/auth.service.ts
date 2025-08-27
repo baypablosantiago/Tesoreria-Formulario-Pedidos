@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { MessageBoxService } from './message-box.service';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { MessageBoxService } from './message-box.service';
 })
 export class AuthService {
 
-  private LOGIN_URL = `${environment.apiUrl}/login`;
+  private LOGIN_URL = `${environment.apiUrl}/login?useCookies=false&useSessionCookies=false`;
   private TOKEN_KEY = "loginToken";
   private tokenExpirationTimer?: any;
 

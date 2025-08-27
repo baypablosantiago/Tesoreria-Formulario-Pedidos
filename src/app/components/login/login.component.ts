@@ -32,12 +32,15 @@ export class LoginComponent {
   login(): void {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        this.rolesService.getRoles().subscribe({
-          next: () => this.router.navigate(['/news']),
-          error: () => {
-            this.loginValid = false;
-          }
-        });
+        // Pequeño delay para asegurar que el token esté disponible
+        setTimeout(() => {
+          this.rolesService.getRoles().subscribe({
+            next: () => this.router.navigate(['/news']),
+            error: () => {
+              this.loginValid = false;
+            }
+          });
+        }, 100);
       },
       error: () => this.loginValid = false
     });
