@@ -6,15 +6,6 @@ body {
   font-weight: 400;
 }
 
-::-webkit-scrollbar {
-  width: 0; /* Oculta el scrollbar */
-  height: 0; /* Oculta el scrollbar */
-}
-
-* {
-  scrollbar-width: none; /* Para Firefox */
-}
-
 @include mat.tabs-overrides((
   active-indicator-color: #007b8a ,
   active-focus-indicator-color:#007b8a,

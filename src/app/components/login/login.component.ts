@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ import { RolesService } from '../../services/roles.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
   loginValid: boolean = true;
 
@@ -48,8 +48,16 @@ export class LoginComponent {
   }
   
   currentYear: number = 0;
+
   ngOnInit() {
     this.currentYear = new Date().getFullYear(); // Asigna el año actual al inicializar
+    // Ocultar scrollbars del body en login
+    document.body.style.overflow = 'hidden';
+  }
+
+  ngOnDestroy() {
+    // Restaurar scrollbars del body al salir del login
+    document.body.style.overflow = 'auto';
   }
 
 }
