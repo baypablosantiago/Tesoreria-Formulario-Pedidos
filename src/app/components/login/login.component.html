@@ -13,8 +13,11 @@
 
             <mat-form-field>
                 <mat-label>Contraseña</mat-label>
-                <input autocomplete="off" type="password" [(ngModel)]="password" name="password" matInput placeholder="Ingrese su contraseña" >
+                <input autocomplete="off" [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" matInput placeholder="Ingrese su contraseña" >
                 <mat-icon matPrefix>lock</mat-icon>
+                <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="password-toggle">
+                    {{hidePassword ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
             </mat-form-field>
 
             <div class="error-space">

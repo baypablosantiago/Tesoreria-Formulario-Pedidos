@@ -17,11 +17,12 @@ import { RolesService } from '../../services/roles.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  
+
   loginValid: boolean = true;
 
   email: string = "";
   password: string = "";
+  hidePassword: boolean = true;
 
   constructor(
     private authService: AuthService,
