@@ -1,4 +1,4 @@
-import { Component, forwardRef, signal } from '@angular/core';
+import { Component, forwardRef, signal, Input } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
 export class DropdownFieldComponent implements ControlValueAccessor {
   readonly field = new FormControl('', [Validators.required]);
 
-  readonly conceptOptions: string[] = [
+  @Input() options: (string | number)[] = [
     'Proveedores',
     'Gastos varios',
     'Subsidios',
@@ -55,7 +55,7 @@ export class DropdownFieldComponent implements ControlValueAccessor {
     'Guardias Hospitalarias',
   ];
 
-  readonly placeholder = 'Seleccione una opción';
+  @Input() placeholder: string = 'Seleccione una opción';
   errorMessage = signal('');
 
   private onChange: (_: any) => void = () => {};

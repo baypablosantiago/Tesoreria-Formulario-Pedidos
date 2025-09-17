@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, inject, signal, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { TextFieldComponent } from '../form-table-components/text-field/text-field.component';
@@ -6,6 +6,7 @@ import { NumberFieldComponent } from '../form-table-components/number-field/numb
 import { MoneyFieldComponent } from '../form-table-components/money-field/money-field.component';
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
+import { UserDaService } from '../../services/user-da.service';
 import { FundingRequestCreateDto } from '../../models';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,7 +35,7 @@ import { DropdownFieldComponent } from "../form-table-components/dropdown-field/
     DropdownFieldComponent
   ],
 })
-export class FormTableComponent implements AfterViewInit {
+export class FormTableComponent implements OnInit, AfterViewInit {
   isDisabled = false;
   @ViewChild(MatTable) table!: MatTable<any>;
   private readonly messageBox = inject(MessageBoxService);
@@ -45,7 +46,9 @@ export class FormTableComponent implements AfterViewInit {
     })
   );
 
-  constructor(private fundingRequestService: FundingRequestService) { }
+  availableDAs: number[] = [];
+
+  constructor(private fundingRequestService: FundingRequestService, private userDaService: UserDaService) { }
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
@@ -63,6 +66,13 @@ export class FormTableComponent implements AfterViewInit {
     'Cuenta Corriente a la cual acreditar',
     'Notas / Comentarios'
   ];
+
+  ngOnInit(): void {
+    this.userDaService.getUserDAs().subscribe({
+      next: (das) => this.availableDAs = das,
+      error: () => this.availableDAs = []
+    });
+  }
 
   ngAfterViewInit(): void {
     Array.from({ length: 1 }).forEach(() => this.addRow());
@@ -113,7 +123,6 @@ export class FormTableComponent implements AfterViewInit {
       return value === null || value === undefined || String(value).trim() === '';
     });
   }
-
 
   removeRow() {
     const lastIndex = this.rows.length - 1;
