@@ -8,7 +8,8 @@ import {
   FundingRequestAdminResponseDto,
   FundingRequestUpdateDto,
   PartialPaymentUpdateDto,
-  CommentsFromTesoDto
+  CommentsFromTesoDto,
+  PartialPayment
 } from '../models';
 
 @Injectable({
@@ -16,6 +17,7 @@ import {
 })
 export class FundingRequestService {
   private apiUrl = `${environment.apiUrl}/api/FundingRequest`;
+  private partialPaymentApiUrl = `${environment.apiUrl}/api/PartialPayment`;
 
   constructor(private http: HttpClient) { }
 
@@ -53,5 +55,13 @@ export class FundingRequestService {
 
   changeOnWork(id: number): Observable<FundingRequestResponseDto> {
     return this.http.request<FundingRequestResponseDto>('PATCH', `${this.apiUrl}/on-work/${id}`);
+  }
+
+  getPartialPaymentHistory(fundingRequestId: number): Observable<PartialPayment[]> {
+    return this.http.get<PartialPayment[]>(`${this.partialPaymentApiUrl}/${fundingRequestId}/history`);
+  }
+
+  getTotalPartialPayment(fundingRequestId: number): Observable<{ total: number }> {
+    return this.http.get<{ total: number }>(`${this.partialPaymentApiUrl}/${fundingRequestId}/total`);
   }
 }

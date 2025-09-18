@@ -36,8 +36,30 @@
         <strong>Notas del usuario:</strong> {{ req.comments }}
       </div>
 
-      <div *ngIf="req.partialPayment > 0" class="highlight warning">
+      <div *ngIf="req.partialPayment > 0" class="highlight" [ngClass]="getPartialPaymentClass(req)">
         💰 <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+        <button mat-button class="history-toggle" (click)="togglePaymentHistory(req.id)">
+          <mat-icon>{{ isHistoryExpanded(req.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
+          {{ isHistoryExpanded(req.id) ? 'Ocultar' : 'Ver' }} detalle
+        </button>
+      </div>
+
+      <div *ngIf="req.partialPayment > 0 && isHistoryExpanded(req.id)" class="payment-history">
+        <div *ngIf="isLoadingHistory(req.id)" class="loading">
+          Cargando detalle...
+        </div>
+        <div *ngIf="!isLoadingHistory(req.id) && getPaymentHistory(req.id)" class="history-list">
+          <h4>Detalle de pagos parciales:</h4>
+          <div *ngFor="let payment of getPaymentHistory(req.id)" class="payment-item">
+            <div class="payment-details">
+              <span class="payment-amount">{{ payment.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</span>
+              <span class="payment-date">{{ payment.createdAt | date:'dd/MM/yyyy HH:mm' }}hs</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!isLoadingHistory(req.id) && (!getPaymentHistory(req.id) || getPaymentHistory(req.id)?.length === 0)" class="no-history">
+          No hay historial de pagos disponible.
+        </div>
       </div>
 
       <div *ngIf="req.commentsFromTeso" class="highlight info">
