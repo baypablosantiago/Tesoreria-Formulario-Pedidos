@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FundingRequestAdminResponseDto, PartialPaymentUpdateDto, CommentsFromTesoDto } from '../../models';
+import { FundingRequestAdminResponseDto, PartialPaymentUpdateDto, CommentsFromTesoDto, PartialPayment } from '../../models';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,7 +34,10 @@ export class ActionsModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: FundingRequestAdminResponseDto,
     private fundingRequestService: FundingRequestService,
     private router: Router
-  ) { }
+  ) {
+    // Siempre cargar historial al abrir el modal (puede estar vacío)
+    this.loadPaymentHistory();
+  }
 
   partialPaymentAmount?: number;
   isSubmitting = false;
@@ -45,6 +48,11 @@ export class ActionsModalComponent {
   isCommentSubmitting = false;
   commentSuccess = false;
   commentError = false;
+
+  // Propiedades para historial de pagos
+  paymentHistory: PartialPayment[] = [];
+  isLoadingHistory = false;
+  isDeletingPayment = false;
 
   close(): void {
     this.dialogRef.close();
@@ -74,6 +82,8 @@ export class ActionsModalComponent {
         this.isSubmitting = false;
         this.success = true;
         this.data.partialPayment = updated.partialPayment;
+        // Recargar historial después de agregar pago
+        this.loadPaymentHistory();
       },
       error: err => {
         this.isSubmitting = false;
@@ -106,5 +116,47 @@ export class ActionsModalComponent {
   });
 }
 
+  // Métodos para historial de pagos
+  private loadPaymentHistory(): void {
+    this.isLoadingHistory = true;
+    this.fundingRequestService.getPartialPaymentHistory(this.data.id).subscribe({
+      next: (history) => {
+        this.paymentHistory = history;
+        this.isLoadingHistory = false;
+      },
+      error: (error) => {
+        console.error('Error cargando historial de pagos:', error);
+        this.isLoadingHistory = false;
+      }
+    });
+  }
+
+  deletePayment(paymentId: number): void {
+    if (!confirm('¿Está seguro que desea eliminar este pago parcial?')) {
+      return;
+    }
+
+    this.isDeletingPayment = true;
+
+    this.fundingRequestService.deletePartialPayment(paymentId).subscribe({
+      next: () => {
+        // Recargar historial y recalcular total
+        this.loadPaymentHistory();
+
+        // Recalcular total local (simple suma)
+        const deletedPayment = this.paymentHistory.find(p => p.id === paymentId);
+        if (deletedPayment) {
+          this.data.partialPayment -= deletedPayment.amount;
+        }
+
+        this.isDeletingPayment = false;
+      },
+      error: (error) => {
+        console.error('Error eliminando pago:', error);
+        this.isDeletingPayment = false;
+        alert('Error al eliminar el pago parcial');
+      }
+    });
+  }
 
 }

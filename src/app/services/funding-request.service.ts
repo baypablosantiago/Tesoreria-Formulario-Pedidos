@@ -64,4 +64,8 @@ export class FundingRequestService {
   getTotalPartialPayment(fundingRequestId: number): Observable<{ total: number }> {
     return this.http.get<{ total: number }>(`${this.partialPaymentApiUrl}/${fundingRequestId}/total`);
   }
+
+  deletePartialPayment(paymentId: number): Observable<any> {
+    return this.http.delete(`${this.partialPaymentApiUrl}/${paymentId}`);
+  }
 }

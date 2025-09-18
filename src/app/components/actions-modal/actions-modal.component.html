@@ -187,6 +187,33 @@
                 </form>
             </div>
 
+            <!-- HISTORIAL DE PAGOS PARCIALES -->
+            <div class="form-card">
+                <h3 class="form-title">Detalle de pagos parciales</h3>
+
+                <div *ngIf="isLoadingHistory" class="loading">
+                    Cargando detalle...
+                </div>
+
+                <div *ngIf="!isLoadingHistory && paymentHistory && paymentHistory.length > 0" class="history-list">
+                    <div *ngFor="let payment of paymentHistory" class="payment-item">
+                        <div class="payment-details">
+                            <span class="payment-amount">{{ payment.amount | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</span>
+                            <span class="payment-date">{{ payment.createdAt | date:'dd/MM/yyyy HH:mm' }}hs</span>
+                            <button mat-button class="delete-button" (click)="deletePayment(payment.id)"
+                                [disabled]="isDeletingPayment">
+                                <mat-icon>delete</mat-icon>
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="!isLoadingHistory && (!paymentHistory || paymentHistory.length === 0)" class="no-history">
+                    No hay pagos parciales registrados.
+                </div>
+            </div>
+
             <!-- FORMULARIO DE COMENTARIO -->
             <div class="form-card">
                 <form #commentForm="ngForm" (ngSubmit)="submitComment()" class="comment-form">
