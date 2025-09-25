@@ -98,11 +98,21 @@ export class DashboardComponent {
 
     const formatCurrency = (amount: number) => {
       return new Intl.NumberFormat('es-AR', {
-        style: 'currency',
-        currency: 'ARS',
         minimumFractionDigits: 2
       }).format(amount);
     };
+
+    const headers = [
+      'D.A.',
+      'N° de Solicitud',
+      'Ejercicio',
+      'N° de Orden de Pago',
+      'Concepto, Proveedor o Contratista',
+      'Vencimiento',
+      'Importe Solicitado',
+      'Fuente de Financiamiento',
+      'Cuenta Corriente a la cual acreditar'
+    ];
 
     const rows = allSelected.map(req => [
       req.da,
@@ -116,7 +126,7 @@ export class DashboardComponent {
       req.checkingAccount
     ]);
 
-    const tsvContent = rows.map(row => row.join('\t')).join('\n');
+    const tsvContent = [headers.join('\t'), ...rows.map(row => row.join('\t'))].join('\n');
 
     navigator.clipboard.writeText(tsvContent).then(() => {
       this.messageBox.show('Datos copiados al portapapeles. Ahora podés pegarlos en Excel.', 'success');
@@ -127,7 +137,7 @@ export class DashboardComponent {
   }
 
   getTotalAmount(requests: FundingRequestAdminResponseDto[]): number {
-    return requests.reduce((sum, req) => sum + req.amount, 0);
+    return requests.reduce((sum, req) => sum + (req.amount - req.partialPayment), 0);
   }
 
   changeOnWorkState() {

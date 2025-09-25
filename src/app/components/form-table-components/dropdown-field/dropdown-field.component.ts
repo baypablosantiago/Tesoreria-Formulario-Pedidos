@@ -53,6 +53,7 @@ export class DropdownFieldComponent implements ControlValueAccessor {
     'Ley 4035',
     'Partida Hospitales y Centros de Salud',
     'Guardias Hospitalarias',
+    'IAPSER',
   ];
 
   @Input() placeholder: string = 'Seleccione una opción';
