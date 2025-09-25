@@ -175,11 +175,19 @@ export class FormTableComponent implements OnInit, AfterViewInit {
           },
           error: (err) => {
             hasError = true;
-            this.messageBox.show(
-              'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
-              'error',
-              'Error de servidor.'
-            );
+            if (err.status === 500 && err.error && err.error.includes && err.error.includes('Ya existe una solicitud idéntica')) {
+              this.messageBox.show(
+                'Ya existe una solicitud idéntica con los mismos datos. Verifique sus solicitudes enviadas antes de enviar nuevamente.',
+                'warning',
+                'Solicitud Duplicada'
+              );
+            } else {
+              this.messageBox.show(
+                'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
+                'error',
+                'Error de servidor.'
+              );
+            }
           }
         });
       });
