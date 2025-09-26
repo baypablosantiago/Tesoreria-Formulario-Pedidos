@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
 import { FundingRequestAdminResponseDto } from '../../models';
@@ -16,13 +16,15 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: './dashboard.component.scss',
   imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule]
 })
-export class DashboardComponent {
+export class DashboardComponent implements AfterViewInit {
   constructor(
     private fundingService: FundingRequestService,
     private router: Router,
     private messageBox: MessageBoxService) { }
 
   allRequests: FundingRequestAdminResponseDto[] = []
+
+  @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
 
   ngOnInit() {
     this.fundingService.getAllActiveFundingRequests().subscribe(
@@ -31,6 +33,9 @@ export class DashboardComponent {
         this.groupedRequests = this.groupByDA(requests);
       }
     );
+  }
+
+  ngAfterViewInit() {
   }
 
   groupedRequests: { da: number; requests: FundingRequestAdminResponseDto[] }[] = [];
@@ -114,19 +119,46 @@ export class DashboardComponent {
       'Cuenta Corriente a la cual acreditar'
     ];
 
-    const rows = allSelected.map(req => [
-      req.da,
-      req.requestNumber,
-      req.fiscalYear,
-      req.paymentOrderNumber,
-      req.concept,
-      req.dueDate || '',
-      formatCurrency(req.amount),
-      req.fundingSource,
-      req.checkingAccount
-    ]);
+    // Group selected requests by D.A.
+    const groupedSelected: { [da: number]: FundingRequestAdminResponseDto[] } = {};
+    allSelected.forEach(req => {
+      if (!groupedSelected[req.da]) {
+        groupedSelected[req.da] = [];
+      }
+      groupedSelected[req.da].push(req);
+    });
 
-    const tsvContent = [headers.join('\t'), ...rows.map(row => row.join('\t'))].join('\n');
+    // Sort D.A. groups by number
+    const sortedDAs = Object.keys(groupedSelected).map(Number).sort((a, b) => a - b);
+
+    const tsvParts: string[] = [];
+
+    sortedDAs.forEach((da, index) => {
+      // Add headers
+      tsvParts.push(headers.join('\t'));
+
+      // Add rows for this D.A.
+      const daRows = groupedSelected[da].map(req => [
+        req.da,
+        req.requestNumber,
+        req.fiscalYear,
+        req.paymentOrderNumber,
+        req.concept,
+        req.dueDate || '',
+        formatCurrency(req.amount),
+        req.fundingSource,
+        req.checkingAccount
+      ]);
+
+      tsvParts.push(...daRows.map(row => row.join('\t')));
+
+      // Add empty row between D.A. groups (except for the last one)
+      if (index < sortedDAs.length - 1) {
+        tsvParts.push('');
+      }
+    });
+
+    const tsvContent = tsvParts.join('\n');
 
     navigator.clipboard.writeText(tsvContent).then(() => {
       this.messageBox.show('Datos copiados al portapapeles. Ahora podés pegarlos en Excel.', 'success');
@@ -155,12 +187,28 @@ export class DashboardComponent {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
-        this.reloadCurrentRoute(); 
+        this.reloadCurrentRoute();
       },
       error: err => {
         this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo '+err, 'error');
       }
     });
+  }
+
+  selectAllRequests() {
+    const allSelected = this.isAllRequestsSelected();
+    this.daCards.forEach(card => {
+      if (allSelected) {
+        card.selection.clear();
+      } else {
+        card.requests.forEach(req => card.selection.select(req));
+      }
+      card.emitSelected();
+    });
+  }
+
+  isAllRequestsSelected(): boolean {
+    return this.daCards?.toArray().every(card => card.isAllSelected()) || false;
   }
 
 }

@@ -1,4 +1,9 @@
 <div class="sticky-buttons buttons-container">
+  <button mat-button class="action-button" (click)="selectAllRequests()">
+    <mat-icon class="icon">{{ isAllRequestsSelected() ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+    {{ isAllRequestsSelected() ? 'Deseleccionar todo' : 'Seleccionar todo' }}
+  </button>
+
   <button mat-button class="action-button" (click)="copyToClipboard()">
     <mat-icon class="icon">content_copy</mat-icon>
     Copiar al portapapeles
