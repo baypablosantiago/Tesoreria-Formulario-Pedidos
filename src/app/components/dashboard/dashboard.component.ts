@@ -208,7 +208,8 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   isAllRequestsSelected(): boolean {
-    return this.daCards?.toArray().every(card => card.isAllSelected()) || false;
+    if (!this.daCards || this.daCards.length === 0) return false;
+    return this.daCards.toArray().every(card => card.isAllSelected());
   }
 
 }
