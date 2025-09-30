@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MessageBoxService } from '../../services/message-box.service';
 
 @Component({
   selector: 'app-actions-modal',
@@ -33,7 +34,8 @@ export class ActionsModalComponent {
     public dialogRef: MatDialogRef<ActionsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FundingRequestAdminResponseDto,
     private fundingRequestService: FundingRequestService,
-    private router: Router
+    private router: Router,
+    private messageBox: MessageBoxService
   ) {
     // Siempre cargar historial al abrir el modal (puede estar vacío)
     this.loadPaymentHistory();
@@ -68,6 +70,7 @@ export class ActionsModalComponent {
 
   submitPartialPayment() {
     if (this.partialPaymentAmount == null || !this.data.id) {
+    this.success = false;
     this.error = true;
     return;
   }
@@ -82,6 +85,7 @@ export class ActionsModalComponent {
         this.isSubmitting = false;
         this.success = true;
         this.data.partialPayment = updated.partialPayment;
+        this.partialPaymentAmount = undefined;
         // Recargar historial después de agregar pago
         this.loadPaymentHistory();
       },
@@ -132,30 +136,33 @@ export class ActionsModalComponent {
   }
 
   deletePayment(paymentId: number): void {
-    if (!confirm('¿Está seguro que desea eliminar este pago parcial?')) {
-      return;
-    }
+    this.messageBox.confirm(
+      '¿Está seguro que desea eliminar este pago parcial?',
+      'Confirmar eliminación'
+    ).subscribe(confirmed => {
+      if (!confirmed) return;
 
-    this.isDeletingPayment = true;
+      this.isDeletingPayment = true;
 
-    this.fundingRequestService.deletePartialPayment(paymentId).subscribe({
-      next: () => {
-        // Recargar historial y recalcular total
-        this.loadPaymentHistory();
+      this.fundingRequestService.deletePartialPayment(paymentId).subscribe({
+        next: () => {
+          // Recargar historial y recalcular total
+          this.loadPaymentHistory();
 
-        // Recalcular total local (simple suma)
-        const deletedPayment = this.paymentHistory.find(p => p.id === paymentId);
-        if (deletedPayment) {
-          this.data.partialPayment -= deletedPayment.amount;
+          // Recalcular total local (simple suma)
+          const deletedPayment = this.paymentHistory.find(p => p.id === paymentId);
+          if (deletedPayment) {
+            this.data.partialPayment -= deletedPayment.amount;
+          }
+
+          this.isDeletingPayment = false;
+        },
+        error: (error) => {
+          console.error('Error eliminando pago:', error);
+          this.isDeletingPayment = false;
+          this.messageBox.show('Error al eliminar el pago parcial', 'error');
         }
-
-        this.isDeletingPayment = false;
-      },
-      error: (error) => {
-        console.error('Error eliminando pago:', error);
-        this.isDeletingPayment = false;
-        alert('Error al eliminar el pago parcial');
-      }
+      });
     });
   }
 

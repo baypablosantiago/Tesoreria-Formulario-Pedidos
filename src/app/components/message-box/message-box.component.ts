@@ -3,17 +3,18 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MessageType } from '../../services/message-box.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-message-box',
-  imports: [MatDialogModule,MatButtonModule,MatIcon],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIcon],
   templateUrl: './message-box.component.html',
   styleUrls: ['./message-box.component.scss']
 })
 export class MessageBoxComponent {
   constructor(
     public dialogRef: MatDialogRef<MessageBoxComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string, type: MessageType, title: string }
+    @Inject(MAT_DIALOG_DATA) public data: { message: string, type: MessageType, title: string, showCancel?: boolean }
   ) {}
 
   get icon(): string {
@@ -32,5 +33,13 @@ export class MessageBoxComponent {
       case 'warning': return 'orange';
       default: return 'blue';
     }
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
   }
 }

@@ -10,5 +10,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button class="close-button" (click)="dialogRef.close()">Cerrar</button>
+  <button mat-button class="close-button" (click)="data.showCancel ? onConfirm() : dialogRef.close()">
+    {{ data.showCancel ? 'Confirmar' : 'Cerrar' }}
+  </button>
+  <button *ngIf="data.showCancel" mat-button class="close-button" (click)="onCancel()">Cancelar</button>
 </mat-dialog-actions>

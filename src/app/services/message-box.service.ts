@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageBoxComponent } from '../components/message-box/message-box.component';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export type MessageType = 'success' | 'error' | 'warning' | 'info';
 
@@ -26,5 +28,22 @@ export class MessageBoxService {
       },
       width: '400px'
     });
+  }
+
+  confirm(message: string, title: string = 'Confirmación'): Observable<boolean> {
+    const dialogRef = this.dialog.open(MessageBoxComponent, {
+      data: {
+        message,
+        type: 'warning' as MessageType,
+        title,
+        showCancel: true
+      },
+      width: '400px',
+      disableClose: true
+    });
+
+    return dialogRef.afterClosed().pipe(
+      map(result => result === true)
+    );
   }
 }
