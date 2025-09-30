@@ -137,21 +137,21 @@ export class DashboardComponent implements AfterViewInit {
       // Add headers
       tsvParts.push(headers.join('\t'));
 
-      // Group by funding source within this D.A.
-      const groupedByFunding: { [fundingSource: string]: FundingRequestAdminResponseDto[] } = {};
+      // Group by checking account within this D.A.
+      const groupedByAccount: { [checkingAccount: string]: FundingRequestAdminResponseDto[] } = {};
       groupedSelected[da].forEach(req => {
-        if (!groupedByFunding[req.fundingSource]) {
-          groupedByFunding[req.fundingSource] = [];
+        if (!groupedByAccount[req.checkingAccount]) {
+          groupedByAccount[req.checkingAccount] = [];
         }
-        groupedByFunding[req.fundingSource].push(req);
+        groupedByAccount[req.checkingAccount].push(req);
       });
 
-      // Sort funding sources alphabetically
-      const sortedFundingSources = Object.keys(groupedByFunding).sort();
+      // Sort checking accounts alphabetically
+      const sortedAccounts = Object.keys(groupedByAccount).sort();
 
-      sortedFundingSources.forEach(fundingSource => {
-        // Add rows for this funding source
-        const fundingRows = groupedByFunding[fundingSource].map(req => [
+      sortedAccounts.forEach(checkingAccount => {
+        // Add rows for this checking account
+        const accountRows = groupedByAccount[checkingAccount].map(req => [
           req.da,
           req.requestNumber,
           req.fiscalYear,
@@ -163,7 +163,7 @@ export class DashboardComponent implements AfterViewInit {
           req.checkingAccount
         ]);
 
-        tsvParts.push(...fundingRows.map(row => row.join('\t')));
+        tsvParts.push(...accountRows.map(row => row.join('\t')));
       });
 
       // Add empty row between D.A. groups (except for the last one)
