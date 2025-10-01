@@ -37,8 +37,8 @@ export class ActionsModalComponent {
     private router: Router,
     private messageBox: MessageBoxService
   ) {
-    // Siempre cargar historial al abrir el modal (puede estar vacío)
     this.loadPaymentHistory();
+    this.newComment = this.data.commentsFromTeso || '';
   }
 
   partialPaymentAmount?: number;

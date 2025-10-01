@@ -222,13 +222,14 @@
                     <mat-form-field class="full-width">
                         <mat-label>Comentario</mat-label>
                         <textarea matInput name="comment" [(ngModel)]="newComment"
-                            [ngModelOptions]="{ standalone: true }" rows="2"></textarea>
+                            [ngModelOptions]="{ standalone: true }" rows="2" maxlength="500"></textarea>
+                        <mat-hint align="end">{{ newComment.length }} / 500</mat-hint>
                     </mat-form-field>
 
                     <div class="form-footer">
                         <button mat-raised-button type="submit" class="action-button"
                             [disabled]="!commentForm.valid || isCommentSubmitting">
-                            Guardar comentario
+                            Actualizar comentario
                         </button>
                         <p *ngIf="commentSuccess" class="success-message">Comentario agregado.</p>
                         <p *ngIf="commentError" class="error-message">Error al agregar el comentario.</p>

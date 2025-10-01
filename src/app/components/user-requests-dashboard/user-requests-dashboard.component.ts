@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
@@ -18,14 +18,29 @@ import { FundingRequestResponseDto } from '../../models';
   templateUrl: './user-requests-dashboard.component.html',
   styleUrls: ['./user-requests-dashboard.component.scss']
 })
-export class UserRequestsDashboardComponent implements OnInit {
+export class UserRequestsDashboardComponent implements OnInit, OnDestroy {
   myRequests: FundingRequestResponseDto[] = [];
   activeAndPartialRequests: FundingRequestResponseDto[] = [];
   inactiveRequests: FundingRequestResponseDto[] = [];
+  private pollingInterval?: any;
 
   constructor(private fundingRequestService: FundingRequestService) {}
 
   ngOnInit(): void {
+    this.loadRequests();
+
+    this.pollingInterval = setInterval(() => {
+      this.loadRequests();
+    }, 180000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
+  }
+
+  private loadRequests(): void {
     this.fundingRequestService.getMyFundingRequests().subscribe({
       next: (requests) => {
         this.myRequests = requests;

@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
 import { FundingRequestAdminResponseDto } from '../../models';
@@ -6,8 +6,9 @@ import { FundingRequestService } from '../../services/funding-request.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MessageBoxService } from '../../services/message-box.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { MatIconModule } from "@angular/material/icon";
+import { SignalRService } from '../../services/signalr.service';
 
 
 @Component({
@@ -16,13 +17,15 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: './dashboard.component.scss',
   imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule]
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit, OnDestroy {
   constructor(
     private fundingService: FundingRequestService,
     private router: Router,
-    private messageBox: MessageBoxService) { }
+    private messageBox: MessageBoxService,
+    private signalR: SignalRService) { }
 
   allRequests: FundingRequestAdminResponseDto[] = []
+  private signalRSubscription?: Subscription;
 
   @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
 
@@ -31,6 +34,20 @@ export class DashboardComponent implements AfterViewInit {
       (requests) => {
         this.allRequests = requests;
         this.groupedRequests = this.groupByDA(requests);
+      }
+    );
+
+    this.signalR.startConnection();
+
+    this.signalRSubscription = this.signalR.fundingRequestChanged$.subscribe(
+      (request) => {
+        const index = this.allRequests.findIndex(r => r.id === request.id);
+        if (index !== -1) {
+          this.allRequests[index] = request;
+        } else {
+          this.allRequests.push(request);
+        }
+        this.groupedRequests = this.groupByDA(this.allRequests);
       }
     );
   }
@@ -224,6 +241,11 @@ export class DashboardComponent implements AfterViewInit {
   isAllRequestsSelected(): boolean {
     if (!this.daCards || this.daCards.length === 0) return false;
     return this.daCards.toArray().every(card => card.isAllSelected());
+  }
+
+  ngOnDestroy() {
+    this.signalRSubscription?.unsubscribe();
+    this.signalR.stopConnection();
   }
 
 }
