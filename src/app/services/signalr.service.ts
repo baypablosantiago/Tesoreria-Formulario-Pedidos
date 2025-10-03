@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 import { Subject } from 'rxjs';
-import { FundingRequestAdminResponseDto } from '../models';
+import { FundingRequestAdminResponseDto, FundingRequestChangeNotificationDto } from '../models';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 export class SignalRService {
   private hubConnection?: HubConnection;
   public fundingRequestChanged$ = new Subject<FundingRequestAdminResponseDto>();
+  public fundingRequestNotification$ = new Subject<FundingRequestChangeNotificationDto>();
 
   constructor() {}
 
@@ -37,6 +38,10 @@ export class SignalRService {
 
     this.hubConnection.on('FundingRequestChanged', (data: FundingRequestAdminResponseDto) => {
       this.fundingRequestChanged$.next(data);
+    });
+
+    this.hubConnection.on('FundingRequestNotification', (data: FundingRequestChangeNotificationDto) => {
+      this.fundingRequestNotification$.next(data);
     });
 
     this.hubConnection.onclose((error) => {

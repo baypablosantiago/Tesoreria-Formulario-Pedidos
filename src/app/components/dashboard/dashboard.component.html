@@ -1,3 +1,6 @@
+<!-- Drawer de notificaciones -->
+<app-notification-drawer></app-notification-drawer>
+
 <div class="sticky-buttons buttons-container">
   <button mat-button class="action-button" (click)="selectAllRequests()">
     <mat-icon class="icon">{{ isAllRequestsSelected() ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
@@ -30,8 +33,8 @@
 
   <div class="total-row">
     Total pendiente:
-    
+
       {{ getTotalAmount(group.requests) | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
-    
+
   </div>
 </div>

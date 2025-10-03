@@ -9,23 +9,27 @@ import { MessageBoxService } from '../../services/message-box.service';
 import { forkJoin, Subscription } from 'rxjs';
 import { MatIconModule } from "@angular/material/icon";
 import { SignalRService } from '../../services/signalr.service';
+import { NotificationService } from '../../services/notification.service';
+import { NotificationDrawerComponent } from '../notification-drawer/notification-drawer.component';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule]
+  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule, NotificationDrawerComponent]
 })
 export class DashboardComponent implements AfterViewInit, OnDestroy {
   constructor(
     private fundingService: FundingRequestService,
     private router: Router,
     private messageBox: MessageBoxService,
-    private signalR: SignalRService) { }
+    private signalR: SignalRService,
+    private notificationService: NotificationService) { }
 
   allRequests: FundingRequestAdminResponseDto[] = []
   private signalRSubscription?: Subscription;
+  private signalRNotificationSubscription?: Subscription;
 
   @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
 
@@ -37,17 +41,46 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       }
     );
 
+    // Cargar notificaciones desde la base de datos
+    this.notificationService.loadNotificationsFromDB().subscribe(
+      (dbNotifications) => {
+        this.notificationService.initializeFromDB(dbNotifications);
+      },
+      (error) => {
+        console.error('Error cargando notificaciones:', error);
+      }
+    );
+
     this.signalR.startConnection();
 
     this.signalRSubscription = this.signalR.fundingRequestChanged$.subscribe(
       (request) => {
         const index = this.allRequests.findIndex(r => r.id === request.id);
-        if (index !== -1) {
-          this.allRequests[index] = request;
+
+        // Si la solicitud ya no está activa, removerla del array
+        if (request.isActive === false) {
+          if (index !== -1) {
+            this.allRequests.splice(index, 1);
+            // Limpiar del mapa de selecciones si estaba seleccionada
+            this.removeFromSelectionMap(request.id);
+          }
         } else {
-          this.allRequests.push(request);
+          // Si está activa, actualizar o agregar
+          if (index !== -1) {
+            this.allRequests[index] = request;
+          } else {
+            this.allRequests.push(request);
+          }
         }
+
         this.groupedRequests = this.groupByDA(this.allRequests);
+      }
+    );
+
+    // Suscribirse a las notificaciones de cambios
+    this.signalRNotificationSubscription = this.signalR.fundingRequestNotification$.subscribe(
+      (notification) => {
+        this.notificationService.addNotification(notification);
       }
     );
   }
@@ -73,17 +106,20 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     }));
   }
 
-  private reloadCurrentRoute(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
-  }
-
   selectedRequestsMap = new Map<string, FundingRequestAdminResponseDto[]>();
 
   onSelectedRequestsChanged(daTitle: string, selected: FundingRequestAdminResponseDto[]) {
     this.selectedRequestsMap.set(daTitle, selected);
+  }
+
+  private removeFromSelectionMap(requestId: number): void {
+    // Recorrer todas las entradas del mapa y remover la solicitud si está seleccionada
+    this.selectedRequestsMap.forEach((requests, key) => {
+      const filtered = requests.filter(r => r.id !== requestId);
+      if (filtered.length !== requests.length) {
+        this.selectedRequestsMap.set(key, filtered);
+      }
+    });
   }
 
   changeIsActiveState() {
@@ -101,7 +137,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
-        this.reloadCurrentRoute();
+        // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
         this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo ' + err, 'error');
@@ -218,7 +254,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
-        this.reloadCurrentRoute();
+        // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
         this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo '+err, 'error');
@@ -245,6 +281,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.signalRSubscription?.unsubscribe();
+    this.signalRNotificationSubscription?.unsubscribe();
     this.signalR.stopConnection();
   }
 

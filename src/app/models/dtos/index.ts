@@ -4,3 +4,4 @@ export * from './funding-request-admin-response.dto';
 export * from './funding-request-update.dto';
 export * from './partial-payment-update.dto';
 export * from './comments-from-teso.dto';
+export * from './funding-request-change-notification.dto';

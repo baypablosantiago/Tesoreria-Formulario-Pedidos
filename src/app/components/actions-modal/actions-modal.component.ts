@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,7 +33,6 @@ export class ActionsModalComponent {
     public dialogRef: MatDialogRef<ActionsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FundingRequestAdminResponseDto,
     private fundingRequestService: FundingRequestService,
-    private router: Router,
     private messageBox: MessageBoxService
   ) {
     this.loadPaymentHistory();
@@ -58,14 +56,6 @@ export class ActionsModalComponent {
 
   close(): void {
     this.dialogRef.close();
-    this.reloadCurrentRoute();
-  }
-
-  private reloadCurrentRoute(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
   }
 
   submitPartialPayment() {
