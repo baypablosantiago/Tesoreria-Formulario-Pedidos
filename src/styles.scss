@@ -29,18 +29,3 @@ body {
     selected-focus-icon-color: #007a6b,
     selected-pressed-icon-color: #005f51
   ));
-
-// Estilo personalizado para snackbar de notificaciones
-.custom-notification-snackbar {
-  .mdc-snackbar__surface {
-    background-color: #ffffff !important;
-    border-left: 4px solid #00796B !important;
-    box-shadow: 0 3px 5px -1px rgba(0, 121, 107, 0.3),
-                0 6px 10px 0 rgba(0, 121, 107, 0.2),
-                0 1px 18px 0 rgba(0, 121, 107, 0.15) !important;
-  }
-
-  .mat-mdc-snack-bar-label {
-    color: #333 !important;
-  }
-}

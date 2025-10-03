@@ -1,10 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Notification } from '../models';
 import { FundingRequestChangeNotificationDto } from '../models';
-import { NotificationSnackbarComponent } from '../components/notification-snackbar/notification-snackbar.component';
 import { environment } from '../../environments/environment';
 
 interface AdminNotificationDB {
@@ -37,12 +35,10 @@ export class NotificationService {
   public unreadCount$ = this.unreadCountSubject.asObservable();
   public highlightRequest$ = this.highlightRequestSubject.asObservable();
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor() {}
 
   addNotification(data: FundingRequestChangeNotificationDto): Notification {
     const fullMessage = this.buildFullNotificationMessage(data);
-    const shortMessage = this.buildShortNotificationMessage(data);
-    const icon = this.getIconForChangeType(data.changeType);
 
     const notification: Notification = {
       id: `${data.requestId}-${Date.now()}`,
@@ -62,33 +58,9 @@ export class NotificationService {
     this.notificationsSubject.next([...this.notifications]);
     this.updateUnreadCount();
 
-    // Mostrar snackbar con mensaje corto
-    this.showSnackbar(shortMessage, icon);
-
     return notification;
   }
 
-  private showSnackbar(message: string, icon?: string): void {
-    this.snackBar.openFromComponent(NotificationSnackbarComponent, {
-      data: { message, icon },
-      duration: 7000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      panelClass: ['custom-notification-snackbar']
-    });
-  }
-
-  private getIconForChangeType(changeType: string): string {
-    switch (changeType) {
-      case 'CREATE': return 'add_circle';
-      case 'UPDATE': return 'edit';
-      case 'STATUS_CHANGE': return 'swap_horiz';
-      case 'WORK_STATUS_CHANGE': return 'work';
-      case 'COMMENT_ADDED': return 'comment';
-      case 'PAYMENT_UPDATED': return 'payments';
-      default: return 'notifications';
-    }
-  }
 
   loadNotificationsFromDB(): Observable<AdminNotificationDB[]> {
     return this.http.get<AdminNotificationDB[]>(`${environment.apiUrl}/api/AdminNotifications?limit=50`);
@@ -182,30 +154,4 @@ export class NotificationService {
     }
   }
 
-  private buildShortNotificationMessage(data: FundingRequestChangeNotificationDto): string {
-    const reqInfo = `Solicitud #${data.requestNumber} de DA ${data.da}`;
-
-    switch (data.changeType) {
-      case 'CREATE':
-        return `Nueva solicitud recibida: ${reqInfo}`;
-
-      case 'UPDATE':
-        return `${reqInfo} modificó "${data.fieldChanged}"`;
-
-      case 'STATUS_CHANGE':
-        return `${reqInfo} cambió estado`;
-
-      case 'WORK_STATUS_CHANGE':
-        return `${reqInfo} cambió estado de revisión`;
-
-      case 'COMMENT_ADDED':
-        return `${reqInfo} agregó comentario`;
-
-      case 'PAYMENT_UPDATED':
-        return `${reqInfo} actualizó pago parcial`;
-
-      default:
-        return `${reqInfo} fue modificada`;
-    }
-  }
 }
