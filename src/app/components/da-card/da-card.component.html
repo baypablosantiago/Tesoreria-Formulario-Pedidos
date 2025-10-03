@@ -94,8 +94,14 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="row-hover" (click)="onRowClick(row)"
-        [ngClass]="{ 'on-work-row': row.onWork }">
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [id]="'request-' + row.id"
+        class="row-hover"
+        (click)="onRowClick(row)"
+        [ngClass]="{
+          'on-work-row': row.onWork,
+          'highlighted-row': highlightedRequestId === row.id
+        }">
       </tr>
 
     </table>

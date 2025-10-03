@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Notification } from '../models';
 import { FundingRequestChangeNotificationDto } from '../models';
@@ -31,9 +31,11 @@ export class NotificationService {
   private notifications: Notification[] = [];
   private notificationsSubject = new BehaviorSubject<Notification[]>([]);
   private unreadCountSubject = new BehaviorSubject<number>(0);
+  private highlightRequestSubject = new Subject<number>();
 
   public notifications$ = this.notificationsSubject.asObservable();
   public unreadCount$ = this.unreadCountSubject.asObservable();
+  public highlightRequest$ = this.highlightRequestSubject.asObservable();
 
   constructor(private snackBar: MatSnackBar) {}
 
@@ -142,6 +144,10 @@ export class NotificationService {
     // Actualizar en DB
     this.http.put(`${environment.apiUrl}/api/AdminNotifications/mark-all-read`, {})
       .subscribe();
+  }
+
+  highlightRequestById(requestId: number): void {
+    this.highlightRequestSubject.next(requestId);
   }
 
   private updateUnreadCount(): void {

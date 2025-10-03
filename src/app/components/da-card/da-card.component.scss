@@ -27,6 +27,25 @@
   color: #008b78;
 }
 
+.highlighted-row {
+  outline: 3px solid #00796B !important;
+  outline-offset: -3px;
+  animation: highlightPulse 1.5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    outline-color: #00796B;
+    box-shadow: 0 0 0 0 rgba(0, 121, 107, 0.6);
+  }
+  50% {
+    outline-color: #4DB6AC;
+    box-shadow: 0 0 20px 8px rgba(0, 121, 107, 0.4);
+  }
+}
+
 mat-card {
   border: 1px solid #26a69a;
 }

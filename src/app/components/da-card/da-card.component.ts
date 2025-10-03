@@ -29,8 +29,8 @@ export class DaCardComponent {
   constructor(private dialog: MatDialog) { }
 
   @Input() requests: FundingRequestAdminResponseDto[] = [];
-
   @Input() daTitle: string = '';
+  @Input() highlightedRequestId: number | null = null;
   displayedColumns = [
     'select',
     'Fecha Recibido',

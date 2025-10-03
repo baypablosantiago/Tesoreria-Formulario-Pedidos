@@ -30,6 +30,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   allRequests: FundingRequestAdminResponseDto[] = []
   private signalRSubscription?: Subscription;
   private signalRNotificationSubscription?: Subscription;
+  private highlightSubscription?: Subscription;
+  highlightedRequestId: number | null = null;
 
   @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
 
@@ -81,6 +83,13 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     this.signalRNotificationSubscription = this.signalR.fundingRequestNotification$.subscribe(
       (notification) => {
         this.notificationService.addNotification(notification);
+      }
+    );
+
+    // Suscribirse al evento de highlight
+    this.highlightSubscription = this.notificationService.highlightRequest$.subscribe(
+      (requestId: number) => {
+        this.highlightRequest(requestId);
       }
     );
   }
@@ -279,9 +288,36 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     return this.daCards.toArray().every(card => card.isAllSelected());
   }
 
+  highlightRequest(requestId: number): void {
+    // Verificar si la solicitud existe en el dashboard
+    const request = this.allRequests.find(r => r.id === requestId);
+
+    if (!request) {
+      console.log('Solicitud no encontrada en el dashboard:', requestId);
+      return;
+    }
+
+    // Marcar como highlighted
+    this.highlightedRequestId = requestId;
+
+    // Hacer scroll a la solicitud después de un pequeño delay (para que Angular actualice el DOM)
+    setTimeout(() => {
+      const element = document.getElementById(`request-${requestId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+
+    // Quitar highlight después de 5 segundos
+    setTimeout(() => {
+      this.highlightedRequestId = null;
+    }, 5000);
+  }
+
   ngOnDestroy() {
     this.signalRSubscription?.unsubscribe();
     this.signalRNotificationSubscription?.unsubscribe();
+    this.highlightSubscription?.unsubscribe();
     this.signalR.stopConnection();
   }
 

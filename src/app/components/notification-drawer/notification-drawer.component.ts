@@ -66,6 +66,19 @@ export class NotificationDrawerComponent implements OnInit, OnDestroy {
     this.notificationService.markAsRead(notification.id);
   }
 
+  onNotificationClick(notification: Notification): void {
+    // Marcar como leída
+    this.markAsRead(notification);
+
+    // Emitir evento para highlight en dashboard
+    if (notification.data?.requestId) {
+      this.notificationService.highlightRequestById(notification.data.requestId);
+    }
+
+    // Cerrar drawer
+    this.isOpen = false;
+  }
+
   markAllAsRead(): void {
     this.notificationService.markAllAsRead();
   }

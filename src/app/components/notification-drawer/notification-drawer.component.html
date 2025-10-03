@@ -44,7 +44,7 @@
             @for (notification of notifications; track notification.id) {
               <mat-list-item
                 [class.unread]="!notification.read"
-                (click)="markAsRead(notification)">
+                (click)="onNotificationClick(notification)">
                 <div class="notification-item">
                   <div class="notification-content">
                     <p class="notification-message">{{ notification.message }}</p>
