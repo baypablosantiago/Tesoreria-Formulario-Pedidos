@@ -17,6 +17,7 @@ import { FundingRequestService } from '../../services/funding-request.service';
 export class UserRequestsListComponent {
   @Input() requests: FundingRequestResponseDto[] = [];
   @Input() showCompleted: boolean = false;
+  @Input() highlightedRequestId: number | null = null;
 
   private expandedHistories = new Set<number>();
   private loadingHistories = new Set<number>();
@@ -59,8 +60,8 @@ onEdit(req: FundingRequestResponseDto): void {
   }
 
   getPartialPaymentClass(req: FundingRequestResponseDto): string {
-    if (!req.isActive) return 'completed'; // Azul para finalizadas
-    return 'warning'; // Amarillo para activas con pago parcial
+    if (!req.isActive) return 'completed'; 
+    return 'warning'; 
   }
 
 

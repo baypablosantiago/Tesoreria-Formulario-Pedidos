@@ -1,8 +1,9 @@
 .request-card {
   margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
 
   &.pending {
-    border-left: 5px solid #26a69a; 
+    border-left: 5px solid #26a69a;
   }
 
   &.partial {
@@ -10,7 +11,19 @@
   }
 
   &.completed {
-    border-left: 5px solid #1976d2; 
+    border-left: 5px solid #1976d2;
+  }
+
+  &.pending.highlighted {
+    animation: highlight-pulse-pending 1s ease-in-out 5;
+  }
+
+  &.partial.highlighted {
+    animation: highlight-pulse-partial 1s ease-in-out 5;
+  }
+
+  &.completed.highlighted {
+    animation: highlight-pulse-completed 1s ease-in-out 5;
   }
 
   mat-card {
@@ -76,7 +89,6 @@
 
     &.info {
       background-color: #ffffff;
-      // border-left: 4px solid #1976d2;
     }
 
     .history-toggle {
@@ -86,7 +98,6 @@
       min-width: auto;
     }
 
-    // Estilos para pagos parciales en solicitudes activas (amarillo)
     &.warning .history-toggle {
       color: #ffa000 !important;
 
@@ -100,7 +111,6 @@
       }
     }
 
-    // Estilos para pagos parciales en solicitudes finalizadas (azul)
     &.completed .history-toggle {
       color: #1976d2 !important;
 
@@ -151,7 +161,7 @@
 
         .payment-amount {
           font-weight: bold;
-          color: #ffa000; // Por defecto amarillo para solicitudes activas
+          color: #ffa000; 
         }
 
         .payment-date {
@@ -159,7 +169,6 @@
           font-size: 0.85rem;
         }
 
-        // .payment-user eliminado por seguridad - no mostrar quien registró el pago
       }
     }
 
@@ -171,13 +180,12 @@
     }
   }
 
-  // Colores de montos de pago según el estado de la solicitud
   .highlight.completed + .payment-history .payment-amount {
-    color: #1976d2 !important; // Azul para solicitudes finalizadas
+    color: #1976d2 !important; 
   }
 
   .highlight.warning + .payment-history .payment-amount {
-    color: #ffa000 !important; // Amarillo para solicitudes activas
+    color: #ffa000 !important; 
   }
 }
 
@@ -212,4 +220,37 @@
     .icon{
       color:#26a69a;
     }
+}
+
+@keyframes highlight-pulse-pending {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: -5px 0 0 0 #26a69a, 0 0 0 rgba(38, 166, 154, 0);
+  }
+  50% {
+    background-color: rgba(38, 166, 154, 0.2);
+    box-shadow: -5px 0 0 0 #26a69a, 0 0 40px rgba(38, 166, 154, 0.8);
+  }
+}
+
+@keyframes highlight-pulse-partial {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: -5px 0 0 0 #ffa000, 0 0 0 rgba(255, 160, 0, 0);
+  }
+  50% {
+    background-color: rgba(255, 160, 0, 0.2);
+    box-shadow: -5px 0 0 0 #ffa000, 0 0 40px rgba(255, 160, 0, 0.8);
+  }
+}
+
+@keyframes highlight-pulse-completed {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: -5px 0 0 0 #1976d2, 0 0 0 rgba(25, 118, 210, 0);
+  }
+  50% {
+    background-color: rgba(25, 118, 210, 0.2);
+    box-shadow: -5px 0 0 0 #1976d2, 0 0 40px rgba(25, 118, 210, 0.8);
+  }
 }

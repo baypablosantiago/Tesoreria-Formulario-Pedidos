@@ -1,0 +1,63 @@
+<button
+  mat-icon-button
+  class="notification-button"
+  [class.has-unread]="unreadCount > 0"
+  [class.shake]="shouldShake"
+  (click)="toggleDrawer()"
+  [matBadge]="unreadCount"
+  [matBadgeHidden]="unreadCount === 0"
+  matBadgeColor="warn"
+  matBadgeSize="small">
+  <mat-icon>notifications</mat-icon>
+</button>
+
+@if (isOpen) {
+  <div class="drawer-backdrop" (click)="toggleDrawer()"></div>
+  <div class="drawer-panel">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2>Notificaciones</h2>
+        <button mat-icon-button (click)="toggleDrawer()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="drawer-actions">
+        <button mat-button (click)="markAllAsRead()" [disabled]="unreadCount === 0">
+          <mat-icon>done_all</mat-icon>
+          Marcar todo como leído
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="notifications-list">
+        @if (notifications.length === 0) {
+          <div class="no-notifications">
+            <mat-icon>notifications_none</mat-icon>
+            <p>No hay notificaciones</p>
+          </div>
+        } @else {
+          <mat-list>
+            @for (notification of notifications; track notification.id) {
+              <mat-list-item
+                [class.unread]="!notification.read"
+                (click)="onNotificationClick(notification)">
+                <div class="notification-item">
+                  <div class="notification-content">
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <span class="notification-time">{{ getTimeAgo(notification.timestamp) }}</span>
+                  </div>
+                  @if (!notification.read) {
+                    <div class="unread-indicator"></div>
+                  }
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            }
+          </mat-list>
+        }
+      </div>
+    </div>
+  </div>
+}

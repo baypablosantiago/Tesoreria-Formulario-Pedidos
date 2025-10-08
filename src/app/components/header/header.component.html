@@ -17,6 +17,10 @@
         <button mat-button routerLinkActive="active" routerLink="/finished-requests">Solicitudes finalizadas</button>
       </li>
 
+      <li *hasRole="'user'">
+        <app-user-notification-drawer></app-user-notification-drawer>
+      </li>
+
       <li>
         <button mat-button (click)="logout()">Cerrar sesión</button>
       </li>
