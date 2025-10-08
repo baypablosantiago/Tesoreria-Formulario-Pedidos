@@ -1,29 +1,31 @@
-<div class="buttons-container">
-  <button mat-button class="action-button" (click)="changeIsActiveState()">
-    <mat-icon class="icon">undo</mat-icon>
-    Cambiar estado a pendiente</button>
+<div class="finished-requests-wrapper">
+  <div class="sticky-buttons buttons-container">
+    <button mat-button class="action-button" (click)="changeIsActiveState()">
+      <mat-icon class="icon">undo</mat-icon>
+      Cambiar estado a pendiente</button>
+  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let monthGroup of groupedRequests">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ monthGroup.month | titlecase }}</mat-panel-title>
+
+      </mat-expansion-panel-header>
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let daGroup of monthGroup.groupedByDA">
+          <mat-expansion-panel-header>
+            <mat-panel-title>D.A. {{ daGroup.da }}</mat-panel-title>
+
+          </mat-expansion-panel-header>
+
+          <app-da-card
+
+            [requests]="daGroup.requests"
+            (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + daGroup.da, $event)"
+          ></app-da-card>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
-
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let monthGroup of groupedRequests">
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ monthGroup.month | titlecase }}</mat-panel-title>
-
-    </mat-expansion-panel-header>
-
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let daGroup of monthGroup.groupedByDA">
-        <mat-expansion-panel-header>
-          <mat-panel-title>D.A. {{ daGroup.da }}</mat-panel-title>
-          
-        </mat-expansion-panel-header>
-
-        <app-da-card
-          
-          [requests]="daGroup.requests"
-          (selectedRequestsChanged)="onSelectedRequestsChanged('D.A. ' + daGroup.da, $event)"
-        ></app-da-card>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </mat-expansion-panel>
-</mat-accordion>
