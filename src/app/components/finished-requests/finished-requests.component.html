@@ -6,14 +6,14 @@
   </div>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let monthGroup of groupedRequests">
+    <mat-expansion-panel *ngFor="let monthGroup of groupedRequests; trackBy: trackByMonth">
       <mat-expansion-panel-header>
         <mat-panel-title>{{ monthGroup.month | titlecase }}</mat-panel-title>
 
       </mat-expansion-panel-header>
 
       <mat-accordion>
-        <mat-expansion-panel *ngFor="let daGroup of monthGroup.groupedByDA">
+        <mat-expansion-panel *ngFor="let daGroup of monthGroup.groupedByDA; trackBy: trackByDA">
           <mat-expansion-panel-header>
             <mat-panel-title>D.A. {{ daGroup.da }}</mat-panel-title>
 
