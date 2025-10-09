@@ -82,7 +82,11 @@
       <!-- Comentarios -->
       <ng-container matColumnDef="Notas / Comentarios">
         <th mat-header-cell *matHeaderCellDef>Notas / Comentarios</th>
-        <td mat-cell *matCellDef="let req"> {{ req.comments }} </td>
+        <td mat-cell *matCellDef="let req" class="comments-cell">
+          <span [title]="req.comments || ''">
+            {{ req.comments && req.comments.length > 25 ? (req.comments.substring(0, 25) + '...') : req.comments }}
+          </span>
+        </td>
       </ng-container>
 
       <!-- Pago parcial -->
