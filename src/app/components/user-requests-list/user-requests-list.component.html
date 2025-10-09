@@ -36,7 +36,7 @@
       </div>
 
       <div *ngIf="req.comments">
-        <strong>Notas del usuario:</strong> {{ req.comments }}
+        <strong>Notas / Comentarios:</strong> {{ req.comments }}
       </div>
 
       <div *ngIf="req.partialPayment > 0" class="highlight" [ngClass]="getPartialPaymentClass(req)">

@@ -1,6 +1,7 @@
 <mat-form-field appearance="outline">
     <input autocomplete="off"
         matInput
-        [formControl]="field"       
+        [formControl]="field"
+        [attr.maxlength]="maxlength || null"
     />
 </mat-form-field>

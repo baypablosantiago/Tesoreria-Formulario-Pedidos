@@ -1,4 +1,4 @@
-import { Component, forwardRef, ViewEncapsulation, signal } from '@angular/core';
+import { Component, forwardRef, ViewEncapsulation, signal, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +25,8 @@ import { merge } from 'rxjs';
 })
 
 export class TextFieldComponent implements ControlValueAccessor {
+  @Input() maxlength?: number;
+
   readonly field = new FormControl('');
   errorMessage = signal('');
 

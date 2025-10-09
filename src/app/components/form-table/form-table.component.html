@@ -24,82 +24,110 @@
     </div>
 
     <!-- Tabla -->
-    <table mat-table [dataSource]="rows.controls" aria-label="Formulario dinámico">
+    <table mat-table [dataSource]="tableDataSource" aria-label="Formulario dinámico">
 
       <!-- Columnas -->
       <ng-container matColumnDef="D.A.">
         <th mat-header-cell *matHeaderCellDef class="col-da">D.A.</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-dropdown-field formControlName="DA" [options]="availableDAs" [disabled]="availableDAs.length === 0" placeholder="DA"></app-dropdown-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-dropdown-field formControlName="DA" [options]="availableDAs" [disabled]="availableDAs.length === 0" placeholder="DA"></app-dropdown-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="N° de Solicitud">
         <th mat-header-cell *matHeaderCellDef class="col-ns">N° de Solicitud</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-number-field formControlName="nroSolicitud"></app-number-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-number-field formControlName="nroSolicitud"></app-number-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Ejercicio">
         <th mat-header-cell *matHeaderCellDef class="col-ej">Ejercicio</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-number-field formControlName="ejercicio"></app-number-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-number-field formControlName="ejercicio"></app-number-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="N° de Orden de Pago">
         <th mat-header-cell *matHeaderCellDef class="col-op">N° de Orden de Pago</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-text-field formControlName="ordenPago"></app-text-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-text-field formControlName="ordenPago"></app-text-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Concepto, Proveedor o Contratista">
         <th mat-header-cell *matHeaderCellDef class="col-cpc">Concepto, Proveedor o Contratista</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-dropdown-field formControlName="concepto"></app-dropdown-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-dropdown-field formControlName="concepto"></app-dropdown-field>
+          </ng-container>
         </td>
       </ng-container>
 
 
       <ng-container matColumnDef="Vencimiento">
         <th mat-header-cell *matHeaderCellDef class="col-venc">Vencimiento</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-date-field formControlName="vencimiento"></app-date-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-date-field formControlName="vencimiento"></app-date-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Importe Solicitado">
         <th mat-header-cell *matHeaderCellDef class="col-imp">Importe Solicitado</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-money-field formControlName="importe"></app-money-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-money-field formControlName="importe"></app-money-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Fuente de Financiamiento">
         <th mat-header-cell *matHeaderCellDef class="col-fuen">Fuente de Financiamiento</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-text-field formControlName="fuenteFinanciamiento"></app-text-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-text-field formControlName="fuenteFinanciamiento"></app-text-field>
+          </ng-container>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="Cuenta Corriente a la cual acreditar">
         <th mat-header-cell *matHeaderCellDef class="col-cc">Cuenta Corriente a la cual acreditar</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-text-field formControlName="cuentaCorriente"></app-text-field>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.isCommentRow" [formGroup]="element.row">
+            <app-text-field formControlName="cuentaCorriente"></app-text-field>
+          </ng-container>
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="Notas / Comentarios">
-        <th mat-header-cell *matHeaderCellDef class="col-notas">Notas / Comentarios</th>
-        <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i">
-          <app-text-field formControlName="comentarios"></app-text-field>
+      <!-- Columna expandida para comentarios -->
+      <ng-container matColumnDef="expandedComments">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="comments-cell">
+          <div class="comments-row" [formGroup]="element.row">
+            <label class="comments-label">Notas / Comentarios:</label>
+            <app-text-field formControlName="comentarios" [maxlength]="500"></app-text-field>
+          </div>
         </td>
+      </ng-container>
+
+      <!-- Fila divisoria -->
+      <ng-container matColumnDef="divider">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="divider-cell"></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; when: isDataRow" class="data-row" [ngClass]="getRowClass(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedComments']; when: isCommentRow" class="comments-expanded-row" [ngClass]="getRowClass(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['divider']; when: isDividerRow" class="divider-row"></tr>
     </table>
   </div>
 </form>

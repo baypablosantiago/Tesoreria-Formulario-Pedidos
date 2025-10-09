@@ -47,6 +47,7 @@ export class FormTableComponent implements OnInit, AfterViewInit {
   );
 
   availableDAs: number[] = [];
+  tableDataSource: any[] = [];
 
   constructor(private fundingRequestService: FundingRequestService, private userDaService: UserDaService) { }
 
@@ -63,8 +64,7 @@ export class FormTableComponent implements OnInit, AfterViewInit {
     'Vencimiento',
     'Importe Solicitado',
     'Fuente de Financiamiento',
-    'Cuenta Corriente a la cual acreditar',
-    'Notas / Comentarios'
+    'Cuenta Corriente a la cual acreditar'
   ];
 
   ngOnInit(): void {
@@ -76,7 +76,32 @@ export class FormTableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     Array.from({ length: 1 }).forEach(() => this.addRow());
-    this.table.dataSource = this.rows.controls;
+    this.updateTableDataSource();
+  }
+
+  updateTableDataSource(): void {
+    this.tableDataSource = [];
+    this.rows.controls.forEach((row, idx) => {
+      // Fila de datos
+      this.tableDataSource.push({ row, isCommentRow: false, isDivider: false, requestIndex: idx });
+      // Fila de comentarios
+      this.tableDataSource.push({ row, isCommentRow: true, isDivider: false, requestIndex: idx });
+      // Fila divisoria (excepto después de la última solicitud)
+      if (idx < this.rows.length - 1) {
+        this.tableDataSource.push({ row: null, isCommentRow: false, isDivider: true, requestIndex: idx });
+      }
+    });
+    if (this.table) {
+      this.table.renderRows();
+    }
+  }
+
+  isDataRow = (index: number, item: any) => !item.isCommentRow && !item.isDivider;
+  isCommentRow = (index: number, item: any) => item.isCommentRow && !item.isDivider;
+  isDividerRow = (index: number, item: any) => item.isDivider;
+
+  getRowClass(element: any): string {
+    return element.requestIndex % 2 === 0 ? 'even-request' : 'odd-request';
   }
 
   addRow() {
@@ -90,15 +115,12 @@ export class FormTableComponent implements OnInit, AfterViewInit {
       importe: new FormControl('', Validators.required),
       fuenteFinanciamiento: new FormControl('', Validators.required),
       cuentaCorriente: new FormControl('', Validators.required),
-      comentarios: new FormControl('')
+      comentarios: new FormControl('', Validators.maxLength(500))
     });
 
     if (this.rows.length < 10) {
       this.rows.push(row);
-
-      if (this.table) {
-        this.table.renderRows();
-      }
+      this.updateTableDataSource();
     } else {
       this.messageBox.show('Puede enviar formularios de hasta 10 filas como máximo.', 'info', 'Máximo de filas alcanzado.');
     }
@@ -133,7 +155,7 @@ export class FormTableComponent implements OnInit, AfterViewInit {
     } else {
       if (this.isRowEmpty(lastRow)) {
         this.rows.removeAt(lastIndex);
-        this.table.renderRows();
+        this.updateTableDataSource();
       } else {
         this.messageBox.show('No se puede eliminar una fila que contiene datos. Verifique la ultima fila.', 'warning', 'Atención.');
       }
