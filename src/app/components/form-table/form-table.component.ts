@@ -7,7 +7,8 @@ import { MoneyFieldComponent } from '../form-table-components/money-field/money-
 import { MessageBoxService } from '../../services/message-box.service';
 import { FundingRequestService } from '../../services/funding-request.service';
 import { UserDaService } from '../../services/user-da.service';
-import { FundingRequestCreateDto } from '../../models';
+import { DraftService } from '../../services/draft.service';
+import { FundingRequestCreateDto, DraftRowData } from '../../models';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from "@angular/material/input";
@@ -49,7 +50,11 @@ export class FormTableComponent implements OnInit, AfterViewInit {
   availableDAs: number[] = [];
   tableDataSource: any[] = [];
 
-  constructor(private fundingRequestService: FundingRequestService, private userDaService: UserDaService) { }
+  constructor(
+    private fundingRequestService: FundingRequestService,
+    private userDaService: UserDaService,
+    private draftService: DraftService
+  ) { }
 
   get rows(): FormArray {
     return this.form().get('rows') as FormArray;
@@ -72,10 +77,16 @@ export class FormTableComponent implements OnInit, AfterViewInit {
       next: (das) => this.availableDAs = das,
       error: () => this.availableDAs = []
     });
+
+    // Load draft if exists
+    this.loadDraft();
   }
 
   ngAfterViewInit(): void {
-    Array.from({ length: 1 }).forEach(() => this.addRow());
+    // Only add default row if no draft was loaded
+    if (this.rows.length === 0) {
+      Array.from({ length: 1 }).forEach(() => this.addRow());
+    }
     this.updateTableDataSource();
   }
 
@@ -187,6 +198,9 @@ export class FormTableComponent implements OnInit, AfterViewInit {
           next: () => {
             responses++;
             if (responses === requests.length && !hasError) {
+              // Delete draft after successful submission
+              this.draftService.deleteDraft().subscribe();
+
               this.messageBox.show(
                 'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
                 'success',
@@ -220,6 +234,75 @@ export class FormTableComponent implements OnInit, AfterViewInit {
         'Formulario incompleto.'
       );
     }
+  }
+
+  saveDraft(): void {
+    const draftData: DraftRowData[] = this.rows.controls.map(row => ({
+      DA: row.get('DA')?.value ?? '',
+      nroSolicitud: row.get('nroSolicitud')?.value ?? '',
+      ejercicio: row.get('ejercicio')?.value ?? '',
+      ordenPago: row.get('ordenPago')?.value ?? '',
+      concepto: row.get('concepto')?.value ?? '',
+      vencimiento: row.get('vencimiento')?.value ?? '',
+      importe: row.get('importe')?.value ?? '',
+      fuenteFinanciamiento: row.get('fuenteFinanciamiento')?.value ?? '',
+      cuentaCorriente: row.get('cuentaCorriente')?.value ?? '',
+      comentarios: row.get('comentarios')?.value ?? ''
+    }));
+
+    this.draftService.saveDraft(draftData).subscribe({
+      next: () => {
+        this.messageBox.show(
+          'Borrador guardado correctamente.',
+          'success',
+          'Borrador guardado'
+        );
+      },
+      error: () => {
+        this.messageBox.show(
+          'Error al guardar el borrador.',
+          'error',
+          'Error'
+        );
+      }
+    });
+  }
+
+  loadDraft(): void {
+    this.draftService.getDraft().subscribe({
+      next: (draft) => {
+        if (draft && draft.draftData) {
+          const draftData: DraftRowData[] = JSON.parse(draft.draftData);
+
+          // Clear existing rows
+          while (this.rows.length > 0) {
+            this.rows.removeAt(0);
+          }
+
+          // Load draft data
+          draftData.forEach(data => {
+            const row = new FormGroup({
+              DA: new FormControl(data.DA, Validators.required),
+              nroSolicitud: new FormControl(data.nroSolicitud, Validators.required),
+              ejercicio: new FormControl(data.ejercicio, Validators.required),
+              ordenPago: new FormControl(data.ordenPago, Validators.required),
+              concepto: new FormControl(data.concepto, Validators.required),
+              vencimiento: new FormControl(data.vencimiento, Validators.required),
+              importe: new FormControl(data.importe, Validators.required),
+              fuenteFinanciamiento: new FormControl(data.fuenteFinanciamiento, Validators.required),
+              cuentaCorriente: new FormControl(data.cuentaCorriente, Validators.required),
+              comentarios: new FormControl(data.comentarios, Validators.maxLength(500))
+            });
+            this.rows.push(row);
+          });
+
+          this.updateTableDataSource();
+        }
+      },
+      error: () => {
+        // No draft found or error, do nothing
+      }
+    });
   }
 
 

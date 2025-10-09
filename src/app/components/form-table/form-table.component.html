@@ -16,6 +16,10 @@
       </div>
 
       <div class="right-button">
+        <button mat-raised-button class="action-button" (click)="saveDraft()">
+          <mat-icon class="icon">save</mat-icon>
+          Guardar como borrador
+        </button>
         <button mat-raised-button class="action-button" (click)="submitRequest()">
           <mat-icon class="icon">send</mat-icon>
           Enviar solicitud
@@ -24,7 +28,8 @@
     </div>
 
     <!-- Tabla -->
-    <table mat-table [dataSource]="tableDataSource" aria-label="Formulario dinámico">
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="tableDataSource" aria-label="Formulario dinámico">
 
       <!-- Columnas -->
       <ng-container matColumnDef="D.A.">
@@ -129,5 +134,6 @@
       <tr mat-row *matRowDef="let row; columns: ['expandedComments']; when: isCommentRow" class="comments-expanded-row" [ngClass]="getRowClass(row)"></tr>
       <tr mat-row *matRowDef="let row; columns: ['divider']; when: isDividerRow" class="divider-row"></tr>
     </table>
+    </div>
   </div>
 </form>
