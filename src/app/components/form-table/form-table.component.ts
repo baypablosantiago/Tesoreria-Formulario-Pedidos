@@ -78,12 +78,10 @@ export class FormTableComponent implements OnInit, AfterViewInit {
       error: () => this.availableDAs = []
     });
 
-    // Load draft if exists
     this.loadDraft();
   }
 
   ngAfterViewInit(): void {
-    // Only add default row if no draft was loaded
     if (this.rows.length === 0) {
       Array.from({ length: 1 }).forEach(() => this.addRow());
     }
@@ -93,11 +91,8 @@ export class FormTableComponent implements OnInit, AfterViewInit {
   updateTableDataSource(): void {
     this.tableDataSource = [];
     this.rows.controls.forEach((row, idx) => {
-      // Fila de datos
       this.tableDataSource.push({ row, isCommentRow: false, isDivider: false, requestIndex: idx });
-      // Fila de comentarios
       this.tableDataSource.push({ row, isCommentRow: true, isDivider: false, requestIndex: idx });
-      // Fila divisoria (excepto después de la última solicitud)
       if (idx < this.rows.length - 1) {
         this.tableDataSource.push({ row: null, isCommentRow: false, isDivider: true, requestIndex: idx });
       }
@@ -129,11 +124,11 @@ export class FormTableComponent implements OnInit, AfterViewInit {
       comentarios: new FormControl('', Validators.maxLength(500))
     });
 
-    if (this.rows.length < 10) {
+    if (this.rows.length < 20) {
       this.rows.push(row);
       this.updateTableDataSource();
     } else {
-      this.messageBox.show('Puede enviar formularios de hasta 10 filas como máximo.', 'info', 'Máximo de filas alcanzado.');
+      this.messageBox.show('Puede enviar formularios de hasta 20 filas como máximo.', 'info', 'Máximo de filas alcanzado.');
     }
 
   }
