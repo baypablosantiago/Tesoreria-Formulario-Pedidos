@@ -168,7 +168,7 @@ export class FormTableComponent implements OnInit, AfterViewInit {
         this.rows.removeAt(lastIndex);
         this.updateTableDataSource();
       } else {
-        this.messageBox.show('No se puede eliminar una fila que contiene datos. Verifique la ultima fila.', 'warning', 'Atención.');
+        this.messageBox.show('No se puede eliminar una fila que contiene datos. Verifique la ultima fila.', 'warning', 'Fila con datos.');
       }
     }
   }
@@ -215,7 +215,7 @@ export class FormTableComponent implements OnInit, AfterViewInit {
               this.messageBox.show(
                 'Ya existe una solicitud idéntica con los mismos datos. Verifique sus solicitudes enviadas antes de enviar nuevamente.',
                 'warning',
-                'Solicitud Duplicada'
+                'Solicitud duplicada.'
               );
             } else {
               this.messageBox.show(
@@ -253,9 +253,9 @@ export class FormTableComponent implements OnInit, AfterViewInit {
     this.draftService.saveDraft(draftData).subscribe({
       next: () => {
         this.messageBox.show(
-          'Borrador guardado correctamente.',
+          'El borrador guardado se cargará automaticamente siempre que navegue al formulario de solicitudes y se elimina una vez enviadas las solicitudes de fondos.',
           'success',
-          'Borrador guardado'
+          'Borrador guardado.'
         );
       },
       error: () => {
