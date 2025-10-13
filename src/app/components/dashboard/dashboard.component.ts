@@ -146,6 +146,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
+        // Limpiar todas las selecciones después de la operación exitosa
+        this.clearAllSelections();
         // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
@@ -263,6 +265,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
+        // Limpiar todas las selecciones después de la operación exitosa
+        this.clearAllSelections();
         // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
@@ -286,6 +290,17 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   isAllRequestsSelected(): boolean {
     if (!this.daCards || this.daCards.length === 0) return false;
     return this.daCards.toArray().every(card => card.isAllSelected());
+  }
+
+  clearAllSelections() {
+    // Limpiar el mapa de selecciones
+    this.selectedRequestsMap.clear();
+
+    // Limpiar los SelectionModel de cada card
+    this.daCards.forEach(card => {
+      card.selection.clear();
+      card.emitSelected();
+    });
   }
 
   highlightRequest(requestId: number): void {
