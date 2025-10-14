@@ -54,3 +54,24 @@
   border-bottom: none;
 }
 
+::ng-deep .mat-mdc-menu-item.selected-sort {
+  background-color: #e0f7fa !important;
+  font-weight: 500;
+
+  .mat-icon {
+    color: #00897b;
+  }
+}
+
+::ng-deep .mat-mdc-menu-item {
+  display: flex !important;
+  align-items: center !important;
+
+  .check-icon {
+    margin-left: auto !important;
+    color: #00897b !important;
+    font-size: 20px !important;
+    order: 999 !important;
+  }
+}
+

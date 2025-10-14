@@ -11,13 +11,14 @@ import { MatIconModule } from "@angular/material/icon";
 import { SignalRService } from '../../services/signalr.service';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationDrawerComponent } from '../notification-drawer/notification-drawer.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule, NotificationDrawerComponent]
+  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule, NotificationDrawerComponent, MatMenuModule]
 })
 export class DashboardComponent implements AfterViewInit, OnDestroy {
   constructor(
@@ -33,9 +34,30 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   private highlightSubscription?: Subscription;
   highlightedRequestId: number | null = null;
 
+  sortBy: keyof FundingRequestAdminResponseDto = 'requestNumber';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  sortFieldLabels: Record<string, string> = {
+    'receivedAt': 'Fecha Recibido',
+    'requestNumber': 'N° de Solicitud',
+    'paymentOrderNumber': 'N° de Orden de Pago',
+    'concept': 'Concepto',
+    'dueDate': 'Vencimiento',
+    'amount': 'Importe Solicitado',
+    'fundingSource': 'Fuente de Financiamiento',
+    'checkingAccount': 'Cuenta Corriente',
+    'partialPayment': 'Pago Parcial'
+  };
+
+  get currentSortLabel(): string {
+    return this.sortFieldLabels[this.sortBy] || 'N° de Solicitud';
+  }
+
   @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
 
   ngOnInit() {
+    this.loadSortPreferences();
+
     this.fundingService.getAllActiveFundingRequests().subscribe(
       (requests) => {
         this.allRequests = requests;
@@ -43,7 +65,6 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       }
     );
 
-    // Cargar notificaciones desde la base de datos
     this.notificationService.loadNotificationsFromDB().subscribe(
       (dbNotifications) => {
         this.notificationService.initializeFromDB(dbNotifications);
@@ -59,15 +80,12 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       (request) => {
         const index = this.allRequests.findIndex(r => r.id === request.id);
 
-        // Si la solicitud ya no está activa, removerla del array
         if (request.isActive === false) {
           if (index !== -1) {
             this.allRequests.splice(index, 1);
-            // Limpiar del mapa de selecciones si estaba seleccionada
             this.removeFromSelectionMap(request.id);
           }
         } else {
-          // Si está activa, actualizar o agregar
           if (index !== -1) {
             this.allRequests[index] = request;
           } else {
@@ -79,14 +97,12 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       }
     );
 
-    // Suscribirse a las notificaciones de cambios
     this.signalRNotificationSubscription = this.signalR.fundingRequestNotification$.subscribe(
       (notification) => {
         this.notificationService.addNotification(notification);
       }
     );
 
-    // Suscribirse al evento de highlight
     this.highlightSubscription = this.notificationService.highlightRequest$.subscribe(
       (requestId: number) => {
         this.highlightRequest(requestId);
@@ -111,8 +127,72 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
     return Object.entries(grouped).map(([da, reqs]) => ({
       da: +da,
-      requests: reqs
+      requests: this.sortRequests(reqs)
     }));
+  }
+
+  setSortBy(field: keyof FundingRequestAdminResponseDto) {
+    this.sortBy = field;
+    this.saveSortPreferences();
+    this.groupedRequests = this.groupByDA(this.allRequests);
+  }
+
+  toggleSortDirection() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.saveSortPreferences();
+    this.groupedRequests = this.groupByDA(this.allRequests);
+  }
+
+  private sortRequests(requests: FundingRequestAdminResponseDto[]): FundingRequestAdminResponseDto[] {
+    return [...requests].sort((a, b) => {
+      const aValue = a[this.sortBy];
+      const bValue = b[this.sortBy];
+
+      if (aValue == null && bValue == null) return 0;
+      if (aValue == null) return -1;
+      if (bValue == null) return 1;
+
+      let comparison = 0;
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        comparison = aValue - bValue;
+      } else if (aValue instanceof Date && bValue instanceof Date) {
+        comparison = aValue.getTime() - bValue.getTime();
+      } else if (this.sortBy === 'receivedAt') {
+        const dateA = new Date(aValue as any);
+        const dateB = new Date(bValue as any);
+        comparison = dateA.getTime() - dateB.getTime();
+      } else if (this.sortBy === 'dueDate') {
+        const dateA = new Date(aValue as string);
+        const dateB = new Date(bValue as string);
+        if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
+          comparison = dateA.getTime() - dateB.getTime();
+        } else {
+          comparison = String(aValue).localeCompare(String(bValue), 'es-AR');
+        }
+      } else {
+        comparison = String(aValue).localeCompare(String(bValue), 'es-AR');
+      }
+
+      return this.sortDirection === 'asc' ? comparison : -comparison;
+    });
+  }
+
+  private saveSortPreferences() {
+    localStorage.setItem('dashboardSortBy', this.sortBy);
+    localStorage.setItem('dashboardSortDirection', this.sortDirection);
+  }
+
+  private loadSortPreferences() {
+    const savedSortBy = localStorage.getItem('dashboardSortBy');
+    const savedSortDirection = localStorage.getItem('dashboardSortDirection');
+
+    if (savedSortBy) {
+      this.sortBy = savedSortBy as keyof FundingRequestAdminResponseDto;
+    }
+    if (savedSortDirection === 'asc' || savedSortDirection === 'desc') {
+      this.sortDirection = savedSortDirection;
+    }
   }
 
   selectedRequestsMap = new Map<string, FundingRequestAdminResponseDto[]>();
@@ -122,7 +202,6 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   }
 
   private removeFromSelectionMap(requestId: number): void {
-    // Recorrer todas las entradas del mapa y remover la solicitud si está seleccionada
     this.selectedRequestsMap.forEach((requests, key) => {
       const filtered = requests.filter(r => r.id !== requestId);
       if (filtered.length !== requests.length) {
@@ -145,10 +224,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
     forkJoin(requests).subscribe({
       next: updatedList => {
-        this.messageBox.show('Las solicitudes seleccionadas fueron aprobadas y ahora son visibles en la pestaña "Solicitudes aprobadas".', 'success', 'Exito');
-        // Limpiar todas las selecciones después de la operación exitosa
+        this.messageBox.show('Las solicitudes seleccionadas fueron marcadas como finalizadas y ahora son visibles en la pestaña "Solicitudes finalizadas".', 'success', 'Exito');
         this.clearAllSelections();
-        // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
         this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo ' + err, 'error');
@@ -183,7 +260,6 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       'Cuenta Corriente a la cual acreditar'
     ];
 
-    // Group selected requests by D.A.
     const groupedSelected: { [da: number]: FundingRequestAdminResponseDto[] } = {};
     allSelected.forEach(req => {
       if (!groupedSelected[req.da]) {
@@ -192,45 +268,28 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       groupedSelected[req.da].push(req);
     });
 
-    // Sort D.A. groups by number
     const sortedDAs = Object.keys(groupedSelected).map(Number).sort((a, b) => a - b);
 
     const tsvParts: string[] = [];
 
     sortedDAs.forEach((da, index) => {
-      // Add headers
       tsvParts.push(headers.join('\t'));
+      const sortedRequests = this.sortRequests(groupedSelected[da]);
 
-      // Group by checking account within this D.A.
-      const groupedByAccount: { [checkingAccount: string]: FundingRequestAdminResponseDto[] } = {};
-      groupedSelected[da].forEach(req => {
-        if (!groupedByAccount[req.checkingAccount]) {
-          groupedByAccount[req.checkingAccount] = [];
-        }
-        groupedByAccount[req.checkingAccount].push(req);
-      });
+      const daRows = sortedRequests.map(req => [
+        req.da,
+        req.requestNumber,
+        req.fiscalYear,
+        req.paymentOrderNumber,
+        req.concept,
+        req.dueDate || '',
+        formatCurrency(req.amount),
+        req.fundingSource,
+        req.checkingAccount
+      ]);
 
-      // Sort checking accounts alphabetically
-      const sortedAccounts = Object.keys(groupedByAccount).sort();
+      tsvParts.push(...daRows.map(row => row.join('\t')));
 
-      sortedAccounts.forEach(checkingAccount => {
-        // Add rows for this checking account
-        const accountRows = groupedByAccount[checkingAccount].map(req => [
-          req.da,
-          req.requestNumber,
-          req.fiscalYear,
-          req.paymentOrderNumber,
-          req.concept,
-          req.dueDate || '',
-          formatCurrency(req.amount),
-          req.fundingSource,
-          req.checkingAccount
-        ]);
-
-        tsvParts.push(...accountRows.map(row => row.join('\t')));
-      });
-
-      // Add empty row between D.A. groups (except for the last one)
       if (index < sortedDAs.length - 1) {
         tsvParts.push('');
       }
@@ -265,9 +324,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     forkJoin(requests).subscribe({
       next: updatedList => {
         this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
-        // Limpiar todas las selecciones después de la operación exitosa
         this.clearAllSelections();
-        // No recargar la ruta - SignalR actualiza automáticamente
       },
       error: err => {
         this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo '+err, 'error');
@@ -293,10 +350,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   }
 
   clearAllSelections() {
-    // Limpiar el mapa de selecciones
     this.selectedRequestsMap.clear();
 
-    // Limpiar los SelectionModel de cada card
     this.daCards.forEach(card => {
       card.selection.clear();
       card.emitSelected();
@@ -304,7 +359,6 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   }
 
   highlightRequest(requestId: number): void {
-    // Verificar si la solicitud existe en el dashboard
     const request = this.allRequests.find(r => r.id === requestId);
 
     if (!request) {
@@ -312,10 +366,8 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Marcar como highlighted
     this.highlightedRequestId = requestId;
 
-    // Hacer scroll a la solicitud después de un pequeño delay (para que Angular actualice el DOM)
     setTimeout(() => {
       const element = document.getElementById(`request-${requestId}`);
       if (element) {
@@ -323,10 +375,9 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       }
     }, 100);
 
-    // Quitar highlight después de 5 segundos
     setTimeout(() => {
       this.highlightedRequestId = null;
-    }, 5000);
+    }, 3000);
   }
 
   ngOnDestroy() {
