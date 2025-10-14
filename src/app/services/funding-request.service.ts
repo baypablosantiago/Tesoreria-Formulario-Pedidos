@@ -57,6 +57,13 @@ export class FundingRequestService {
     return this.http.request<FundingRequestResponseDto>('PATCH', `${this.apiUrl}/on-work/${id}`);
   }
 
+  setOnWorkBatch(requestIds: number[], onWork: boolean): Observable<{ updatedCount: number; message: string }> {
+    return this.http.post<{ updatedCount: number; message: string }>(`${this.apiUrl}/batch/set-onwork`, {
+      requestIds,
+      onWork
+    });
+  }
+
   getPartialPaymentHistory(fundingRequestId: number): Observable<PartialPayment[]> {
     return this.http.get<PartialPayment[]>(`${this.partialPaymentApiUrl}/${fundingRequestId}/history`);
   }

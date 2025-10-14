@@ -2,37 +2,63 @@
 <app-notification-drawer></app-notification-drawer>
 
 <div class="dashboard-wrapper">
-  <div class="sticky-buttons buttons-container">
-  <button mat-button class="action-button" (click)="selectAllRequests()">
-    <mat-icon class="icon">{{ isAllRequestsSelected() ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
-    {{ isAllRequestsSelected() ? 'Deseleccionar todo' : 'Seleccionar todo' }}
-  </button>
+  <div class="sticky-buttons" [class.scrolled]="isScrolled">
+    <!-- Sección superior: Utilidades -->
+    <div class="buttons-container utility-section">
+      <div class="left-buttons">
+        <button mat-button class="action-button" (click)="selectAllRequests()">
+          <mat-icon class="icon">{{ isAllRequestsSelected() ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          {{ isAllRequestsSelected() ? 'Deseleccionar todo' : 'Seleccionar todo' }}
+        </button>
 
-  <button mat-button class="action-button" (click)="copyToClipboard()">
-    <mat-icon class="icon">content_copy</mat-icon>
-    Copiar al portapapeles
-  </button>
+        <button mat-button class="action-button" (click)="copyToClipboard()">
+          <mat-icon class="icon">content_copy</mat-icon>
+          Copiar al portapapeles
+        </button>
+      </div>
 
-  <button mat-button class="action-button" (click)="changeOnWorkState()">
-    <mat-icon class="icon">construction</mat-icon>
-    Cambiar estado "En revisión"
-  </button>
+      <div class="right-buttons">
+        <div class="filter-input-container">
+          <mat-icon class="search-icon">manage_search</mat-icon>
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Filtrar solicitudes..."
+            (keydown.enter)="onFilterEnter()"
+            #filterInput>
+        </div>
 
-  <button mat-button class="action-button" (click)="changeIsActiveState()">
-    <mat-icon class="icon">done_outline</mat-icon>
-    Cambiar estado a finalizado
-  </button>
+        <button mat-button class="action-button" [matMenuTriggerFor]="sortMenu">
+          <mat-icon class="icon">sort</mat-icon>
+          Ordenar por
+        </button>
 
-  <button mat-button class="action-button" [matMenuTriggerFor]="sortMenu">
-    <mat-icon class="icon">sort</mat-icon>
-    Ordenar por
-  </button>
+        <button mat-button class="action-button" (click)="toggleSortDirection()">
+          <mat-icon class="icon">{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+          {{ sortDirection === 'asc' ? 'Ascendente' : 'Descendente' }}
+        </button>
+      </div>
+    </div>
 
-  <button mat-button class="action-button" (click)="toggleSortDirection()">
-    <mat-icon class="icon">{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
-    {{ sortDirection === 'asc' ? 'Ascendente' : 'Descendente' }}
-  </button>
-</div>
+    <!-- Sección inferior: Acciones de cambio de estado -->
+    <div class="buttons-container actions-section">
+
+      <button mat-button class="action-button" (click)="markAllAsOnWork()">
+        <mat-icon class="icon">construction</mat-icon>
+        Marcar TODAS como "En revisión"
+      </button>
+
+      <button mat-button class="action-button" (click)="changeOnWorkState()">
+        <mat-icon class="icon">construction</mat-icon>
+        Cambiar estado "En revisión" (Solo seleccionadas)
+      </button>
+
+      <button mat-button class="action-button" (click)="changeIsActiveState()">
+        <mat-icon class="icon">done_outline</mat-icon>
+        Cambiar estado a finalizado
+      </button>
+    </div>
+  </div>
 
 <mat-menu #sortMenu="matMenu">
   <button mat-menu-item (click)="setSortBy('receivedAt')" [class.selected-sort]="sortBy === 'receivedAt'">

@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
 import { FundingRequestAdminResponseDto } from '../../models';
@@ -36,6 +36,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
   sortBy: keyof FundingRequestAdminResponseDto = 'requestNumber';
   sortDirection: 'asc' | 'desc' = 'asc';
+  isScrolled = false;
 
   sortFieldLabels: Record<string, string> = {
     'receivedAt': 'Fecha Recibido',
@@ -385,6 +386,51 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     this.signalRNotificationSubscription?.unsubscribe();
     this.highlightSubscription?.unsubscribe();
     this.signalR.stopConnection();
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 50;
+  }
+
+  onFilterEnter() {
+    this.messageBox.show('La funcion de filtro esta en desarrollo, ninguna base de datos fue eliminada :)', 'info', 'Base de datos eliminada');
+  }
+
+  markAllAsOnWork() {
+    const totalRequests = this.allRequests.length;
+
+    if (totalRequests === 0) {
+      this.messageBox.show('No hay solicitudes activas para marcar', 'info', 'Atención');
+      return;
+    }
+
+    const requestIds = this.allRequests.map(r => r.id);
+
+    this.messageBox.confirm(
+      `¿Está seguro de marcar las ${totalRequests} solicitudes como "En revisión"?`,
+      'Confirmar acción masiva'
+    ).subscribe(confirmed => {
+      if (confirmed) {
+        this.fundingService.setOnWorkBatch(requestIds, true).subscribe({
+          next: (response) => {
+            this.messageBox.show(
+              `${response.updatedCount} solicitudes marcadas como "En revisión" correctamente`,
+              'success',
+              'Éxito'
+            );
+          },
+          error: (err) => {
+            console.error('Error al marcar solicitudes:', err);
+            this.messageBox.show(
+              'Ocurrió un error al marcar las solicitudes. Informe a desarrollo.',
+              'error',
+              'Error'
+            );
+          }
+        });
+      }
+    });
   }
 
 }
