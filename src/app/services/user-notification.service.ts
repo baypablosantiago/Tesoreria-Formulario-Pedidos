@@ -8,7 +8,7 @@ interface UserNotificationDB {
   userId: string;
   requestId: number;
   changeType: string;
-  message: string;
+  data: string;
   isRead: boolean;
   createdAt: string;
 }
@@ -82,14 +82,49 @@ export class UserNotificationService {
   }
 
   private mapFromDB(dbNotification: UserNotificationDB): UserNotification {
+    let parsedData: any = {};
+
+    try {
+      parsedData = JSON.parse(dbNotification.data);
+    } catch (e) {
+      console.error('Error parsing notification data:', e);
+    }
+
+    const message = this.buildUserNotificationMessage(dbNotification.changeType, parsedData);
+
     return {
       id: dbNotification.id.toString(),
-      message: dbNotification.message,
+      message: message,
       timestamp: new Date(dbNotification.createdAt),
       read: dbNotification.isRead,
       requestId: dbNotification.requestId,
       changeType: dbNotification.changeType
     };
+  }
+
+  private buildUserNotificationMessage(changeType: string, data: any): string {
+    const requestNumber = data.requestNumber || data.RequestNumber || '?';
+
+    switch (changeType) {
+      case 'STATUS_FINALIZED':
+        return `Tu solicitud #${requestNumber} ha sido finalizada correctamente. Podrás visualizarla en la pestaña "Historial de Solicitudes".`;
+
+      case 'STATUS_REACTIVATED':
+        return `Tu solicitud #${requestNumber} fue devuelta a "Solicitudes en curso".`;
+
+      case 'WORK_STATUS_CHANGE':
+        if (data.onWork === true || data.OnWork === true) {
+          return `Tu solicitud #${requestNumber} entró en revisión. Ya no podrás modificarla, solo agregar/modificar el campo "Comentarios".`;
+        } else {
+          return `Tu solicitud #${requestNumber} está pendiente. Podés modificar los campos de la solicitud y agregar comentarios.`;
+        }
+
+      case 'COMMENT_ADDED':
+        return `Tesorería General agregó un comentario en tu solicitud #${requestNumber}`;
+
+      default:
+        return `Tu solicitud #${requestNumber} fue actualizada`;
+    }
   }
 
   markAsRead(notificationId: string): void {

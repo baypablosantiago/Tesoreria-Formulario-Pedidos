@@ -1,0 +1,40 @@
+<div class="confirmation-dialog">
+  <h2 mat-dialog-title>Confirmar envío de solicitudes</h2>
+
+  <mat-dialog-content>
+    <p class="intro-text">
+      Estás por enviar {{ data.requests.length }}
+      {{ data.requests.length === 1 ? 'solicitud' : 'solicitudes' }}:
+    </p>
+
+    <div *ngFor="let group of groupedByDA" class="da-group">
+      <h3 class="da-header">DA {{ group.da }}:</h3>
+
+      <ul class="request-list">
+        <li *ngFor="let req of group.requests" class="request-item">
+          Solicitud #{{ req.requestNumber }} - {{ req.amount | currency:'ARS':'symbol-narrow':'1.2-2' }}
+        </li>
+      </ul>
+
+      <mat-divider></mat-divider>
+
+      <p class="da-total">
+        <strong>Total DA {{ group.da }}:</strong>
+        {{ group.total | currency:'ARS':'symbol-narrow':'1.2-2' }}
+      </p>
+    </div>
+
+    <div *ngIf="groupedByDA.length > 1" class="grand-total-section">
+      <mat-divider></mat-divider>
+      <p class="grand-total">
+        <strong>Total General:</strong>
+        {{ grandTotal | currency:'ARS':'symbol-narrow':'1.2-2' }}
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onConfirm()">Confirmar y Enviar</button>
+  </mat-dialog-actions>
+</div>

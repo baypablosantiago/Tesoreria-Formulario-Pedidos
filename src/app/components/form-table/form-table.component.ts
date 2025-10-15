@@ -16,6 +16,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { DateFieldComponent } from '../form-table-components/date-field/date-field.component';
 import { DropdownFieldComponent } from "../form-table-components/dropdown-field/dropdown-field.component";
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-form-table',
