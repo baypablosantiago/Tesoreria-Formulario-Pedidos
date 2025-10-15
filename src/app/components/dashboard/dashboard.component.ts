@@ -219,17 +219,24 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const requests = allSelected.map(req =>
-      this.fundingService.changeIsActive(req.id!)
-    );
+    this.messageBox.confirm(
+      `¿Está seguro de marcar ${allSelected.length} solicitud${allSelected.length > 1 ? 'es' : ''} como finalizadas?`,
+      'Confirmar cambio de estado'
+    ).subscribe(confirmed => {
+      if (confirmed) {
+        const requests = allSelected.map(req =>
+          this.fundingService.changeIsActive(req.id!)
+        );
 
-    forkJoin(requests).subscribe({
-      next: updatedList => {
-        this.messageBox.show('Las solicitudes seleccionadas fueron marcadas como finalizadas y ahora son visibles en la pestaña "Solicitudes finalizadas".', 'success', 'Exito');
-        this.clearAllSelections();
-      },
-      error: err => {
-        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo ' + err, 'error');
+        forkJoin(requests).subscribe({
+          next: updatedList => {
+            this.messageBox.show('Las solicitudes seleccionadas fueron marcadas como finalizadas y ahora son visibles en la pestaña "Solicitudes finalizadas".', 'success', 'Exito');
+            this.clearAllSelections();
+          },
+          error: err => {
+            this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo ' + err, 'error');
+          }
+        });
       }
     });
   }
@@ -284,7 +291,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
         req.paymentOrderNumber,
         req.concept,
         req.dueDate || '',
-        formatCurrency(req.amount),
+        formatCurrency(req.amount - req.partialPayment),
         req.fundingSource,
         req.checkingAccount
       ]);
@@ -310,7 +317,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     return requests.reduce((sum, req) => sum + (req.amount - req.partialPayment), 0);
   }
 
-  changeOnWorkState() {
+  markSelectedAsOnWork() {
     const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
 
     if (allSelected.length === 0) {
@@ -318,17 +325,52 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const requests = allSelected.map(req =>
-      this.fundingService.changeOnWork(req.id!)
-    );
+    this.messageBox.confirm(
+      `¿Está seguro de marcar ${allSelected.length} solicitud${allSelected.length > 1 ? 'es' : ''} como "En revisión"?`,
+      'Confirmar cambio de estado'
+    ).subscribe(confirmed => {
+      if (confirmed) {
+        const requestIds = allSelected.map(req => req.id!);
 
-    forkJoin(requests).subscribe({
-      next: updatedList => {
-        this.messageBox.show('Se cambió el estado "en revision" de las solicitudes seleccionadas.', 'success', 'Exito');
-        this.clearAllSelections();
-      },
-      error: err => {
-        this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo. Codigo '+err, 'error');
+        this.fundingService.markSelectedAsOnWork(requestIds).subscribe({
+          next: (response) => {
+            this.messageBox.show(`${response.updatedCount} solicitudes marcadas como "En revisión".`, 'success', 'Éxito');
+            this.clearAllSelections();
+          },
+          error: err => {
+            console.error('Error al marcar solicitudes como "En revisión":', err);
+            this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo.', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  markSelectedAsPending() {
+    const allSelected: FundingRequestAdminResponseDto[] = Array.from(this.selectedRequestsMap.values()).flat();
+
+    if (allSelected.length === 0) {
+      this.messageBox.show('No hay solicitudes seleccionadas.', 'info', 'Atención');
+      return;
+    }
+
+    this.messageBox.confirm(
+      `¿Está seguro de marcar ${allSelected.length} solicitud${allSelected.length > 1 ? 'es' : ''} como "Pendiente"?`,
+      'Confirmar cambio de estado'
+    ).subscribe(confirmed => {
+      if (confirmed) {
+        const requestIds = allSelected.map(req => req.id!);
+
+        this.fundingService.markSelectedAsPending(requestIds).subscribe({
+          next: (response) => {
+            this.messageBox.show(`${response.updatedCount} solicitudes marcadas como "Pendiente".`, 'success', 'Éxito');
+            this.clearAllSelections();
+          },
+          error: err => {
+            console.error('Error al marcar solicitudes como "Pendiente":', err);
+            this.messageBox.show('Ocurrió un error al cambiar los estados. Informe a desarrollo.', 'error');
+          }
+        });
       }
     });
   }

@@ -53,15 +53,19 @@ export class FundingRequestService {
     return this.http.put<FundingRequestResponseDto>(`${this.apiUrl}/update-request`, request);
   }
 
-  changeOnWork(id: number): Observable<FundingRequestResponseDto> {
-    return this.http.request<FundingRequestResponseDto>('PATCH', `${this.apiUrl}/on-work/${id}`);
-  }
-
   setOnWorkBatch(requestIds: number[], onWork: boolean): Observable<{ updatedCount: number; message: string }> {
     return this.http.post<{ updatedCount: number; message: string }>(`${this.apiUrl}/batch/set-onwork`, {
       requestIds,
       onWork
     });
+  }
+
+  markSelectedAsOnWork(requestIds: number[]): Observable<{ updatedCount: number; message: string }> {
+    return this.http.post<{ updatedCount: number; message: string }>(`${this.apiUrl}/batch/mark-as-on-work`, requestIds);
+  }
+
+  markSelectedAsPending(requestIds: number[]): Observable<{ updatedCount: number; message: string }> {
+    return this.http.post<{ updatedCount: number; message: string }>(`${this.apiUrl}/batch/mark-as-pending`, requestIds);
   }
 
   getPartialPaymentHistory(fundingRequestId: number): Observable<PartialPayment[]> {

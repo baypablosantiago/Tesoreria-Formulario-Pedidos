@@ -48,14 +48,19 @@
         Marcar TODAS como "En revisión"
       </button>
 
-      <button mat-button class="action-button" (click)="changeOnWorkState()">
+      <button mat-button class="action-button" (click)="markSelectedAsOnWork()">
         <mat-icon class="icon">construction</mat-icon>
-        Cambiar estado "En revisión" (Solo seleccionadas)
+        Marcar seleccionadas como "En revisión"
+      </button>
+
+      <button mat-button class="action-button" (click)="markSelectedAsPending()">
+        <mat-icon class="icon">pending_actions</mat-icon>
+        Marcar seleccionadas como "Pendiente"
       </button>
 
       <button mat-button class="action-button" (click)="changeIsActiveState()">
         <mat-icon class="icon">done_outline</mat-icon>
-        Cambiar estado a finalizado
+        Marcar seleccionadas como "Finalizada"
       </button>
     </div>
   </div>
