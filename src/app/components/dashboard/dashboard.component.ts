@@ -457,7 +457,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
         this.fundingService.setOnWorkBatch(requestIds, true).subscribe({
           next: (response) => {
             this.messageBox.show(
-              `${response.updatedCount} solicitudes marcadas como "En revisión" correctamente`,
+              `${response.updatedCount} solicitudes marcadas como "En revisión".`,
               'success',
               'Éxito'
             );

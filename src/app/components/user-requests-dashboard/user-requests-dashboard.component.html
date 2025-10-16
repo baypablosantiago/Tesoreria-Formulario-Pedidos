@@ -8,10 +8,33 @@
   </mat-tab>
 
   <mat-tab label="Historial de Solicitudes">
-    <app-user-requests-list
-      [requests]="inactiveRequests"
-      [showCompleted]="true"
-      [highlightedRequestId]="highlightedRequestId">
-    </app-user-requests-list>
+    <div class="history-container">
+      <mat-accordion multi>
+        <mat-expansion-panel
+          *ngFor="let monthGroup of groupedInactiveRequests; trackBy: trackByMonth"
+          [expanded]="isPanelOpen(monthGroup.month)"
+          (opened)="onPanelOpened(monthGroup.month)"
+          (closed)="onPanelClosed(monthGroup.month)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ monthGroup.month }}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ monthGroup.count }} solicitud{{ monthGroup.count !== 1 ? 'es' : '' }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <app-user-requests-list
+            [requests]="monthGroup.requests"
+            [showCompleted]="true"
+            [highlightedRequestId]="highlightedRequestId">
+          </app-user-requests-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <div *ngIf="groupedInactiveRequests.length === 0" class="empty-state">
+        No hay solicitudes finalizadas.
+      </div>
+    </div>
   </mat-tab>
 </mat-tab-group>

@@ -1,6 +1,6 @@
 .request-card {
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   transition: all 0.3s ease;
 
   &.pending::before {
@@ -52,8 +52,18 @@
   }
 
   mat-card {
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 4px !important;
+  }
+
+  ::ng-deep mat-card-header {
+    padding: 0 0 0.5rem 0 !important;
+    margin: 0 !important;
+  }
+
+  ::ng-deep mat-card-content {
+    margin: 0 !important;
+    padding: 0 1rem !important;
   }
 
   .header-content {
@@ -90,22 +100,31 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
 
     span {
       flex: 1 1 30%;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.1rem;
     }
   }
 
   .highlight {
     padding: 0.5rem;
     border-radius: 4px;
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
 
     &.warning {
       background-color: #fff8e1;
       border-left: 4px solid #ffa000;
+    }
+
+    &.warning + .payment-history {
+      border-top: 1px solid rgba(255, 160, 0, 0.3);
+    }
+
+    &:has(+ .payment-history) {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
     &.completed {
@@ -115,6 +134,16 @@
 
     &.info {
       background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+      mat-icon {
+        vertical-align: middle;
+        margin-right: 0.25rem;
+        color: #616161;
+        font-size: 1.2rem;
+        height: 1.2rem;
+        width: 1.2rem;
+      }
     }
 
     .history-toggle {
@@ -152,11 +181,13 @@
   }
 
   .payment-history {
-    margin-top: 0.75rem;
+    margin-top: 0;
     padding: 0.75rem;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    background-color: #fff3e0;
+    border-left: 4px solid #ffa000;
+    border-bottom: 1px solid rgba(255, 160, 0, 0.3);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 
     .loading {
       text-align: center;
@@ -225,6 +256,7 @@
 .edit-container{
   display: flex;
   justify-content: flex-end;
+  margin-top: 0.35rem;
 }
 
 .action-button {
@@ -263,32 +295,32 @@
 @keyframes highlight-pulse-pending {
   0%, 100% {
     background-color: transparent;
-    box-shadow: -5px 0 0 0 #26a69a, 0 0 0 rgba(38, 166, 154, 0);
+    box-shadow: 0 0 0 rgba(38, 166, 154, 0);
   }
   50% {
     background-color: rgba(38, 166, 154, 0.2);
-    box-shadow: -5px 0 0 0 #26a69a, 0 0 40px rgba(38, 166, 154, 0.8);
+    box-shadow: 0 0 40px rgba(38, 166, 154, 0.8);
   }
 }
 
 @keyframes highlight-pulse-partial {
   0%, 100% {
     background-color: transparent;
-    box-shadow: -5px 0 0 0 #ffa000, 0 0 0 rgba(255, 160, 0, 0);
+    box-shadow: 0 0 0 rgba(255, 160, 0, 0);
   }
   50% {
     background-color: rgba(255, 160, 0, 0.2);
-    box-shadow: -5px 0 0 0 #ffa000, 0 0 40px rgba(255, 160, 0, 0.8);
+    box-shadow: 0 0 40px rgba(255, 160, 0, 0.8);
   }
 }
 
 @keyframes highlight-pulse-completed {
   0%, 100% {
     background-color: transparent;
-    box-shadow: -5px 0 0 0 #1976d2, 0 0 0 rgba(25, 118, 210, 0);
+    box-shadow: 0 0 0 rgba(25, 118, 210, 0);
   }
   50% {
     background-color: rgba(25, 118, 210, 0.2);
-    box-shadow: -5px 0 0 0 #1976d2, 0 0 40px rgba(25, 118, 210, 0.8);
+    box-shadow: 0 0 40px rgba(25, 118, 210, 0.8);
   }
 }

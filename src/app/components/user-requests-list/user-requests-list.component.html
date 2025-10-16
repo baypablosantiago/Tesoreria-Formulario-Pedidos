@@ -40,7 +40,7 @@
       </div>
 
       <div *ngIf="req.partialPayment > 0" class="highlight" [ngClass]="getPartialPaymentClass(req)">
-        💰 <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
+       <strong>Pago parcial:</strong> {{ req.partialPayment | currency:'ARS':'symbol':'1.2-2':'es-AR' }}
         <button mat-button class="history-toggle" (click)="togglePaymentHistory(req.id)">
           <mat-icon>{{ isHistoryExpanded(req.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
           {{ isHistoryExpanded(req.id) ? 'Ocultar' : 'Ver' }} detalle
@@ -66,7 +66,8 @@
       </div>
 
       <div *ngIf="req.commentsFromTeso" class="highlight info">
-        📝 <strong>Comentarios de Tesorería General:</strong> {{ req.commentsFromTeso }}
+        <mat-icon>message</mat-icon>
+        <strong>Comentarios de Tesorería General:</strong> {{ req.commentsFromTeso }}
       </div>
 
       <div *ngIf="isEditable(req)" class="edit-container" >

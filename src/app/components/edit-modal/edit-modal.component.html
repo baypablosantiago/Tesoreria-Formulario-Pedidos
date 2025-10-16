@@ -20,7 +20,7 @@
     <form [formGroup]="form" class="edit-form">
       
       <div *ngIf="data.onWork || data.partialPayment > 0" class="alert-info">
-        Solo se puede modificar el comentario debido a que la solicitud está {{ data.onWork ? 'en revisión' : 'con pago parcial' }}.
+        Solo se puede modificar el comentario debido a que la solicitud {{ data.onWork ? 'está en revisión' : 'posee pago parcial' }}.
       </div>
 
       <div class="form-card comments">
