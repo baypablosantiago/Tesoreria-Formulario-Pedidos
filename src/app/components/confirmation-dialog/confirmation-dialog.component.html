@@ -3,9 +3,7 @@
 
   <mat-dialog-content>
     <p class="intro-text">
-      Estás por enviar {{ data.requests.length }}
-      {{ data.requests.length === 1 ? 'solicitud' : 'solicitudes' }}:
-    </p>
+      Por favor, verifique que los montos individuales y sus sumas sean correctos. Una vez enviado el formulario, no será posible eliminar las solicitudes, solo modificarlas.    </p>
 
     <div *ngFor="let group of groupedByDA" class="da-group">
       <h3 class="da-header">DA {{ group.da }}:</h3>
@@ -35,6 +33,6 @@
 
   <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="onConfirm()">Confirmar y Enviar</button>
+    <button mat-button (click)="onConfirm()">Confirmar y Enviar</button>
   </mat-dialog-actions>
 </div>

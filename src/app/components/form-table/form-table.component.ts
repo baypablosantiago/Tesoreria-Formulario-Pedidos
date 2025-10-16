@@ -55,7 +55,8 @@ export class FormTableComponent implements OnInit, AfterViewInit {
   constructor(
     private fundingRequestService: FundingRequestService,
     private userDaService: UserDaService,
-    private draftService: DraftService
+    private draftService: DraftService,
+    private dialog: MatDialog
   ) { }
 
   get rows(): FormArray {
@@ -187,42 +188,17 @@ export class FormTableComponent implements OnInit, AfterViewInit {
         comments: row.get('comentarios')?.value || ''
       }));
 
-      let hasError = false;
-      let responses = 0;
+      // Open confirmation dialog
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: { requests },
+        width: '600px',
+        disableClose: false
+      });
 
-      requests.forEach(req => {
-        this.fundingRequestService.addFundingRequest(req).subscribe({
-          next: () => {
-            responses++;
-            if (responses === requests.length && !hasError) {
-              // Delete draft after successful submission
-              this.draftService.deleteDraft().subscribe();
-
-              this.messageBox.show(
-                'Las solicitudes fueron enviadas correctamente y entrarán en revisión por el personal de la Tesorería General.',
-                'success',
-                'Formulario enviado.'
-              );
-              this.isDisabled = true;
-            }
-          },
-          error: (err) => {
-            hasError = true;
-            if (err.status === 500 && err.error && err.error.includes && err.error.includes('Ya existe una solicitud idéntica')) {
-              this.messageBox.show(
-                'Ya existe una solicitud idéntica con los mismos datos. Verifique sus solicitudes enviadas antes de enviar nuevamente.',
-                'warning',
-                'Solicitud duplicada.'
-              );
-            } else {
-              this.messageBox.show(
-                'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
-                'error',
-                'Error de servidor.'
-              );
-            }
-          }
-        });
+      dialogRef.afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+          this.sendRequests(requests);
+        }
       });
     } else {
       this.messageBox.show(
@@ -231,6 +207,46 @@ export class FormTableComponent implements OnInit, AfterViewInit {
         'Formulario incompleto.'
       );
     }
+  }
+
+  private sendRequests(requests: FundingRequestCreateDto[]): void {
+    let hasError = false;
+    let responses = 0;
+
+    requests.forEach(req => {
+      this.fundingRequestService.addFundingRequest(req).subscribe({
+        next: () => {
+          responses++;
+          if (responses === requests.length && !hasError) {
+            // Delete draft after successful submission
+            this.draftService.deleteDraft().subscribe();
+
+            this.messageBox.show(
+              'Las solicitudes fueron enviadas y entrarán en revisión por el personal de la Tesorería General.',
+              'success',
+              'Formulario enviado.'
+            );
+            this.isDisabled = true;
+          }
+        },
+        error: (err) => {
+          hasError = true;
+          if (err.status === 500 && err.error && err.error.includes && err.error.includes('Ya existe una solicitud idéntica')) {
+            this.messageBox.show(
+              'Ya existe una solicitud idéntica con los mismos datos. Verifique sus solicitudes enviadas antes de enviar nuevamente.',
+              'warning',
+              'Solicitud duplicada.'
+            );
+          } else {
+            this.messageBox.show(
+              'Ocurrió un error al enviar una solicitud. Informe a Tesorería.',
+              'error',
+              'Error de servidor.'
+            );
+          }
+        }
+      });
+    });
   }
 
   saveDraft(): void {
