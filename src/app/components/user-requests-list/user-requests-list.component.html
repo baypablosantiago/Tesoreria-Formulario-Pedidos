@@ -70,7 +70,7 @@
       </div>
 
       <div *ngIf="isEditable(req)" class="edit-container" >
-        <button mat-raised-button class="action-button" (click)="onEdit(req)">
+        <button mat-raised-button class="action-button" [ngClass]="{'partial-payment-button': req.partialPayment > 0}" (click)="onEdit(req)">
            <mat-icon class="icon">edit</mat-icon> Modificar
         </button>
       </div>

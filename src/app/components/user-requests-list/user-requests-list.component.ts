@@ -56,7 +56,7 @@ onEdit(req: FundingRequestResponseDto): void {
   }
 
   isEditable(req: FundingRequestResponseDto): boolean {
-    return req.isActive && req.partialPayment === 0;
+    return req.isActive;
   }
 
   getPartialPaymentClass(req: FundingRequestResponseDto): string {

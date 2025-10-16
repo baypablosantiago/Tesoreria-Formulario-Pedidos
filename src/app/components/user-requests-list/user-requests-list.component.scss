@@ -1,17 +1,42 @@
 .request-card {
+  position: relative;
   margin-bottom: 1.5rem;
   transition: all 0.3s ease;
 
-  &.pending {
-    border-left: 5px solid #26a69a;
+  &.pending::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: #26a69a;
+    border-radius: 4px 0 0 4px;
+    z-index: 1;
   }
 
-  &.partial {
-    border-left: 5px solid #ffa000;
+  &.partial::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: #ffa000;
+    border-radius: 4px 0 0 4px;
+    z-index: 1;
   }
 
-  &.completed {
-    border-left: 5px solid #1976d2;
+  &.completed::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: #1976d2;
+    border-radius: 4px 0 0 4px;
+    z-index: 1;
   }
 
   &.pending.highlighted {
@@ -28,6 +53,7 @@
 
   mat-card {
     padding: 1rem;
+    border-radius: 4px !important;
   }
 
   .header-content {
@@ -216,9 +242,21 @@
         color: #007b8a;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    
+
     .icon{
       color:#26a69a;
+    }
+
+    &.partial-payment-button {
+        .icon {
+            color: #ffa000;
+        }
+
+        &:hover {
+            background-color: #fff3e0;
+            color: #e68900;
+            box-shadow: 0 2px 6px rgba(255, 160, 0, 0.3);
+        }
     }
 }
 

@@ -59,7 +59,7 @@ export class EditModalComponent {
       checkingAccount: [data.checkingAccount]
     });
 
-    if (data.onWork) {
+    if (data.onWork || data.partialPayment > 0) {
       Object.keys(this.form.controls).forEach(key => {
         if (key !== 'comments') {
           this.form.controls[key].disable();
