@@ -1,19 +1,24 @@
+<div class="login-header">
+  <h1>Sistema de Gestión de Solicitudes de Fondos</h1>
+  <p>Tesorería General de Entre Ríos</p>
+</div>
+
 <mat-card>
     <mat-card-header>
-        <h2>Login</h2>
+        <h2>Iniciar sesión</h2>
     </mat-card-header>
     <mat-card-content>
         <form #loginForm="ngForm" (submit)="login()">
 
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input autocomplete="off" [(ngModel)]="email" name="email" matInput placeholder="Ingrese su email">
+                <input autocomplete="off" [(ngModel)]="email" name="email" matInput placeholder="Ingrese su email" (input)="onInputChange()">
                 <mat-icon matPrefix>email</mat-icon>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Contraseña</mat-label>
-                <input autocomplete="off" [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" matInput placeholder="Ingrese su contraseña" >
+                <input autocomplete="off" [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password" matInput placeholder="Ingrese su contraseña" (input)="onInputChange()">
                 <mat-icon matPrefix>lock</mat-icon>
                 <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="password-toggle">
                     {{hidePassword ? 'visibility_off' : 'visibility'}}
@@ -21,7 +26,7 @@
             </mat-form-field>
 
             <div class="error-space">
-                <mat-error *ngIf="!loginValid">Usuario o contraseña incorrecto</mat-error>
+                <mat-error *ngIf="!loginValid">Usuario o contraseña incorrecto.</mat-error>
             </div>
 
             <button mat-raised-button>
@@ -31,9 +36,8 @@
         </form>
 
          <div class="footer-text">
-            <p>&copy; {{ currentYear }} Tesoreria General de Entre Ríos.</p>
-            <p>Todos los derechos reservados.</p>
-            <p>Made by BPS.</p>
+            <p>© {{ currentYear }} - Todos los derechos reservados</p>
+            <p class="support-text">Desarrollo & Soporte: <a href="mailto:pbay@entrerios.gov.ar">pbay&#64;entrerios.gov.ar</a></p>
         </div>
 
     </mat-card-content>

@@ -46,6 +46,12 @@ export class LoginComponent implements OnDestroy {
       error: () => this.loginValid = false
     });
   }
+
+  onInputChange(): void {
+    if (!this.loginValid) {
+      this.loginValid = true;
+    }
+  }
   
   currentYear: number = 0;
 

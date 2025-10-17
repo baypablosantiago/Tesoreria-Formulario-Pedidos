@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./components/header/header.component";
+import { FooterComponent } from "./components/footer/footer.component";
 import { filter } from 'rxjs';
 import { NgIf } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -8,7 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, NgIf,MatNativeDateModule],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, NgIf, MatNativeDateModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
