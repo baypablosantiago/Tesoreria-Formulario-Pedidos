@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, ViewChildren, ViewChild, QueryList, AfterViewInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { DaCardComponent } from "../da-card/da-card.component";
 import { CommonModule } from '@angular/common';
 import { FundingRequestAdminResponseDto } from '../../models';
@@ -12,13 +12,15 @@ import { SignalRService } from '../../services/signalr.service';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationDrawerComponent } from '../notification-drawer/notification-drawer.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule, NotificationDrawerComponent, MatMenuModule]
+  imports: [DaCardComponent, CommonModule, MatButtonModule, MatIconModule, NotificationDrawerComponent, MatMenuModule, MatIconButton, MatTooltipModule]
 })
 export class DashboardComponent implements AfterViewInit, OnDestroy {
   constructor(
@@ -33,6 +35,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   private signalRNotificationSubscription?: Subscription;
   private highlightSubscription?: Subscription;
   highlightedRequestId: number | null = null;
+  filterText: string = '';
 
   sortBy: keyof FundingRequestAdminResponseDto = 'requestNumber';
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -55,6 +58,158 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   }
 
   @ViewChildren(DaCardComponent) daCards!: QueryList<DaCardComponent>;
+  @ViewChild('filterInput') filterInput!: ElementRef<HTMLInputElement>;
+
+  get filteredRequests(): FundingRequestAdminResponseDto[] {
+    if (!this.filterText || this.filterText.trim() === '') {
+      return this.allRequests;
+    }
+
+    const searchTerm = this.filterText.toLowerCase().trim();
+
+    return this.allRequests.filter(request =>
+      this.matchesSearchTerm(request, searchTerm)
+    );
+  }
+
+  private matchesSearchTerm(request: FundingRequestAdminResponseDto, searchTerm: string): boolean {
+    // Detectar búsqueda con prefijo "columna:valor"
+    if (searchTerm.includes(':')) {
+      const colonIndex = searchTerm.indexOf(':');
+      const field = searchTerm.substring(0, colonIndex).trim().toLowerCase();
+      const value = searchTerm.substring(colonIndex + 1).trim().toLowerCase();
+
+      // Si no hay valor después del ":", búsqueda normal
+      if (!value) {
+        // Continuar con búsqueda normal
+      } else {
+        // Mapeo de nombres de columnas a campos de búsqueda
+        switch(field) {
+          case 'd.a.':
+          case 'da':
+            return request.da?.toString().includes(value);
+
+          case 'n° solicitud':
+          case 'n° de solicitud':
+          case 'numero de solicitud':
+          case 'solicitud':
+            return request.requestNumber?.toString().includes(value);
+
+          case 'fecha recibido':
+          case 'fecha':
+            if (request.receivedAt) {
+              const date = new Date(request.receivedAt);
+              const dateStr = date.toLocaleDateString('es-AR');
+              const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+              return dateStr.includes(value) || timeStr.includes(value);
+            }
+            return false;
+
+          case 'n° de orden de pago':
+          case 'orden de pago':
+          case 'orden':
+            return request.paymentOrderNumber?.toLowerCase().includes(value);
+
+          case 'concepto, proveedor o contratista':
+          case 'concepto':
+          case 'proveedor':
+            return request.concept?.toLowerCase().includes(value);
+
+          case 'vencimiento y/o periodo':
+          case 'vencimiento':
+          case 'periodo':
+            return request.dueDate?.toLowerCase().includes(value);
+
+          case 'importe solicitado':
+          case 'importe':
+          case 'monto':
+            if (request.amount?.toString().includes(value)) return true;
+            const formattedAmount = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2 }).format(request.amount);
+            return formattedAmount.includes(value);
+
+          case 'fuente de financiamiento':
+          case 'fuente':
+          case 'financiamiento':
+            return request.fundingSource?.toLowerCase().includes(value);
+
+          case 'cuenta corriente a la cual acreditar':
+          case 'cuenta corriente':
+          case 'cuenta':
+            return request.checkingAccount?.toLowerCase().includes(value);
+
+          case 'notas / comentarios':
+          case 'notas':
+          case 'comentarios':
+            return request.comments?.toLowerCase().includes(value) ?? false;
+
+          case 'pago parcial':
+          case 'parcial':
+            if (request.partialPayment > 0) {
+              if (request.partialPayment.toString().includes(value)) return true;
+              const formattedPartial = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2 }).format(request.partialPayment);
+              return formattedPartial.includes(value);
+            }
+            return false;
+
+          default:
+            // Si no reconoce el prefijo, hacer búsqueda normal
+            break;
+        }
+      }
+    }
+
+    // Búsqueda normal en todos los campos (sin prefijo)
+
+    // Búsqueda en N° de Solicitud
+    if (request.requestNumber?.toString().includes(searchTerm)) return true;
+
+    // Búsqueda en N° de Orden de Pago
+    if (request.paymentOrderNumber?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Concepto, Proveedor o Contratista
+    if (request.concept?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Vencimiento y/o Periodo
+    if (request.dueDate?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Importe Solicitado (como número o como string)
+    if (request.amount?.toString().includes(searchTerm)) return true;
+    const formattedAmount = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2 }).format(request.amount);
+    if (formattedAmount.includes(searchTerm)) return true;
+
+    // Búsqueda en Fuente de Financiamiento
+    if (request.fundingSource?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Cuenta Corriente
+    if (request.checkingAccount?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Notas / Comentarios
+    if (request.comments?.toLowerCase().includes(searchTerm)) return true;
+
+    // Búsqueda en Pago Parcial
+    if (request.partialPayment > 0) {
+      if (request.partialPayment.toString().includes(searchTerm)) return true;
+      const formattedPartial = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2 }).format(request.partialPayment);
+      if (formattedPartial.includes(searchTerm)) return true;
+    }
+
+    // Búsqueda en Fecha Recibido (formato dd/MM/yyyy)
+    if (request.receivedAt) {
+      const date = new Date(request.receivedAt);
+      const dateStr = date.toLocaleDateString('es-AR');
+      const timeStr = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      if (dateStr.includes(searchTerm) || timeStr.includes(searchTerm)) return true;
+    }
+
+    // Búsqueda en D.A.
+    if (request.da?.toString().includes(searchTerm)) return true;
+
+    // Búsqueda por estado "en revisión" o "en trabajo"
+    if (request.onWork && ('en revisión'.includes(searchTerm) || 'en trabajo'.includes(searchTerm) || 'revision'.includes(searchTerm))) return true;
+    if (!request.onWork && 'pendiente'.includes(searchTerm)) return true;
+
+    return false;
+  }
 
   ngOnInit() {
     this.loadSortPreferences();
@@ -135,13 +290,13 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
   setSortBy(field: keyof FundingRequestAdminResponseDto) {
     this.sortBy = field;
     this.saveSortPreferences();
-    this.groupedRequests = this.groupByDA(this.allRequests);
+    this.applyFilter();
   }
 
   toggleSortDirection() {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.saveSortPreferences();
-    this.groupedRequests = this.groupByDA(this.allRequests);
+    this.applyFilter();
   }
 
   private sortRequests(requests: FundingRequestAdminResponseDto[]): FundingRequestAdminResponseDto[] {
@@ -435,8 +590,29 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     this.isScrolled = window.scrollY > 50;
   }
 
-  onFilterEnter() {
-    this.messageBox.show('La funcion de filtro esta en desarrollo, ninguna base de datos fue eliminada :)', 'info', 'Base de datos eliminada');
+  onFilterChange(value: string) {
+    this.filterText = value;
+    this.applyFilter();
+  }
+
+  private applyFilter() {
+    this.groupedRequests = this.groupByDA(this.filteredRequests);
+  }
+
+  clearFilter() {
+    this.filterText = '';
+    if (this.filterInput) {
+      this.filterInput.nativeElement.value = '';
+    }
+    this.applyFilter();
+  }
+
+  get isFiltered(): boolean {
+    return this.filterText.trim() !== '';
+  }
+
+  get filteredCount(): number {
+    return this.filteredRequests.length;
   }
 
   markAllAsOnWork() {

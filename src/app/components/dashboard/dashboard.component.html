@@ -19,13 +19,22 @@
 
       <div class="right-buttons">
         <div class="filter-input-container">
-          <mat-icon class="search-icon">manage_search</mat-icon>
+          <mat-icon class="search-icon"
+            matTooltip="Búsqueda avanzada: use 'columna:valor' para filtrar por una columna en específico. Ejemplo: 
+ 'N° Solicitud:7485'"
+            matTooltipPosition="below"
+            matTooltipClass="search-filter-tooltip">
+            manage_search
+          </mat-icon>
           <input
             type="text"
             class="filter-input"
-            placeholder="Filtrar solicitudes..."
-            (keydown.enter)="onFilterEnter()"
+            placeholder="Buscar..."
+            (input)="onFilterChange($any($event.target).value)"
             #filterInput>
+          <button *ngIf="isFiltered" mat-icon-button class="clear-button" (click)="clearFilter()">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
 
         <button mat-button class="action-button" [matMenuTriggerFor]="sortMenu">
@@ -63,6 +72,12 @@
         Marcar seleccionadas como "Finalizada"
       </button>
     </div>
+  </div>
+
+  <!-- Indicador de filtro activo -->
+  <div *ngIf="isFiltered" class="filter-info">
+    <mat-icon>info</mat-icon>
+    <span>Mostrando {{ filteredCount }} de {{ allRequests.length }} solicitudes</span>
   </div>
 
 <mat-menu #sortMenu="matMenu">
