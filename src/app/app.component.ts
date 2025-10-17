@@ -15,12 +15,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class AppComponent {
   showHeader = true;
+  hideFooter = false;
 
   constructor(private router: Router) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.showHeader = !event.urlAfterRedirects.startsWith('/login');
+        const url = event.urlAfterRedirects;
+        this.showHeader = !url.startsWith('/login');
+
+        // Ocultar footer (manteniendo espacio) en las pestañas de admin con mucha información
+        this.hideFooter = url.startsWith('/dashboard') || url.startsWith('/finished-requests');
       });
   }
 

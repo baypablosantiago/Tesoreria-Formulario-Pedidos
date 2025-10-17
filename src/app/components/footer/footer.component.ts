@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   currentYear = new Date().getFullYear();
-  version = '1.0.0';
+  version = '0.2 TEST';
 }
